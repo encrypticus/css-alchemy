@@ -1,0 +1,37 @@
+mixin main-nav(selectedID)
+  include main-nav.data.pug
+
+  nav.main-nav&attributes(attributes)
+    ul.main-nav__list.main-nav__list_level-1
+      - mainNav(mainMenu)
+
+  - function mainNav(menu) {
+      - for (var i = 0; i < menu.length; i++) {
+          +main-nav-item(selectedID, menu[i], menu[i].level)
+            - if (typeof menu[i].children !== 'undefined') {
+                +main-nav-sublist(menu[i].level + 1)
+                  - mainNav(menu[i].children);
+            - }
+      - }
+  - }
+
+mixin main-nav-item(selectedID, item, level)
+  -
+    var thisItemClass = `main-nav__item main-nav__item_level-${level}`;
+    var thisLinkClass = `main-nav__link main-nav__link_level-${level}`;
+
+    if (selectedID === item.id)
+      thisItemClass += ' main-nav__item_active';
+
+    if (item.children)
+      thisItemClass += ' main-nav__item_has-child';
+
+  li(class= thisItemClass)
+    a(class= thisLinkClass, href= item.url)= item.name
+    block
+
+mixin main-nav-sublist(level)
+  -
+    var listClass = `main-nav__list main-nav__list_level-${level}`;
+  ul(class= listClass)
+    block
