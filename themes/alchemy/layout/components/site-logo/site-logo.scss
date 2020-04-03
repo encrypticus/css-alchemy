@@ -1,0 +1,33 @@
+@import '../../../../../webpack-boilerplate/src/sass/utils';
+
+.site-logo {
+
+  $block-name: &; // #{$block-name}__element
+
+  &__link {
+    display: flex;
+    padding: pxToRem(10);
+    font-size: pxToRem(30);
+    font-family: 'Yanone Kaffeesatz', Arial, sans-serif;
+    font-weight: bold;
+    color: #000;
+    border-radius: 5px;
+    align-items: center;
+    transition: background-color, .3s;
+    text-transform: uppercase;
+    text-decoration: none;
+    order: 2;
+
+    &:hover {
+      background-color: rgba(119, 119, 119, .1);
+    }
+  }
+
+  &__link-text {
+    order: 1;
+  }
+
+  &__icon {
+    margin-right: pxToRem(10);
+  }
+}
