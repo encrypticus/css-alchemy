@@ -1,2 +1,2 @@
 import './sass/common.scss';
-import './index.scss';
+import '../../themes/alchemy/layout/components/socials/socials';

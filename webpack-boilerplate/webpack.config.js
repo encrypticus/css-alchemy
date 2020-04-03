@@ -16,6 +16,7 @@ const enableStylelint = require('./webpack/plugins/stylelint-webpack-plugin'); /
 const processJs = require('./webpack/presets/js'); // пресет обрабатывает js-файлы
 const browserSync = require('./webpack/plugins/browser-sync-webpack-plugin'); // плагин browser sync
 const cleanWebpackPlugin = require('./webpack/plugins/clean-webpack-plugin'); // плагин очищает папку сборки перед каждой пересборкой
+const copyPlugin = require('./webpack/plugins/copy-webpack-plugin'); // плагин копирует файлы из указанной папки в папку назначения
 
 module.exports = () => {
   const commonConfig = webpackMerge(
@@ -28,7 +29,7 @@ module.exports = () => {
       publicPath: '/'
     }),
     miniCssExtractPlugin({
-      filename : '[name].css',
+      filename: '[name].css',
       chunkFilename: '[name].css'
     }),
     processCss(),
@@ -63,7 +64,14 @@ module.exports = () => {
     processFonts(),
     processJs(),
     cleanWebpackPlugin(),
-    enableStylelint()
+    enableStylelint(),
+    copyPlugin([
+      {
+        from: '../themes/alchemy/layout/components/**/img/*',
+        to: path.resolve(__dirname, '../themes/alchemy/source/img'),
+        flatten: true
+      }
+    ])
   );
 
   if (process.env.mode === 'development') {
