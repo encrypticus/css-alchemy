@@ -17,6 +17,7 @@ const processJs = require('./webpack/presets/js'); // пресет обраба�
 const browserSync = require('./webpack/plugins/browser-sync-webpack-plugin'); // плагин browser sync
 const cleanWebpackPlugin = require('./webpack/plugins/clean-webpack-plugin'); // плагин очищает папку сборки перед каждой пересборкой
 const copyPlugin = require('./webpack/plugins/copy-webpack-plugin'); // плагин копирует файлы из указанной папки в папку назначения
+const aliases = require('./webpack/options/aliases'); //
 
 module.exports = () => {
   const commonConfig = webpackMerge(
@@ -71,7 +72,8 @@ module.exports = () => {
         to: path.resolve(__dirname, '../themes/alchemy/source/img'),
         flatten: true
       }
-    ])
+    ]),
+    aliases()
   );
 
   if (process.env.mode === 'development') {

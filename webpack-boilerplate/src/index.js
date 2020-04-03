@@ -1,5 +1,5 @@
 import './sass/common.scss';
-import '../../themes/alchemy/layout/components/socials/socials';
-import '../../themes/alchemy/layout/components/site-logo/site-logo';
-import '../../themes/alchemy/layout/components/hamburger/hamburger';
-import '../../themes/alchemy/layout/blocks/page-header/page-header';
+import '#components/socials/socials';
+import '#components/site-logo/site-logo';
+import '#components/hamburger/hamburger';
+import '#blocks/page-header/page-header';
