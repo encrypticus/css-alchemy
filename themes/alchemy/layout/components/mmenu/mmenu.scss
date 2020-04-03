@@ -1,0 +1,24 @@
+$mm_transitionDuration: .5s;
+
+@import '../../../../../webpack-boilerplate/node_modules/mmenu-js/src/mmenu';
+
+@import '../../../../../webpack-boilerplate/src/sass/utils';
+
+.mmenu {
+
+  &__link,
+  &__list-item,
+  &__title,
+  .mm-navbar__title {
+    font-size: pxToRem(16, 10);
+    font-family: 'Yanone Kaffeesatz', Arial, sans-serif;
+  }
+
+  &__logo {
+    text-transform: uppercase;
+  }
+
+  .mm-navbar__title span {
+    overflow: visible;
+  }
+}
