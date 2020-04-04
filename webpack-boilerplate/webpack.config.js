@@ -71,6 +71,15 @@ module.exports = () => {
         from: '../themes/alchemy/layout/components/**/img/*',
         to: path.resolve(__dirname, '../themes/alchemy/source/img'),
         flatten: true
+      },
+      {
+        from: '../themes/alchemy/layout/blocks/**/img/*',
+        to: path.resolve(__dirname, '../themes/alchemy/source/img'),
+        flatten: true
+      },
+      {
+        from: '../themes/alchemy/favicons',
+        to: path.resolve(__dirname, '../themes/alchemy/source/favicons')
       }
     ]),
     aliases()
