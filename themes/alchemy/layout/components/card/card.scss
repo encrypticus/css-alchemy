@@ -1,0 +1,113 @@
+@import '../../../../../webpack-boilerplate/src/sass/utils';
+
+.card {
+
+  $block-name: &; // #{$block-name}__element
+
+  position: relative;
+  //display: flex;
+  width: 265px;
+  height: 265px;
+  background-color: #fff;
+  //align-items: center;
+  transition: transform .5s;
+  box-shadow: 0 0 10px rgba(#000, .3);
+  transform-style: preserve-3d;
+
+  &__face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    backface-visibility: hidden;
+  }
+
+  &__back {
+    background-color: #fff;
+    transform: rotateY(180deg);
+  }
+
+  &__img {
+    width: 100%;
+    height: auto;
+  }
+
+  &__description {
+    font-size: pxToRem(23);
+    margin-bottom: pxToRem(50);
+  }
+
+  &__links {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  &__link {
+    position: relative;
+    display: inline-flex;
+    padding: pxToRem(5) pxToRem(10);
+    font-size: pxToRem(23);
+    color: rgba(#000, .8);
+    background-color: rgba(#000, .1);
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color .5s, box-shadow .5s;
+    box-shadow: 0 0 3px rgba(#000, .5);
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: rgba(#000, .8);
+      transform: scaleX(0);
+      transition: transform .2s;
+    }
+
+    &:hover {
+      background-color: transparent;
+      box-shadow: 0 0 3px transparent;
+    }
+  }
+
+  &__link-icon {
+    margin-right: 10px;
+
+    path {
+      fill: #bbb;
+    }
+  }
+
+  &__link-icon path {
+    transition: fill 1s;
+  }
+
+  &__link:hover &__link-icon path {
+    fill: blue;
+  }
+
+  &__link:hover:after {
+    transform: scaleX(1);
+  }
+}
+
+.card-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.card-wrapper:hover .card {
+  transform: rotateY(180deg);
+  transition: transform .5s;
+}
