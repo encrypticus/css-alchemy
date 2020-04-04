@@ -4,7 +4,9 @@ append style
   link(rel="stylesheet" href= url_for('index.css'))
 
 block content
-  include blocks/page-header/page-header
+  .page__heading
+    +heading('Мои проекты')
+  include blocks/cards/cards
 
 block scripts
   script(src= url_for('npm.svg-injector.js'))
