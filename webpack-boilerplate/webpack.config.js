@@ -80,6 +80,10 @@ module.exports = () => {
       {
         from: '../themes/alchemy/favicons',
         to: path.resolve(__dirname, '../themes/alchemy/source/favicons')
+      },
+      {
+        from: '../themes/alchemy/thumbnails',
+        to: path.resolve(__dirname, '../themes/alchemy/source/thumbnails')
       }
     ]),
     aliases()
