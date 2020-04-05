@@ -34,12 +34,19 @@ html, body {
   }
 
   &__content {
+    display: grid;
+    grid-gap: pxToRem(65);
     padding: pxToRem(65) pxToRem(117);
+  }
+
+  &__content-inner {
+    display: grid;
+    grid-gap: pxToRem(30);
   }
 
   &__heading {
     text-align: center;
-    margin-bottom: pxToRem(30);
+    margin-bottom: pxToRem(-35);
   }
 }
 

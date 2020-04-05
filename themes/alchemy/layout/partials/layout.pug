@@ -5,16 +5,18 @@ include includes
   keywords = "";
 
   const postList = site.posts.reduce(function(posts, post) {
+    let excerpt = post.excerpt.replace(/\>\</g, '>\n<') || post.content.substr(0, 1000).replace(/\>\</g, '>\n<');
 
-  posts.push({
-    title: post.title,
-    subtitle: post.subtitle,
-    categories: post.categories,
-    tags: post.tags,
-    date: post.date,
-    id: post._id,
-    content: strip_html(post.content),
-    link: url_for(post.link || post.path)
+    posts.push({
+      title: post.title,
+      subtitle: post.subtitle,
+      categories: post.categories,
+      tags: post.tags,
+      date: post.date,
+      id: post._id,
+      content: post.content,
+      link: url_for(post.link || post.path),
+      thumbnail: post.thumbnail
   });
 
   return posts;

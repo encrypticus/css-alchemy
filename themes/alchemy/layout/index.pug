@@ -6,7 +6,11 @@ append style
 block content
   .page__heading
     +heading('Мои проекты')
+
   include blocks/cards/cards
+
+  .page__content-inner
+    include blocks/post-list/post-list
 
 block scripts
   script(src= url_for('npm.svg-injector.js'))
