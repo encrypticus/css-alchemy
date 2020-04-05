@@ -1,0 +1,23 @@
+mixin post(post = {})
+  article.post
+    .post__thumb-wrapper
+      img.post__thumbnail(src=`${post.thumbnail}`)
+
+    time.post__date= `Опубликовано: ${date(post.date)}`
+
+    h2.post__title= `${post.title}`
+
+    ul.post__categories
+      each category in post.categories.data
+        li.post__category
+          a.post__category-link(href= url_for(category.path))= category.name
+
+    .post__content
+      | !{render(truncate(post.content.replace(/\\n/g, ' '), { length: 1000, omission: '...' }), 'html')}
+
+    hr
+
+    ul.post__tags
+      each tag in post.tags.data
+        li.post__tag
+          a.post__tag-link(href= url_for(tag.path))= `#${tag.name}`
