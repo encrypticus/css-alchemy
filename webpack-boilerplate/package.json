@@ -6,7 +6,7 @@
   "scripts": {
     "browser-sync": "cross-env mode=development webpack --mode development --watch",
     "dev-server": "cross-env mode=development webpack-dev-server --mode development --watch",
-    "prod": "cross-env mode=production webpack --mode production",
+    "prod": "cross-env mode=production webpack --mode production --watch",
     "deploy": "gh-pages -d dist"
   },
   "repository": {

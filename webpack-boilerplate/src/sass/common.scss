@@ -36,12 +36,18 @@ html, body {
   &__content {
     display: grid;
     grid-gap: pxToRem(65);
-    padding: pxToRem(65) pxToRem(117);
+    padding: pxToRem(65) pxToPercent(117, 1400);
+
+    @include for-laptop-down {
+      padding-left: pxToPercent(30, 1400);
+      padding-right: pxToPercent(30, 1400);
+    }
   }
 
   &__content-inner {
     display: grid;
     grid-gap: pxToRem(30);
+    grid-template-columns: minmax(320px, 865px) pxToRem(265);
   }
 
   &__heading {

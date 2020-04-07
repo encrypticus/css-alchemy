@@ -8,3 +8,4 @@ import '#components/mmenu/mmenu';
 import '#components/card/card';
 import '#blocks/cards/cards';
 import '#components/heading/heading';
+import '#components/post/post';

@@ -1,0 +1,105 @@
+@import "../../../../../webpack-boilerplate/src/sass/utils";
+
+.post {
+  background-color: #fff;
+  border-radius: 4px;
+
+  &__thumb-wrapper {
+    overflow: hidden;
+    border-radius: 4px 4px 0 0;
+    line-height: 0;
+  }
+
+  &__thumbnail {
+    width: 100%;
+    height: auto;
+  }
+
+  &__content-wrapper {
+    padding: pxToRem(20);
+  }
+
+  &__meta {
+    display: flex;
+    margin-bottom: pxToRem(10);
+    color: #b1b1b1;
+    font-size: 1.2rem;
+    letter-spacing: .6px;
+  }
+
+  &__categories {
+    margin-left: 12px;
+
+    &::before {
+      content: "\2022";
+    }
+  }
+
+  &__category-link,
+  &__tag-link {
+    margin: 0 12px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font: inherit;
+    color: #7a7a7a;
+    letter-spacing: inherit;
+    transition: color .3s;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  &__tag-link {
+    display: block;
+    padding: 2px 5px 2px 20px;
+    margin-left: 0;
+    background-color: rgba(#000, .1);
+    border-radius: 4px;
+    position: relative;
+    font-weight: bold;
+    font-size: 1.1rem;
+
+    &::before {
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      content: '';
+      height: 14px;
+      width: 14px;
+      background-image: url(img/icon-tag.svg);
+    }
+  }
+
+  &__date {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: inherit;
+    color: #7a7a7a;
+  }
+
+  &__title {
+    font-size: 2rem;
+    letter-spacing: 1px;
+    margin-bottom: pxToRem(15);
+  }
+
+  &__content {
+    font-family: Lora, serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.5;
+    padding-bottom: pxToRem(10);
+    border-bottom: 1px solid #ccc;
+  }
+
+  &__tags {
+    display: flex;
+  }
+
+  &__foot {
+    padding-top: pxToRem(15);
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}

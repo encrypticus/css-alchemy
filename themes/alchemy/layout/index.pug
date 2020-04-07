@@ -10,7 +10,10 @@ block content
   include blocks/cards/cards
 
   .page__content-inner
-    include blocks/post-list/post-list
+    section.page__posts
+      include blocks/post-list/post-list
+
+    aside.page__sidebar
 
 block scripts
   script(src= url_for('npm.svg-injector.js'))
