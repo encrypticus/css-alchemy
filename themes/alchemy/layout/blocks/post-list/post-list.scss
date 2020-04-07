@@ -1,0 +1,8 @@
+@import "../../../../../webpack-boilerplate/src/sass/utils";
+
+.post-list {
+
+  &__item {
+    margin-bottom: pxToRem(30);
+  }
+}

@@ -9,3 +9,4 @@ import '#components/card/card';
 import '#blocks/cards/cards';
 import '#components/heading/heading';
 import '#components/post/post';
+import '#blocks/post-list/post-list';
