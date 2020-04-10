@@ -10,3 +10,4 @@ import '#blocks/cards/cards';
 import '#components/heading/heading';
 import '#components/post/post';
 import '#blocks/post-list/post-list';
+import '#components/button-more/button-more';
