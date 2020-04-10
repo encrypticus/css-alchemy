@@ -1,0 +1,14 @@
+@import '../../../../../webpack-boilerplate/src/sass/utils';
+
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: pxToRem(140);
+  padding: 0 pxToRem(118);
+  background-color: #353535;
+
+  @include for-tablet-landscape-down {
+    padding: pxToRem(20);
+  }
+}

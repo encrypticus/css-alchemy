@@ -11,3 +11,4 @@ import '#components/heading/heading';
 import '#components/post/post';
 import '#blocks/post-list/post-list';
 import '#components/button-more/button-more';
+import '#blocks/page-footer/page-footer';
