@@ -27,7 +27,25 @@
     order: 1;
   }
 
+  &_theme_light {
+
+    #{$block-name}__link-text {
+      color: #fff;
+    }
+  }
+
   &__icon {
     margin-right: pxToRem(10);
+  }
+
+  &_theme_light {
+
+    #{$block-name}__icon {
+
+      use {
+        fill: #fff !important;
+        stroke: #fff !important;
+      }
+    }
   }
 }
