@@ -1,6 +1,7 @@
 @import '../../../../../webpack-boilerplate/src/sass/utils';
 
 .page-header {
+  flex-grow: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;

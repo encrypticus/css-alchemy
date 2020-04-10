@@ -3,6 +3,7 @@
 @import 'utils';
 
 html, body {
+  height: 100%;
   font-size: 16px;
   font-family: 'Yanone Kaffeesatz', Arial, sans-serif;
   color: #000;
@@ -15,6 +16,7 @@ html, body {
 
 .page {
   position: relative;
+  height: 100%;
   padding: pxToRem(250) 0;
   margin: auto;
   max-width: 1750px;
@@ -32,6 +34,7 @@ html, body {
   }
 
   &__content {
+    flex-grow: 1;
     display: grid;
     padding: pxToRem(65) pxToPercent(117, 1400);
     grid-gap: pxToRem(65);
@@ -65,7 +68,10 @@ html, body {
 }
 
 .wrapper {
-  max-width: 1400px;
+  display: flex;
+  height: 100%;
   margin: auto;
   background-color: rgba(#000, .1);
+  max-width: 1400px;
+  flex-direction: column;
 }
