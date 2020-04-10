@@ -18,27 +18,44 @@
 
   &__content-wrapper {
     padding: pxToRem(20);
+
+    @include for-phone-only {
+      padding: pxToRem(10);
+    }
   }
 
   &__meta {
     display: flex;
+    flex-wrap: wrap;
     margin-bottom: pxToRem(10);
     color: #b1b1b1;
     font-size: 1.2rem;
     letter-spacing: .6px;
+
+    @include for-desktop-down {
+      flex-direction: column;
+    }
   }
 
   &__categories {
     margin-left: 12px;
 
+    @include for-desktop-down {
+      margin-left: 0;
+    }
+
     &::before {
       content: "\2022";
+
+      @include for-desktop-down {
+        content: '';
+      }
     }
   }
 
   &__category-link,
   &__tag-link {
-    margin: 0 12px;
+    margin: 0 pxToRem(12);
     text-decoration: none;
     text-transform: uppercase;
     font: inherit;
@@ -46,8 +63,19 @@
     letter-spacing: inherit;
     transition: color .3s;
 
+    @include for-phone-only {
+      margin: 0 5px;
+    }
+
     &:hover {
       color: #000;
+    }
+  }
+
+  &__category-link:first-child {
+
+    @include for-desktop-down {
+      margin-left: 0;
     }
   }
 
@@ -77,6 +105,10 @@
     text-transform: uppercase;
     letter-spacing: inherit;
     color: #7a7a7a;
+
+    @include for-desktop-down {
+      margin-bottom: pxToRem(5);
+    }
   }
 
   &__title {
@@ -96,6 +128,7 @@
 
   &__tags {
     display: flex;
+    align-items: center;
   }
 
   &__foot {
