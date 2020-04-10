@@ -1,7 +1,7 @@
 extends partials/layout
 
 append style
-  link(rel="stylesheet" href= url_for('index.css'))
+  != css('index.css')
 
 block content
   .page__heading
@@ -16,6 +16,4 @@ block content
     aside.page__sidebar
 
 block scripts
-  script(src= url_for('npm.svg-injector.js'))
-  script(src= url_for('npm.mmenu-js.js'))
-  script(src= url_for('index.js'))
+  != js(['npm.svg-injector.js', 'npm.mmenu-js.js', 'index.js'])
