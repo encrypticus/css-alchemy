@@ -13,6 +13,9 @@ mixin post(post = {})
       .post__content
         | !{render(truncate(post.content.replace(/\\n/g, ' '), { length: 400, omission: '...' }), 'html')}
 
+      .post__button-more
+        +button-more('Читать', post.link)
+
       .post__foot
         ul.post__tags
           each tag in post.tags.data
