@@ -1,5 +1,16 @@
-mixin socials()
-  .socials
+mixin socials(mods)
+  -
+    // список модификаторов
+    let allMods = '';
+
+    if(typeof(mods) !== 'undefined' && mods) {
+      let modsList = mods.split(',');
+      for (let i = 0; i < modsList.length; i++) {
+        allMods = allMods + ' socials_' + modsList[i].trim();
+      }
+    }
+
+  .socials(class=allMods)
     a.socials__link(href='https://github.com/encrypticus/')
       img.socials__icon(src="img/github-icon.svg")
     a.socials__link(href='https://t.me/encrypticus')

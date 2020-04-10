@@ -1,4 +1,7 @@
 .socials {
+
+  $block-name: &;
+
   display: flex;
   width: 75px;
   justify-content: space-between;
@@ -12,5 +15,15 @@
     width: 25px;
     height: auto;
     color: gray;
+  }
+
+  &_theme_light {
+
+    #{$block-name}__icon {
+
+      path {
+        fill: #fff;
+      }
+    }
   }
 }
