@@ -1,0 +1,37 @@
+@import "../../../../../webpack-boilerplate/src/sass/utils";
+
+.button-more {
+  position: relative;
+  display: inline-flex;
+  padding: pxToRem(5) pxToRem(10);
+  font-family: Lora, serif;
+  font-style: italic;
+  //font-size: pxToRem(23);
+  color: rgba(#000, .8);
+  background-color: rgba(#000, .1);
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color .5s, box-shadow .5s;
+  box-shadow: 0 0 3px rgba(#000, .5);
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: rgba(#000, .8);
+    transform: scaleX(0);
+    transition: transform .2s;
+  }
+
+  &:hover {
+    background-color: transparent;
+    box-shadow: 0 0 3px transparent;
+  }
+}
+
+.button-more:hover:after {
+  transform: scaleX(1);
+}
