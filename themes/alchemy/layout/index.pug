@@ -14,7 +14,11 @@ block content
       include blocks/post-list/post-list
 
     aside.page__sidebar
+      +heading('категории', 'sidebar')
       +categories
+
+      +heading('тэги', 'sidebar')
+      +tags
 
 block scripts
   != js(['npm.svg-injector.js', 'npm.mmenu-js.js', 'index.js', 'npm.jquery.js'])
