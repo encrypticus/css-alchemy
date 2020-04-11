@@ -1,0 +1,47 @@
+@import "../../../../../../webpack-boilerplate/src/sass/utils";
+
+.tags-widget {
+  background-color: #fff;
+  padding: pxToRem(20);
+  margin-bottom: pxToRem(60);
+  border-radius: 4px;
+  user-select: none;
+
+  &-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &-list-item {
+    position: relative;
+    line-height: pxToRem(24);
+    margin: 0 5px 5px 0;
+  }
+
+  &-list-link {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1.2rem;
+    letter-spacing: .6px;
+    color: #7a7a7a;
+    padding: 2px 5px 2px 20px;
+    background-color: rgba(#000, .1);
+    border-radius: 4px;
+    position: relative;
+    transition: color .3s;
+
+    &:hover {
+      color: #000;
+    }
+
+    &::before {
+      position: absolute;
+      top: 7px;
+      left: 4px;
+      content: '';
+      height: 14px;
+      width: 14px;
+      background-image: url(img/icon-tag.svg);
+    }
+  }
+}
