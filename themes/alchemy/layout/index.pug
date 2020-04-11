@@ -20,8 +20,9 @@ block content
       +heading('тэги', 'sidebar')
       +tags
 
-      +heading('архив', 'sidebar')
-      +archives
+      if theme.archives.show
+        +heading('архив', 'sidebar')
+        +archives
 
 block scripts
   != js(['npm.svg-injector.js', 'npm.mmenu-js.js', 'index.js', 'npm.jquery.js'])
