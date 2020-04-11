@@ -1,6 +1,13 @@
+@import "../../../../../webpack-boilerplate/src/sass/utils";
+
 .heading {
 
   $block-name: &; // #{$block-name}__element
 
-  font-size: 30px;
+  font-size: pxToRem(30);
+
+  &_sidebar {
+    color: #696969;
+    margin-bottom: pxToRem(10);
+  }
 }
