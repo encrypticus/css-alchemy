@@ -14,6 +14,7 @@ block content
       include blocks/post-list/post-list
 
     aside.page__sidebar
+      +categories
 
 block scripts
-  != js(['npm.svg-injector.js', 'npm.mmenu-js.js', 'index.js'])
+  != js(['npm.svg-injector.js', 'npm.mmenu-js.js', 'index.js', 'npm.jquery.js'])
