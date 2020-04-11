@@ -1,0 +1,57 @@
+@import "../../../../../../webpack-boilerplate/src/sass/utils";
+
+.categories-widget {
+  background-color: #fff;
+  padding: pxToRem(20);
+  border-radius: 4px;
+  user-select: none;
+
+  &-list-item {
+    position: relative;
+    padding-left: pxToRem(20);
+    line-height: pxToRem(24);
+  }
+
+  &-list-link {
+    display: block;
+    text-decoration: none;
+    font-size: 1.2rem;
+    letter-spacing: .6px;
+    color: #7a7a7a;
+    transition: margin-left .3s;
+
+    &:hover {
+      margin-left: 8px;
+    }
+  }
+
+  &-list-link + &-list-child {
+    display: none;
+  }
+
+  &__arrow {
+    position: absolute;
+    top: pxToRem(3);
+    left: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    transition: transform .3s;
+
+    &_rotated {
+      transform: rotate(90deg);
+    }
+
+    path {
+      color: #7a7a7a;
+      transition: color .3s;
+    }
+
+    &:hover {
+
+      path {
+        color: #000;
+      }
+    }
+  }
+}
