@@ -23,6 +23,7 @@ module.exports = () => {
   const commonConfig = webpackMerge(
     setEntry({
       index: './src/index.js',
+      common: './src/common.js'
     }),
     setOutput({
       filename: '[name].js',

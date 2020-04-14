@@ -38,6 +38,7 @@ html
     meta(http-equiv="X-UA-Compatible" content="IE=Edge")
 
     block style
+      != css('common.css')
 
     block favicons
       include favicons
@@ -57,3 +58,4 @@ html
           include ../blocks/page-footer/page-footer
 
     block scripts
+      != js(['npm.svg-injector.js', 'npm.mmenu-js.js', 'common.js', 'npm.jquery.js'])
