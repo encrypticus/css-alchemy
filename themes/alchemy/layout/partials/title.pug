@@ -6,8 +6,8 @@
     if(is_post()) title = page.title;
     if(is_archive()) title = `Архив`;
     if(is_archive() && is_year()) title = `Архив: ${page.year}`;
-    if(is_archive() && is_month()) title = `Архив: ${["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][page.month - 1]} ${page.year}`;
-    if(is_tag()) title = `Tag: ${page.tag}`;
+    if(is_archive() && is_month()) title = `Архив: ${["Янв", "Фев", "Мар", "Апр", "Май", "Июнь", "Июль", "Авг", "Сент", "Окт", "Ноя", "Дек"][page.month - 1]} ${page.year}`;
+    if(is_tag()) title = `Тэг: ${page.tag}`;
     if(is_category()) title = `Категория: ${page.category}`;
 
     return `${title} - ${config.title}`;
