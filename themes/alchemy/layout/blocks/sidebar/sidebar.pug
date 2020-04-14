@@ -1,0 +1,10 @@
+aside.page__sidebar
+  +heading('категории', 'sidebar')
+  +categories
+
+  +heading('тэги', 'sidebar')
+  +tags
+
+  if theme.archives.show
+    +heading('архив', 'sidebar')
+    +archives
