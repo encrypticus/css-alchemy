@@ -3,12 +3,17 @@
   $block-name: &;
 
   display: flex;
-  width: 75px;
+  width: 125px;
   justify-content: space-between;
 
   &__link {
     display: block;
     line-height: 0;
+    transition: transform .3s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 
   &__icon {
