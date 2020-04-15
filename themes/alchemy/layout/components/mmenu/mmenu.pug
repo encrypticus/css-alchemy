@@ -1,83 +1,14 @@
 mixin mmenu()
   nav#mmenu.mmenu
     ul
-      li.mmenu__list-item
+      limmenu__list-item
         a.mmenu__link(href='/') Главная
       li.mmenu__list-item
-        span Portfolio
-        ul
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Web design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Wordpress design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Mobile App Development
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Internet Marketing
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Social Media Management
+        span Категории
+        != list_categories({ show_count: false, class: 'categories-widget' })
       li.mmenu__list-item
-        span Blog
-        ul
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Web design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Wordpress design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Mobile App Development
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Internet Marketing
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Social Media Management
+        span Тэги
+        != list_tags({ show_count: false, class: 'categories-widget' })
       li.mmenu__list-item
-        span Pages
-        ul
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Web design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Wordpress design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Mobile App Development
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Internet Marketing
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Social Media Management
-      li.mmenu__list-item
-        span Shop
-        ul
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Web design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Wordpress design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Mobile App Development
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Internet Marketing
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Social Media Management
-      li.mmenu__list-item
-        span Components
-        ul
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Web design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Wordpress design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Mobile App Development
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Internet Marketing
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Social Media Management
-      li.mmenu__list-item
-        span Features
-        ul
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Web design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Wordpress design
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Mobile App Development
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Internet Marketing
-          li.mmenu__list-item
-            a.mmenu__link(href='./') Social Media Management
+        span Архивы
+        != list_archives({ show_count: false, class: 'categories-widget' })
