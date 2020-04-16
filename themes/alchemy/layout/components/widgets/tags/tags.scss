@@ -17,6 +17,12 @@
     position: relative;
     line-height: pxToRem(24);
     margin: 0 5px 5px 0;
+    transition: box-shadow .3s, transform .3s;
+
+    &:hover {
+      box-shadow:  2px 2px 5px rgba(#000, .5);
+      transform: translate(-2px);
+    }
   }
 
   &-list-link {
