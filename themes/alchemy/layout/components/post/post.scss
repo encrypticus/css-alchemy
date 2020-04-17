@@ -61,7 +61,7 @@
     font: inherit;
     color: #7a7a7a;
     letter-spacing: inherit;
-    transition: color .3s;
+    transition: .3s;
 
     @include for-phone-only {
       margin: 0 5px;
@@ -88,6 +88,11 @@
     position: relative;
     font-weight: bold;
     font-size: 1.1rem;
+
+    &:hover {
+      box-shadow: 2px 2px 5px rgba(0,0,0,.5);
+      transform: translate(-2px);
+    }
 
     &::before {
       position: absolute;
