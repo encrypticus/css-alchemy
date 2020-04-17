@@ -13,3 +13,4 @@ import '#blocks/page-footer/page-footer';
 import '#components/widgets/categories/categories';
 import '#components/widgets/tags/tags';
 import '#components/widgets/archives/archives';
+import '#components/pagination/pagination';

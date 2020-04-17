@@ -1,0 +1,41 @@
+@import "../../../../../webpack-boilerplate/src/sass/utils";
+
+.pagination {
+  background-color: #fff;
+  padding: pxToRem(20);
+  border-radius: 4px;
+  box-shadow: 0 0 5px #b7b5b5;
+
+  &__inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 50%;
+    margin: auto;
+  }
+
+  .page-number,
+  .extend {
+    padding: pxToRem(5) pxToRem(15);
+    font: inherit;
+    font-size: pxToRem(32);
+    text-decoration: none;
+    color: inherit;
+    border-radius: 4px;
+  }
+
+  .page-number:not(.current),
+  .extend {
+    transition: box-shadow .3s, transform .3s;
+
+    &:hover {
+      box-shadow: 2px 2px 5px rgba(0,0,0,.5);
+      transform: translate(-2px);
+    }
+  }
+
+  .current {
+    color: rgba(#000, .4);
+    transform: scale(1.3);
+  }
+}
