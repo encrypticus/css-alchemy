@@ -1,5 +1,9 @@
 extends partials/layout
 
+append style
+  if page.include_post_style && page.include_post_style !== ''
+    link(rel="stylesheet", href=`${page.include_post_style}.css`)
+
 block content
   .page__content-inner
     section.page__posts
