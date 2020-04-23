@@ -1,3 +1,113 @@
-.current-post {
-  color: green;
+@import '../../../webpack-boilerplate/src/sass/utils';
+
+.hamburger-table {
+  display: flex;
+  flex-wrap: wrap;
+
+  &__col {
+    position: relative;
+    width: 20%;
+    padding: pxToRem(50) 0;
+    text-align: center;
+
+    @include for-laptop-down {
+      width: 25%;
+    }
+
+    @include for-phone-only {
+      width: 50%;
+    }
+
+    @include for-small-phone-only {
+      width: 100%;
+    }
+
+    &:nth-child(1) {
+      background-color: #4a148c;
+    }
+
+    &:nth-child(2) {
+      background-color: #4db6ac;
+    }
+
+    &:nth-child(3) {
+      background-color: #ff5722;
+    }
+
+    &:nth-child(4) {
+      background-color: #444;
+    }
+
+    &:nth-child(5) {
+      background-color: #ec407a;
+    }
+
+    &:nth-child(6) {
+      background-color: #fbc02d;
+    }
+
+    &:nth-child(7) {
+      background-color: #2196f3;
+    }
+
+    &:nth-child(8) {
+      background-color: #607d8b;
+    }
+
+    &:nth-child(9) {
+      background-color: #43a047;
+    }
+
+    &:nth-child(10) {
+      background-color: #3f51b5;
+    }
+
+    &:nth-child(11) {
+      background-color: #00bcd4;
+    }
+
+    &:nth-child(12) {
+      background-color: #f44336;
+    }
+
+    &:nth-child(13) {
+      background-color: #9c27b0;
+    }
+
+    &:nth-child(14) {
+      background-color: #ffc107;
+    }
+
+    &:nth-child(15) {
+      background-color: #000;
+    }
+
+    &:nth-child(16) {
+      background-color: #03a9f4;
+    }
+
+    &:nth-child(17) {
+      background-color: #795548;
+    }
+  }
+
+  .line-top-left,
+  .line-top-right,
+  .line-center-left,
+  .line-center-right,
+  .line-bottom-left,
+  .line-bottom-right {
+    background-color: #fff;
+  }
+
+  .effect-name {
+    position: absolute;
+    width: 100%;
+    padding-top: pxToRem(10);
+    top: 0;
+    left: 0;
+    color: #fff;
+    text-align: center;
+    font-size: pxToRem(16);
+  }
 }

@@ -1,5 +1,5 @@
 ---
-title: Библиотека гамбургеров
+title: 'Библиотека гамбургеров'
 date: 2020-04-04 14:00:42
 tags:
 - scss
@@ -13,343 +13,84 @@ thumbnail: /thumbnails/hamburgers.jpg
 include_post_style: post
 include_post_script: post
 ---
+include ../../themes/alchemy/layout/components/hamburger/hamburger
+p.post__text
+  | Абзац записывается в Markdown весьма просто: это одна или несколько строк текста, отделённые от окружающего текста одной (или более чем одной)
+  | пустой строкою. (Пустой строкою считается всякая, которая выглядит пустой; строка, не содержащая ничего, кроме пробелов и символов табуляции,
+  | считается пустой.) Обычные параграфы не следует снабжать отступом из пробелов или символов табуляции. Следствием правила «одна или несколько
+  | строк текста» является поддержка Маркдауном таких абзацев текста, в которых имеются «жёсткие переводы строки» (то есть такие места́, в которых
+  | автор нажимал на кнопку «ввод», также называемую «Enter»). Это заметно отличает Markdown от большинства других средств преобразования текста
+  | в HTML (например, от Movable Type с включённой настройкою «Convert Line Breaks»), поскольку эти средства преобразуют переводы строк в HTML-элемент
+  | <br/> — и, стало быть, прерывают им обычное течение текста в абзаце.
 
-<p class="post__text">
-  Абзац записывается в Markdown весьма просто: это одна или несколько строк текста, отделённые от окружающего текста
-  одной (или более чем одной) пустой строкою. (Пустой строкою считается всякая, которая выглядит пустой; строка, не
-  содержащая ничего, кроме пробелов и символов табуляции, считается пустой.) Обычные параграфы не следует снабжать
-  отступом из пробелов или символов табуляции.
-  Следствием правила «одна или несколько строк текста» является поддержка Маркдауном таких абзацев текста, в которых
-  имеются «жёсткие переводы строки» (то есть такие места́, в которых автор нажимал на кнопку «ввод», также называемую
-  «Enter»). Это заметно отличает Markdown от большинства других средств преобразования текста в HTML (например, от
-  Movable Type с включённой настройкою «Convert Line Breaks»), поскольку эти средства преобразуют переводы строк в
-  HTML-элемент <br/> — и, стало быть, прерывают им обычное течение текста в абзаце.
-</p>
+mixin effect-name(name)
+  h3.effect-name= name
 
-<section class="hamburger-table">
+section.hamburger-table
+  .hamburger-table__col
+    +effect-name('simple')
+    +hamburger
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--simple">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('collapse')
+    +hamburger('collapse')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--collapse">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('storm')
+    +hamburger('storm')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--storm">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('juggler')
+    +hamburger('juggler')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--juggler">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('shurikens')
+    +hamburger('shurikens')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--shurikens">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('shurikens-r')
+    +hamburger('shurikens-r')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--shurikens-r">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('shurikens-alt')
+    +hamburger('shurikens-alt')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--shurikens-alt">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('shurikens-alt-r')
+    +hamburger('shurikens-alt-r')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--shurikens-alt-r">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('minify')
+    +hamburger('minify')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--minify">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('arrowturn')
+    +hamburger('arrowturn')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--arrowturn">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('arrowturn-r')
+    +hamburger('arrowturn-r')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--arrowturn-r">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('arrowdown')
+    +hamburger('arrowdown')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--arrowdown">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('arrowdown-r')
+    +hamburger('arrowdown-r')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--arrowdown-r">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('magic')
+    +hamburger('magic')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--magic">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('3d')
+    +hamburger('3d')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--3d">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
+  .hamburger-table__col
+    +effect-name('alchemy')
+    +hamburger('alchemy')
 
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--alchemy">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
-
-  <div class="hamburger-table__col">
-    <button class="hamburger hamburger--alchemy-r">
-      <span class="hamburger-inner">
-        <span class="line-top">
-          <span class="line-top-left"></span>
-          <span class="line-top-right"></span>
-        </span>
-        <span class="line-center">
-          <span class="line-center-left"></span>
-          <span class="line-center-right"></span>
-        </span>
-        <span class="line-bottom">
-          <span class="line-bottom-left"></span>
-          <span class="line-bottom-right"></span>
-        </span>
-      </span>
-    </button>
-  </div>
-
-
-</section>
+  .hamburger-table__col
+    +effect-name('alchemy-r')
+    +hamburger('alchemy-r')
