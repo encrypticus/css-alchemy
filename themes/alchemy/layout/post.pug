@@ -10,3 +10,7 @@ block content
       +post(page, true)
 
     include blocks/sidebar/sidebar
+
+append scripts
+  if page.include_post_script && page.include_post_script !== ''
+    script(src=`${page.include_post_script}.js`)
