@@ -3,7 +3,7 @@ $hamburger-layer-height: 4px !default;
 $hamburger-layer-spacing: 6px !default;
 $hamburger-padding: 10px !default;
 $hamburger-layer-border-radius: 4px !default;
-$hamburger-layer-color: #000;
+$hamburger-layer-color: #000 !default;
 $center-position: calc(50% - #{$hamburger-layer-height} / 2);
 
 @import 'base';
