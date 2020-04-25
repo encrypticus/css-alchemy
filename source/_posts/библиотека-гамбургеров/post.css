@@ -1,6 +1,7 @@
 .hamburger-table {
   display: flex;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  margin-bottom: 1.875rem; }
   .hamburger-table__col {
     position: relative;
     width: 20%;
@@ -65,3 +66,32 @@
     color: #fff;
     text-align: center;
     font-size: 1rem; }
+
+.post__text {
+  margin-bottom: 1.875rem; }
+
+.post__list {
+  list-style-type: decimal;
+  list-style-position: inside;
+  margin-bottom: 1.875rem; }
+
+.post__list-item-span {
+  display: inline-block;
+  margin-bottom: 1.875rem; }
+
+.post code {
+  padding: .2rem .4rem;
+  font-size: 85%;
+  background-color: rgba(27, 31, 35, 0.05);
+  border-radius: 3px; }
+
+.post pre {
+  margin-bottom: 1.875rem;
+  padding: 1rem;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  font-style: normal;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace; }

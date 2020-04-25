@@ -3,6 +3,7 @@
 .hamburger-table {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: pxToRem(30);
 
   &__col {
     position: relative;
@@ -109,5 +110,42 @@
     color: #fff;
     text-align: center;
     font-size: pxToRem(16);
+  }
+}
+
+.post {
+
+  &__text {
+    margin-bottom: pxToRem(30);
+  }
+
+  &__list {
+    list-style-type: decimal;
+    list-style-position: inside;
+    margin-bottom: pxToRem(30);
+  }
+
+  &__list-item-span {
+    display: inline-block;
+    margin-bottom: pxToRem(30);
+  }
+
+  code {
+    padding: .2rem .4rem;
+    font-size: 85%;
+    background-color: rgba(27, 31, 35, .05);
+    border-radius: 3px;
+  }
+
+  pre {
+    margin-bottom: pxToRem(30);
+    padding: pxToRem(16);
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f6f8fa;
+    border-radius: 3px;
+    font-style: normal;
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
   }
 }

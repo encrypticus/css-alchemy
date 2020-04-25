@@ -14,14 +14,13 @@ include_post_style: post
 include_post_script: post
 ---
 include ../../themes/alchemy/layout/components/hamburger/hamburger
+include ../../themes/alchemy/layout/components/heading/heading
 p.post__text
-  | Абзац записывается в Markdown весьма просто: это одна или несколько строк текста, отделённые от окружающего текста одной (или более чем одной)
-  | пустой строкою. (Пустой строкою считается всякая, которая выглядит пустой; строка, не содержащая ничего, кроме пробелов и символов табуляции,
-  | считается пустой.) Обычные параграфы не следует снабжать отступом из пробелов или символов табуляции. Следствием правила «одна или несколько
-  | строк текста» является поддержка Маркдауном таких абзацев текста, в которых имеются «жёсткие переводы строки» (то есть такие места́, в которых
-  | автор нажимал на кнопку «ввод», также называемую «Enter»). Это заметно отличает Markdown от большинства других средств преобразования текста
-  | в HTML (например, от Movable Type с включённой настройкою «Convert Line Breaks»), поскольку эти средства преобразуют переводы строк в HTML-элемент
-  | <br/> — и, стало быть, прерывают им обычное течение текста в абзаце.
+  | Вдохновившись <a href="https://github.com/jonsuh/hamburgers">этой</a> небольшой CSS-библиотекой решил написать подобную, но
+  | со своими эффектами. Итак, встречайте - Magic burgers.
+  | Magic burgers - это небольшая css/scss-библиотека анимированных гамбургер-меню. Помимо css-файла также включает исходные sass-файлы.
+  | Библиотека модульная и настраиваемая, что позволяет вам приготовить свой собственный гамбургер!
+  | Гамбургеры на изображении ниже кликабелны.
 
 mixin effect-name(name)
   h3.effect-name= name
@@ -94,3 +93,208 @@ section.hamburger-table
   .hamburger-table__col
     +effect-name('alchemy-r')
     +hamburger('alchemy-r')
+
+-
+  function replacement(str) {
+    let result = str.replace(/</g, '&lt;');
+    return result;
+  }
+
+  const styleMarkup = `<link href="dist/hamburger.css" rel="stylesheet">`;
+
+  const scriptMarkup = `<script src="js/hamburger.js"></script>`;
+
+  const burgerMarkup = `
+  <button class="hamburger">
+    <span class="hamburger-inner">
+      <span class="line-top">
+        <span class="line-top-left"></span>
+        <span class="line-top-right"></span>
+      </span>
+      <span class="line-center">
+        <span class="line-center-left"></span>
+        <span class="line-center-right"></span>
+      </span>
+      <span class="line-bottom">
+        <span class="line-bottom-left"></span>
+        <span class="line-bottom-right"></span>
+      </span>
+    </span>
+  </button>
+  `;
+
+  const burgerMarkup2 = `
+  <button class="hamburger hamburger--arrowdown">
+    <span class="hamburger-inner">
+      <span class="line-top">
+        <span class="line-top-left"></span>
+        <span class="line-top-right"></span>
+      </span>
+      <span class="line-center">
+        <span class="line-center-left"></span>
+        <span class="line-center-right"></span>
+      </span>
+      <span class="line-bottom">
+        <span class="line-bottom-left"></span>
+        <span class="line-bottom-right"></span>
+      </span>
+    </span>
+  </button>
+  `;
+
+  const burgerMarkup3 = `
+  <button class="hamburger hamburger--arrowdown is-active">
+    <span class="hamburger-inner">
+      <span class="line-top">
+        <span class="line-top-left"></span>
+        <span class="line-top-right"></span>
+      </span>
+      <span class="line-center">
+        <span class="line-center-left"></span>
+        <span class="line-center-right"></span>
+      </span>
+      <span class="line-bottom">
+        <span class="line-bottom-left"></span>
+        <span class="line-bottom-right"></span>
+      </span>
+    </span>
+  </button>
+  `;
+
+p.post__text
+    | Для того, чтобы начать использовать библиотеку, клонируйте <a href="https://github.com/encrypticus/magic-burgers">этот</a>
+    | репозиторий на свой компьютер или загрузите его как zip-архив. Затем в секции <code>&lt;head &gt;</code> на странице вашего сайта вставьте
+    | следующий код:
+
+pre
+  != replacement(styleMarkup)
+
+p.post__text
+  | Затем на страницу вашего сайта добавьте следующую разметку:
+
+pre
+  != replacement(burgerMarkup)
+
+p.post__text
+  | Добавьте название класса того типа гамбургера, который вам нужен:
+
+pre
+  != replacement(burgerMarkup2)
+
+p.post__text
+  | Доступны следующие классы:
+
+pre
+  |hamburger--3d
+  |hamburger--alchemy
+  |hamburger--alchemy-r
+  |hamburger--arrowdown
+  |hamburger--arrowdown-r
+  |hamburger--arrowturn
+  |hamburger--arrowturn-r
+  |hamburger--collapse
+  |hamburger--juggler
+  |hamburger--magic
+  |hamburger--minify
+  |hamburger--shurikens
+  |hamburger--shurikens-r
+  |hamburger--shurikens-alt
+  |hamburger--shurikens-alt-r
+  |hamburger--simple
+  |hamburger--storm
+
+p.post__text
+  | Чтобы переключить состояние гамбургера, добавьте класс <code>is-active</code>:
+
+pre
+  != replacement(burgerMarkup3)
+
+p.post__text
+  | Поскольку имя класса должно переключаться с помощью JavaScript, в директории <code>js/hamburger.js</code> находится файл <code>hamburger.js</code>,
+  | код в котором предназначен для этого. Просто подключите его на странице вашего сайта перед закрывающим тегом <code>&lt;/body&gt;</code>, вставив следующий код:
+
+pre
+  != replacement(scriptMarkup)
+
+p.post__text
+  | Также, если вы используете препроцессор pug, в директории <code>pug</code> находится файл <code>hamburger.pug</code> с примесью,
+  | создающей разметку для гамбургера. Подключив файл с примесью в своем коде, вы можете вызвать ее следующим образом:
+
+pre
+  |+hamburger("class name")
+
+p.post__text
+  | Где <code>class name</code> - это название класса того типа гамбургера, который вам нужен. Например:
+
+pre
+  |+hamburger("3d")
+  |+hamburger("alchemy")
+  |+hamburger("juggler")
+  |+hamburger("shurikens-alt-r")
+
++heading('Sass', 'sidebar')(style="color: black;")
+p.post__text(style="margin-bottom: 15px;")
+  | Исходные файлы <code>.scss</code> доступны, если вы используете препроцессор Sass. Это дает вам гибкость и модульность.
+
+ul.post__list
+  li Скопируйте файлы из директории <code>sass</code> в ваш проект
+  li
+    span.post__list-item-span Импортируйте файл <code>hamburger.scss</code> внутри вашего scss-файла стилей:
+    pre @import "path/to/hamburger";
+  li Настройте свой гамбургер - удалите те типы в файле <code>hamburger.scss</code>, которые вы не планиуете использовать.
+
++heading('Кастомизация', 'sidebar')(style="color: black;")
+p.post__text
+  | Чтобы переопределить настройки по умолчанию, объявите их перед импортом гамбургеров:
+
+pre
+  |$hamburger-layer-width: 30px;
+  |$hamburger-layer-height: 3px;
+  |$hamburger-layer-spacing: 5px;
+
+  |@import "hamburger";
+
+p.post__text
+  | Вы также можете создать отдельный файл (например, <code>hamburger-settings.scss</code>) с этими настройками, а затем импортировать
+  | его перед гамбургерами:
+
+pre
+  |@import "hamburger-settings"
+  |@import "hamburger";
+
+p.post__text
+  | Вот полный список настроек по умолчанию (находится в <code>sass/hamburger.scss</code>):
+
+pre
+  |$hamburger-layer-width        : 40px;
+  |$hamburger-layer-height       : 4px;
+  |$hamburger-layer-spacing      : 6px;
+  |$hamburger-padding            : 10px;
+  |$hamburger-layer-border-radius: 4px;
+  |$hamburger-layer-color        : #000;
+
+  |// Удалите или закомментироуйте типы гамбургеров, которые вам не нужны
+  |// чтобы они были исключены из скомпилированного CSS.
+  |$hamburger-types: (
+  |simple,
+  |collapse,
+  |storm,
+  |juggler,
+  |shurikens,
+  |shurikens-r,
+  |shurikens-alt,
+  |shurikens-alt-r,
+  |minify,
+  |arrowturn,
+  |arrowturn-r,
+  |arrowdown,
+  |arrowdown-r,
+  |magic,
+  |alchemy,
+  |alchemy-r
+  |);
+
++heading('Поддержка браузерами', 'sidebar')(style="color: black;")
+p.post__text
+  | Некоторые анимации используют CSSPerspective API, который на момент написания данной статьи не поддерживается в IE и Firefox.
+  | Для подробной информации воспользуйтесь <a href="https://caniuse.com/#search=perspective">caniuse.com</a>.
