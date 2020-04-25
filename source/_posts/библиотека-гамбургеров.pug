@@ -12,6 +12,7 @@ categories:
 thumbnail: /thumbnails/hamburgers.jpg
 include_post_style: post
 include_post_script: post
+include_highlight: true
 ---
 include ../../themes/alchemy/layout/components/hamburger/hamburger
 include ../../themes/alchemy/layout/components/heading/heading
@@ -163,136 +164,148 @@ section.hamburger-table
 
 p.post__text
     | Для того, чтобы начать использовать библиотеку, клонируйте <a href="https://github.com/encrypticus/magic-burgers">этот</a>
-    | репозиторий на свой компьютер или загрузите его как zip-архив. Затем в секции <code>&lt;head &gt;</code> на странице вашего сайта вставьте
+    | репозиторий на свой компьютер или загрузите его как zip-архив. Затем в секции <span class="code">&lt;head &gt;</span> на странице вашего сайта вставьте
     | следующий код:
 
 pre
-  != replacement(styleMarkup)
+  code.html
+    != replacement(styleMarkup)
 
 p.post__text
   | Затем на страницу вашего сайта добавьте следующую разметку:
 
 pre
-  != replacement(burgerMarkup)
+  code.html
+    != replacement(burgerMarkup)
 
 p.post__text
   | Добавьте название класса того типа гамбургера, который вам нужен:
 
 pre
-  != replacement(burgerMarkup2)
+  code.html
+    != replacement(burgerMarkup2)
 
 p.post__text
   | Доступны следующие классы:
 
 pre
-  |hamburger--3d
-  |hamburger--alchemy
-  |hamburger--alchemy-r
-  |hamburger--arrowdown
-  |hamburger--arrowdown-r
-  |hamburger--arrowturn
-  |hamburger--arrowturn-r
-  |hamburger--collapse
-  |hamburger--juggler
-  |hamburger--magic
-  |hamburger--minify
-  |hamburger--shurikens
-  |hamburger--shurikens-r
-  |hamburger--shurikens-alt
-  |hamburger--shurikens-alt-r
-  |hamburger--simple
-  |hamburger--storm
+  code
+    |hamburger--3d
+    |hamburger--alchemy
+    |hamburger--alchemy-r
+    |hamburger--arrowdown
+    |hamburger--arrowdown-r
+    |hamburger--arrowturn
+    |hamburger--arrowturn-r
+    |hamburger--collapse
+    |hamburger--juggler
+    |hamburger--magic
+    |hamburger--minify
+    |hamburger--shurikens
+    |hamburger--shurikens-r
+    |hamburger--shurikens-alt
+    |hamburger--shurikens-alt-r
+    |hamburger--simple
+    |hamburger--storm
 
 p.post__text
-  | Чтобы переключить состояние гамбургера, добавьте класс <code>is-active</code>:
+  | Чтобы переключить состояние гамбургера, добавьте класс <span class="code">is-active</span>:
 
 pre
-  != replacement(burgerMarkup3)
+  code
+    != replacement(burgerMarkup3)
 
 p.post__text
-  | Поскольку имя класса должно переключаться с помощью JavaScript, в директории <code>js/hamburger.js</code> находится файл <code>hamburger.js</code>,
-  | код в котором предназначен для этого. Просто подключите его на странице вашего сайта перед закрывающим тегом <code>&lt;/body&gt;</code>, вставив следующий код:
+  | Поскольку имя класса должно переключаться с помощью JavaScript, в директории <span class="code">js/hamburger.js</span> находится файл <span class="code">hamburger.js</span>,
+  | код в котором предназначен для этого. Просто подключите его на странице вашего сайта перед закрывающим тегом <span class="code">&lt;/body&gt;</span>, вставив следующий код:
 
 pre
-  != replacement(scriptMarkup)
+  code
+    != replacement(scriptMarkup)
 
 p.post__text
-  | Также, если вы используете препроцессор pug, в директории <code>pug</code> находится файл <code>hamburger.pug</code> с примесью,
+  | Также, если вы используете препроцессор pug, в директории <span class="code">pug</span> находится файл <span class="code">hamburger.pug</span> с примесью,
   | создающей разметку для гамбургера. Подключив файл с примесью в своем коде, вы можете вызвать ее следующим образом:
 
 pre
-  |+hamburger("class name")
+  code
+    |+hamburger("class name")
 
 p.post__text
-  | Где <code>class name</code> - это название класса того типа гамбургера, который вам нужен. Например:
+  | Где <span class="code">class name</span> - это название класса того типа гамбургера, который вам нужен. Например:
 
 pre
-  |+hamburger("3d")
-  |+hamburger("alchemy")
-  |+hamburger("juggler")
-  |+hamburger("shurikens-alt-r")
+  code
+    |+hamburger("3d")
+    |+hamburger("alchemy")
+    |+hamburger("juggler")
+    |+hamburger("shurikens-alt-r")
 
 +heading('Sass', 'sidebar')(style="color: black;")
 p.post__text(style="margin-bottom: 15px;")
-  | Исходные файлы <code>.scss</code> доступны, если вы используете препроцессор Sass. Это дает вам гибкость и модульность.
+  | Исходные файлы <span class="code">.scss</span> доступны, если вы используете препроцессор Sass. Это дает вам гибкость и модульность.
 
 ul.post__list
-  li Скопируйте файлы из директории <code>sass</code> в ваш проект
+  li Скопируйте файлы из директории <span class="code">sass</span> в ваш проект
   li
-    span.post__list-item-span Импортируйте файл <code>hamburger.scss</code> внутри вашего scss-файла стилей:
-    pre @import "path/to/hamburger";
-  li Настройте свой гамбургер - удалите те типы в файле <code>hamburger.scss</code>, которые вы не планиуете использовать.
+    span.post__list-item-span Импортируйте файл <span class="code">hamburger.scss</span> внутри вашего scss-файла стилей:
+    pre
+      code @import "path/to/hamburger";
+  li Настройте свой гамбургер - удалите те типы в файле <span class="code">hamburger.scss</span>, которые вы не планиуете использовать.
 
 +heading('Кастомизация', 'sidebar')(style="color: black;")
 p.post__text
   | Чтобы переопределить настройки по умолчанию, объявите их перед импортом гамбургеров:
 
 pre
-  |$hamburger-layer-width: 30px;
-  |$hamburger-layer-height: 3px;
-  |$hamburger-layer-spacing: 5px;
+  code
+    |$hamburger-layer-width: 30px;
+    |$hamburger-layer-height: 3px;
+    |$hamburger-layer-spacing: 5px;
 
-  |@import "hamburger";
+    |@import "hamburger";
 
 p.post__text
-  | Вы также можете создать отдельный файл (например, <code>hamburger-settings.scss</code>) с этими настройками, а затем импортировать
+  | Вы также можете создать отдельный файл (например, <span class="code">hamburger-settings.scss</span>) с этими настройками, а затем импортировать
   | его перед гамбургерами:
 
 pre
-  |@import "hamburger-settings"
-  |@import "hamburger";
+  code
+    |@import "hamburger-settings";
+    |@import "hamburger";
 
 p.post__text
-  | Вот полный список настроек по умолчанию (находится в <code>sass/hamburger.scss</code>):
+  | Вот полный список настроек по умолчанию (находится в <span class="code">sass/hamburger.scss</span>):
 
 pre
-  |$hamburger-layer-width        : 40px;
-  |$hamburger-layer-height       : 4px;
-  |$hamburger-layer-spacing      : 6px;
-  |$hamburger-padding            : 10px;
-  |$hamburger-layer-border-radius: 4px;
-  |$hamburger-layer-color        : #000;
+  code
+    |$hamburger-layer-width        : 40px;
+    |$hamburger-layer-height       : 4px;
+    |$hamburger-layer-spacing      : 6px;
+    |$hamburger-padding            : 10px;
+    |$hamburger-layer-border-radius: 4px;
+    |$hamburger-layer-color        : #000;
 
-  |// Удалите или закомментироуйте типы гамбургеров, которые вам не нужны
-  |// чтобы они были исключены из скомпилированного CSS.
-  |$hamburger-types: (
-  |simple,
-  |collapse,
-  |storm,
-  |juggler,
-  |shurikens,
-  |shurikens-r,
-  |shurikens-alt,
-  |shurikens-alt-r,
-  |minify,
-  |arrowturn,
-  |arrowturn-r,
-  |arrowdown,
-  |arrowdown-r,
-  |magic,
-  |alchemy,
-  |alchemy-r
-  |);
+    |// Удалите или закомментироуйте типы гамбургеров, которые вам не нужны
+    |// чтобы они были исключены из скомпилированного CSS.
+    |$hamburger-types: (
+    |simple,
+    |collapse,
+    |storm,
+    |juggler,
+    |shurikens,
+    |shurikens-r,
+    |shurikens-alt,
+    |shurikens-alt-r,
+    |minify,
+    |arrowturn,
+    |arrowturn-r,
+    |arrowdown,
+    |arrowdown-r,
+    |magic,
+    |alchemy,
+    |alchemy-r
+    |);
 
 +heading('Поддержка браузерами', 'sidebar')(style="color: black;")
 p.post__text

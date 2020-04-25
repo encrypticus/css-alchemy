@@ -130,7 +130,7 @@
     margin-bottom: pxToRem(30);
   }
 
-  code {
+  .code {
     padding: .2rem .4rem;
     font-size: 85%;
     background-color: rgba(27, 31, 35, .05);
@@ -139,11 +139,11 @@
 
   pre {
     margin-bottom: pxToRem(30);
-    padding: pxToRem(16);
+    //padding: pxToRem(16);
     overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: #f6f8fa;
+    font-size: 90%;
+    //line-height: 1.45;
+    //background-color: #f6f8fa;
     border-radius: 3px;
     font-style: normal;
     font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;

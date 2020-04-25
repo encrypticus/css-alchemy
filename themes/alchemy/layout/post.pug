@@ -2,7 +2,10 @@ extends partials/layout
 
 append style
   if page.include_post_style && page.include_post_style !== ''
-    link(rel="stylesheet", href=`${page.include_post_style}.css`)
+    include partials/styles/post
+
+  if page.include_highlight
+    include partials/styles/highlightjs
 
 block content
   .page__content-inner
@@ -13,4 +16,7 @@ block content
 
 append scripts
   if page.include_post_script && page.include_post_script !== ''
-    script(src=`${page.include_post_script}.js`)
+    include partials/scripts/post
+
+  if page.include_highlight
+    include partials/scripts/highlightjs
