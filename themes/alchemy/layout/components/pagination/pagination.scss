@@ -6,6 +6,10 @@
   border-radius: 4px;
   box-shadow: 0 0 5px #b7b5b5;
 
+  @include for-tablet-landscape-down {
+    margin-bottom: pxToRem(60);
+  }
+
   &__inner {
     display: flex;
     justify-content: space-around;

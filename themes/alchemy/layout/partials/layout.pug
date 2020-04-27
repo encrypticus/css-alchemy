@@ -48,14 +48,14 @@ html
 
   body
     #menu-wrapper
-      .page
-        .wrapper
-          include ../blocks/page-header/page-header
+    .page
+      .wrapper
+        include ../blocks/page-header/page-header
 
-          main.page__content
-            block content
+        main.page__content
+          block content
 
-          include ../blocks/page-footer/page-footer
+        include ../blocks/page-footer/page-footer
 
     block scripts
       != js(['npm.svg-injector.js', 'npm.mmenu-js.js', 'common.js', 'npm.jquery.js'])

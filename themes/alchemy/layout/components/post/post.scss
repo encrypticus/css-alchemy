@@ -19,6 +19,10 @@
   &__content-wrapper {
     padding: pxToRem(20);
 
+    @include for-tablet-landscape-down {
+      margin-bottom: pxToRem(60);
+    }
+
     @include for-phone-only {
       padding: pxToRem(10);
     }
