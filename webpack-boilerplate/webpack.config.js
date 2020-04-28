@@ -67,26 +67,26 @@ module.exports = () => {
     processJs(),
     cleanWebpackPlugin(),
     enableStylelint(),
-    copyPlugin([
-      {
-        from: '../themes/alchemy/layout/components/**/img/*',
-        to: path.resolve(__dirname, '../themes/alchemy/source/img'),
-        flatten: true
-      },
-      {
-        from: '../themes/alchemy/layout/blocks/**/img/*',
-        to: path.resolve(__dirname, '../themes/alchemy/source/img'),
-        flatten: true
-      },
-      {
-        from: '../themes/alchemy/favicons',
-        to: path.resolve(__dirname, '../themes/alchemy/source/favicons')
-      },
-      {
-        from: '../themes/alchemy/thumbnails',
-        to: path.resolve(__dirname, '../themes/alchemy/source/thumbnails')
-      }
-    ]),
+    /*copyPlugin([
+      // {
+      //   from: '../themes/alchemy/layout/components/!**!/img/!*',
+      //   to: path.resolve(__dirname, '../themes/alchemy/source/img'),
+      //   flatten: true
+      // },
+      // {
+      //   from: '../themes/alchemy/layout/blocks/!**!/img/!*',
+      //   to: path.resolve(__dirname, '../themes/alchemy/source/img'),
+      //   flatten: true
+      // },
+      // {
+      //   from: '../themes/alchemy/favicons',
+      //   to: path.resolve(__dirname, '../themes/alchemy/source/favicons')
+      // },
+      // {
+      //   from: '../themes/alchemy/thumbnails',
+      //   to: path.resolve(__dirname, '../themes/alchemy/source/thumbnails')
+      // }
+    ]),*/
     aliases()
   );
 

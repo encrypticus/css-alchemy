@@ -103,13 +103,13 @@
 
   .effect-name {
     position: absolute;
-    width: 100%;
-    padding-top: pxToRem(10);
     top: 0;
     left: 0;
+    width: 100%;
+    font-size: pxToRem(16);
     color: #fff;
     text-align: center;
-    font-size: pxToRem(16);
+    padding-top: pxToRem(10);
   }
 }
 
@@ -138,14 +138,14 @@
   }
 
   pre {
-    margin-bottom: pxToRem(30);
-    //padding: pxToRem(16);
-    overflow: auto;
     font-size: 90%;
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    font-style: normal;
     //line-height: 1.45;
     //background-color: #f6f8fa;
     border-radius: 3px;
-    font-style: normal;
-    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    margin-bottom: pxToRem(30);
+    //padding: pxToRem(16);
+    overflow: auto;
   }
 }
