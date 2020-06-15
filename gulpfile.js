@@ -19,11 +19,12 @@ const paths = {
     'themes/alchemy/thumbnails/*',
   ],
   favicons: 'themes/alchemy/favicons/*',
-  sass: 'source/_posts/**/*.scss'
+  sass: 'source/_posts/**/*.scss',
+  stylelint: ['source/_posts/**/*.scss', 'themes/alchemy/layout/**/*.scss']
 };
 
 // Обработка sass/scss
-gulp.task('sass', () => {
+const processSass = () => {
 
   const plugins = [autoprefixer()];
 
@@ -33,10 +34,10 @@ gulp.task('sass', () => {
     .pipe(gulp.dest((file) => {
       return file.base;
     }));
-});
+};
 
 // Обработка графики
-gulp.task('imgCompress', () => {
+const processImg = () => {
   return gulp.src(paths.img)
     .pipe(imagemin([
         imageminMozjpeg({
@@ -50,16 +51,16 @@ gulp.task('imgCompress', () => {
       { verbose: true }))
     .pipe(flatten())
     .pipe(gulp.dest('themes/alchemy/source/img'));
-});
+};
 
 // Обработка фавиконок
-gulp.task('favicons', () => {
+const favicons = () => {
   return gulp.src(paths.favicons)
     .pipe(gulp.dest('themes/alchemy/source/favicons'))
-});
+};
 
 // Линтинг sass/scss
-gulp.task('lint-sass', () => {
+const stylelint = () => {
   return gulp.src(paths.sass)
     .pipe(gulpStylelint({
       fix: true,
@@ -70,10 +71,21 @@ gulp.task('lint-sass', () => {
     .pipe(gulp.dest((file) => {
       return file.base;
     }));
-});
+};
 
 // Слежение за изменениями
-gulp.task('watch', () => {
-  gulp.watch('./source/_posts/**/*.scss', gulp.parallel('sass'));
-  gulp.watch(paths.img, gulp.parallel('imgCompress'));
-});
+const watch = () => {
+  gulp.watch(paths.sass, gulp.series(processSass));
+  gulp.watch(paths.img, gulp.parallel(processImg));
+};
+
+exports.stylelint = stylelint;
+
+exports.default = gulp.series(
+  gulp.parallel(
+    gulp.series(processSass, stylelint),
+    processImg,
+    favicons
+  ),
+  watch
+);

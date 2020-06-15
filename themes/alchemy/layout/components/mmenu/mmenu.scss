@@ -6,6 +6,10 @@ $mm_transitionDuration: .5s;
 
 .mmenu {
 
+  &_hidden {
+    display: none;
+  }
+
   &__link,
   &__list-item,
   &__title,
