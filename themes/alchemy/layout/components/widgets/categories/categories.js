@@ -1,5 +1,3 @@
-import './categories.scss';
-
 import $ from '../../../../../../webpack-boilerplate/node_modules/jquery';
 
 const $categoryWidget = $('.categories-widget');

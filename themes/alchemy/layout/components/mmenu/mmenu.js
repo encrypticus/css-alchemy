@@ -1,5 +1,4 @@
 import '../../../../../webpack-boilerplate/node_modules/mmenu-js';
-import './mmenu.scss';
 
 const mmenu = new Mmenu('#mmenu', {
   extensions: ['position-right', 'theme-dark'],

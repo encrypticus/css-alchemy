@@ -25,7 +25,7 @@ const defaultOptions = {
  * сборщик будет обрабатывать файлы с тем или иным расширением (модули), а также указываются лоадеры,
  * которые будут обрабатывать эти файлы.
  * @param {Object} options настройки для пресета
- * @returns {Object} свойство объекта конфига сборщика, пресет для scss/sass-файлов
+ * @returns {Object} свойство объекта конфига сборщика, пресет для scss/sassPosts-файлов
  */
 module.exports = (options = defaultOptions) => {
   return {

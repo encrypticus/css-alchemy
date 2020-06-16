@@ -1,5 +1,3 @@
-import './page-header.scss';
-
 const link = document.querySelector('.page-header__link-wrapper');
 const mmenu = document.querySelector('.mmenu');
 

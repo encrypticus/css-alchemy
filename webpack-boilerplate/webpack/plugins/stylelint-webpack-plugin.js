@@ -7,12 +7,12 @@ const styleLintWebpackPlugin = require('stylelint-webpack-plugin');
  */
 const defaultOptions = {
   configFile: 'webpack/configs/stylelint.config.js',
-  files: 'src/**/*.(css|scss|sass)',
+  files: 'src/**/*.(css|scss|sassPosts)',
   fix: true
 };
 
 /**
- * @description плагин подключает к проекту линтер css/sass/scss-кода stylelint
+ * @description плагин подключает к проекту линтер css/sassPosts/scss-кода stylelint
  * @param {Object} options объект настроек плагина
  * @returns {Object} plugin экземпляр плагина
  * @example

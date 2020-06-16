@@ -7,4 +7,5 @@ public/
 .deploy*/
 .idea/
 themes/landscape/
+themes/alchemy/source/
 webpack-boilerplate/node_modules/

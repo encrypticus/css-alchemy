@@ -1,16 +1,104 @@
-@import './sass/common.scss';
+@import 'reset-css/sass/reset';
+@import 'fonts';
+@import 'utils';
 
-import '#components/socials/socials';
-import '#components/site-logo/site-logo';
-import '#components/hamburger/hamburger';
-import '#blocks/page-header/page-header';
-import '#components/mmenu/mmenu';
-import '#components/heading/heading';
-import '#components/post/post';
-import '#blocks/post-list/post-list';
-import '#components/button-more/button-more';
-import '#blocks/page-footer/page-footer';
-import '#components/widgets/categories/categories';
-import '#components/widgets/tags/tags';
-import '#components/widgets/archives/archives';
-import '#components/pagination/pagination';
+html, body {
+  height: 100%;
+  font-size: 16px;
+  font-family: 'Yanone Kaffeesatz', Arial, sans-serif;
+  color: #000;
+  background-color: #fff;
+
+  @include for-phone-landscape-down {
+    font-size: 14px;
+  }
+}
+
+.page {
+  position: relative;
+  height: 100%;
+  padding: pxToRem(250) 0;
+  margin: auto;
+  max-width: 1750px;
+  min-width: 320px;
+  background-image: url(/css-alchemy/img/bg.png);
+  background-repeat: no-repeat;
+
+  @include for-tablet-landscape-down {
+    padding: 0;
+  }
+
+  &__inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(#fff, .8);
+  }
+
+  &__content {
+    flex-grow: 1;
+    display: grid;
+    padding: pxToRem(65) pxToPercent(117, 1400);
+    grid-gap: pxToRem(65);
+
+    @include for-laptop-down {
+      padding-left: pxToPercent(30, 1400);
+      padding-right: pxToPercent(30, 1400);
+    }
+
+    @include for-tablet-landscape-down {
+      display: block;
+    }
+  }
+
+  &__content-inner {
+    display: grid;
+    grid-gap: pxToRem(30);
+    grid-template-columns: minmax(320px, 865px) pxToRem(265);
+
+    @include for-tablet-landscape-down {
+      display: block;
+    }
+  }
+
+  &__heading {
+    text-align: center;
+    margin-bottom: pxToRem(-35);
+
+    @include for-tablet-landscape-down {
+      margin-bottom: pxToRem(35);
+    }
+  }
+
+  &__socials {
+    @include for-phone-only {
+      display: none;
+    }
+  }
+}
+
+.wrapper {
+  display: flex;
+  height: 100%;
+  margin: auto;
+  background-color: rgba(#000, .1);
+  max-width: 1400px;
+  flex-direction: column;
+}
+
+@import '../layout/components/socials/socials';
+@import '../layout/components/site-logo/site-logo';
+@import '../layout/components/hamburger/hamburger';
+@import '../layout/blocks/page-header/page-header';
+@import '../layout/components/mmenu/mmenu';
+@import '../layout/components/heading/heading';
+@import '../layout/components/post/post';
+@import '../layout/blocks/post-list/post-list';
+@import '../layout/components/button-more/button-more';
+@import '../layout/blocks/page-footer/page-footer';
+@import '../layout/components/widgets/categories/categories';
+@import '../layout/components/widgets/tags/tags';
+@import '../layout/components/widgets/archives/archives';
+@import '../layout/components/pagination/pagination';

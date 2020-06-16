@@ -9,7 +9,7 @@ const defaultOptions = {
  * @description этот лоадер добавляет postcss, обрабатывающий css-файлы;
  * важно: лоадер должен быть добавлен перед любым из лоадеров, обрабатывающих css-файлы,
  * такими как css-loader и style-loader, но после любого из лоадеров, обрабатывющих
- * препроцессорные файлы, таких как sass-loader, less-loader и т.д.
+ * препроцессорные файлы, таких как sassPosts-loader, less-loader и т.д.
  * @param {Object} options объект настроек лоадера
  * @returns {Object} loader конфиг лоадера
  * @see https://github.com/postcss/postcss-loader
