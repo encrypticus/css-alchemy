@@ -12,7 +12,4 @@ mixin pagination()
 
   .pagination
     .pagination__inner
-      if page.total === 1
-        +button-more('Назад')(class='button-more_type_back')
-      else
-        != paginator(paginationOption)
+      != paginator(paginationOption)
