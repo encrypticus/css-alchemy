@@ -1,0 +1,12 @@
+@import '../../../webpack-boilerplate/src/sass/utils';
+
+.post {
+
+  &__link {
+    color: blue;
+  }
+
+  &__text {
+    margin-bottom: pxToRem(30);
+  }
+}

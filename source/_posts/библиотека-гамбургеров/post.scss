@@ -115,6 +115,10 @@
 
 .post {
 
+  &__link {
+    color: blue;
+  }
+
   &__text {
     margin-bottom: pxToRem(30);
   }
