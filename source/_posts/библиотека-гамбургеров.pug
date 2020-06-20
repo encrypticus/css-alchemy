@@ -19,7 +19,7 @@ include ../../themes/alchemy/layout/components/heading/heading
 p.post__text
   | Вдохновившись <a class="post__link" href="https://github.com/jonsuh/hamburgers">этой</a> небольшой CSS-библиотекой решил написать подобную, но
   | со своими эффектами. Итак, встречайте - Magic burgers.
-  | Magic burgers - это небольшая css/scss-библиотека анимированных гамбургер-меню. Помимо css-файла также включает исходные sass-файлы.
+  | Magic burgers - это небольшая css/sass-библиотека анимированных гамбургер-меню. Помимо css-файла библиотека включает исходные sass-файлы.
   | Библиотека модульная и настраиваемая, что позволяет вам приготовить свой собственный гамбургер!
   | Гамбургеры на изображении ниже кликабелны.
 
@@ -101,7 +101,7 @@ section.hamburger-table
     return result;
   }
 
-  const styleMarkup = `<link href="dist/hamburger.css" rel="stylesheet">`;
+  const styleMarkup = `<link href="path/to/hamburger.min.css" rel="stylesheet">`;
 
   const scriptMarkup = `<script src="js/hamburger.js"></script>`;
 
@@ -163,9 +163,11 @@ section.hamburger-table
   `;
 
 p.post__text
-    | Для того, чтобы начать использовать библиотеку, клонируйте <a href="https://github.com/encrypticus/magic-burgers">этот</a>
-    | репозиторий на свой компьютер или загрузите его как zip-архив. Затем в секции <span class="code">&lt;head &gt;</span> на странице вашего сайта вставьте
-    | следующий код:
+    | Для того, чтобы начать использовать библиотеку, установите её из реестра
+    | <a class="post__link" href="https://www.npmjs.com/package/magic-burgers", target="_blank">NPM</a>.
+    | Затем, если вы используете препроцессор Sass, импортируйте в вашем файле главный файл библиотеки
+    | <span class="code">hamburgers.scss</span> ( также доступна sass-версия ). Или же в секции
+    | <span class="code">&lt;head &gt;</span> на странице вашего сайта вставьте следующий код:
 
 pre
   code.html
@@ -216,15 +218,16 @@ pre
     != replacement(burgerMarkup3)
 
 p.post__text
-  | Поскольку имя класса должно переключаться с помощью JavaScript, в директории <span class="code">js/hamburger.js</span> находится файл <span class="code">hamburger.js</span>,
-  | код в котором предназначен для этого. Просто подключите его на странице вашего сайта перед закрывающим тегом <span class="code">&lt;/body&gt;</span>, вставив следующий код:
+  | Поскольку имя класса должно переключаться с помощью JavaScript, в директории <span class="code">js/</span>
+  | находится файл <span class="code">hamburger.js</span>, код в котором предназначен для этого. Просто подключите его
+  | на странице вашего сайта перед закрывающим тегом <span class="code">&lt;/body&gt;</span>, вставив следующий код:
 
 pre
   code
     != replacement(scriptMarkup)
 
 p.post__text
-  | Также, если вы используете препроцессор pug, в директории <span class="code">pug</span> находится файл <span class="code">hamburger.pug</span> с примесью,
+  | Также, если вы используете препроцессор pug, в директории <span class="code">pug/</span> находится файл <span class="code">hamburger.pug</span> с примесью,
   | создающей разметку для гамбургера. Подключив файл с примесью в своем коде, вы можете вызвать ее следующим образом:
 
 pre
@@ -243,15 +246,22 @@ pre
 
 +heading('Sass', 'sidebar')(style="color: black;")
 p.post__text(style="margin-bottom: 15px;")
-  | Исходные файлы <span class="code">.scss</span> доступны, если вы используете препроцессор Sass. Это дает вам гибкость и модульность.
+  | Исходные файлы <span class="code">.scss</span> и <span class="code">.sass</span> доступны, если вы используете
+  | препроцессор Sass. Это дает вам гибкость и модульность.
 
 ul.post__list
-  li Скопируйте файлы из директории <span class="code">sass</span> в ваш проект
   li
     span.post__list-item-span Импортируйте файл <span class="code">hamburger.scss</span> внутри вашего scss-файла стилей:
     pre
       code @import "path/to/hamburger";
-  li Настройте свой гамбургер - удалите те типы в файле <span class="code">hamburger.scss</span>, которые вы не планиуете использовать.
+  li
+    | Настройте свой гамбургер - Перед импортом главного файла библиотеки переопределите переменную
+    | <span class="code">$hamburger-types</span>, чтобы удалить из скомпилированного файла те типы гамбургеров, которые
+    | вы не планируете использовать. Это позволит уменьшить размер скомпилированного css-файла:
+pre
+  code
+    |$hamburger-types: ( alchemy );
+    |@import "hamburger"
 
 +heading('Кастомизация', 'sidebar')(style="color: black;")
 p.post__text
@@ -286,8 +296,8 @@ pre
     |$hamburger-layer-border-radius: 4px;
     |$hamburger-layer-color        : #000;
 
-    |// Удалите или закомментироуйте типы гамбургеров, которые вам не нужны
-    |// чтобы они были исключены из скомпилированного CSS.
+    |//Переопределите эту переменную, чтобы удалить из скомпилированного файла те типы гамбургеров,
+    |//которые вы не планируете использовать
     |$hamburger-types: (
     |simple,
     |collapse,
