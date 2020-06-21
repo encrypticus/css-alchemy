@@ -9,3 +9,5 @@ public/
 themes/landscape/
 themes/alchemy/source/
 webpack-boilerplate/node_modules/
+package-lock.json
+yarn.lock
