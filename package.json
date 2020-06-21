@@ -9,7 +9,7 @@
     "server": "hexo server"
   },
   "hexo": {
-    "version": "4.2.0"
+    "version": "4.2.1"
   },
   "dependencies": {
     "hexo": "^4.0.0",
@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.7.6",
+    "del": "^5.1.0",
     "gulp": "^4.0.2",
     "gulp-flatten": "^0.4.0",
     "gulp-imagemin": "^7.1.0",
