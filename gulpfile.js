@@ -8,6 +8,7 @@ const flatten = require('gulp-flatten');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const gulpStylelint = require('gulp-stylelint');
+const del = require('del');
 
 // Пути ресурсов
 const paths = {
@@ -21,7 +22,14 @@ const paths = {
   sassPosts: 'source/_posts/**/*.scss',
   sassTheme: ['themes/alchemy/sass/common.scss', 'themes/alchemy/sass/index.scss'],
   stylelint: ['source/_posts/**/*.scss', 'themes/alchemy/layout/**/*.scss'],
-  fonts: 'themes/alchemy/fonts/*'
+  fonts: 'themes/alchemy/fonts/*',
+  clean: ['themes/alchemy/source/**', '!themes/alchemy/source/**/*.js']
+};
+
+// Очистка папки сборки
+const clean = async () => {
+  await del(paths.clean);
+  console.log('Папка сборки успешно очищена!');
 };
 
 // Обработка sass в директории /source/_posts/
@@ -108,6 +116,7 @@ const watch = () => {
 exports.stylelint = stylelint;
 
 exports.default = gulp.series(
+  clean,
   gulp.parallel(
     gulp.series(process_sass_in_posts, process_sass_in_theme, stylelint),
     processImg,
