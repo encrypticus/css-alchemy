@@ -1,7 +1,6 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass'); // обработка sass
 const imagemin = require('gulp-imagemin'); // оптимизация изображений
-const imgCompress = require('imagemin-jpeg-recompress'); // оптимизация jpg
 const imageminMozjpeg = require('imagemin-mozjpeg'); // оптимизация jpg
 const pngquant = require('imagemin-pngquant'); // оптимизация png
 const flatten = require('gulp-flatten'); // при обработке файлов копирует их в папку назначения без сохранения структуры каталогов
