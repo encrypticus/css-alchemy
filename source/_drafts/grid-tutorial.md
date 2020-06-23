@@ -27,7 +27,7 @@ Sass. Подробно, шаг за шагом я покажу, как созд�
 }
 ```
 
- ```html
+```html
  <section class="card">
   <div class="card__header"></div>
   <div class="card__body"></div>
