@@ -1,0 +1,63 @@
+include ../_utils/replacement
+
+-
+  const snippets = {
+  grid: {
+
+  html: [
+  `<div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-3 col-xs-2"></div>
+      <div class="col col-sm-4 col-md-3 col-xs-1"></div>
+    </div>
+  </div>`,
+
+  `<section class="main">
+    <div class="card">
+      <div class="card__header"></div>
+      <div class="card__body"></div>
+      <div class="card__footer"></div>
+    </div>
+  </section>
+  `
+  ],
+
+  sass: [
+  `.main {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  .card {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+  }
+
+  .card__header,
+  .card__body,
+  .card__footer {
+    flex: 1 0 0%;
+    box-sizing: border-box;
+    margin: 0 15px 30px;
+  }`
+  ],
+
+  bash: [
+  `grid/         - корневая директория библиотеки
+    dist/       - скомпилированные css-файлы библиотеки
+    sass/       - реализиция бибиотеки в sass-синтаксисе
+    scss/       - реализация библиотеки в scss-синтаксисе
+      mixins/   - миксины библиотеки, реализующие ядро
+      partials/ - части библиотеки, реализующие генерацию предопределённых сеточных классов
+      base.scss - начальная инициализация сетки
+      grid.scss - главный файл, точка входа в библиотеку`
+  ]
+  }
+  }
+
+mixin snippet(snippet = '', type = 'html')
+  pre
+    code(class= type)
+      != replacement(snippet)
