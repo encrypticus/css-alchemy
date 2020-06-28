@@ -78,8 +78,14 @@ html, body {
   }
 
   &__socials {
-    @include for-phone-only {
-      display: none;
+    @include for-laptop-down {
+      margin-bottom: 15px;
+    }
+
+    &_header {
+      @include for-phone-only {
+        display: none;
+      }
     }
   }
 }
@@ -107,3 +113,4 @@ html, body {
 @import '../layout/components/widgets/tags/tags';
 @import '../layout/components/widgets/archives/archives';
 @import '../layout/components/pagination/pagination';
+@import '../layout/components/copyright/copyright';
