@@ -1,8 +1,13 @@
-@import '../../../../../webpack-boilerplate/src/sass/utils';
+@import '../../../sass/utils';
 
 .site-logo {
 
   $block-name: &; // #{$block-name}__element
+
+  @include for-laptop-down {
+    order: -1;
+    margin-bottom: 10px;
+  }
 
   &__link {
     display: flex;
