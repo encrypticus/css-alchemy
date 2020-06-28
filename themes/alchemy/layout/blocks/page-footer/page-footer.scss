@@ -3,13 +3,18 @@
 .page-footer {
   flex-grow: 0;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   min-height: pxToRem(140);
   padding: 0 pxToRem(118);
   background-color: #353535;
 
-  @include for-tablet-landscape-down {
+  @include for-desktop-down {
     padding: pxToRem(20);
+  }
+
+  @include for-laptop-down {
+    flex-direction: column;
   }
 }
