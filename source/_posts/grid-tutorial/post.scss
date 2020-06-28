@@ -1,4 +1,5 @@
 @import '../../../webpack-boilerplate/src/sass/utils';
+@import "../../../node_modules/flexbox-grid-pro/grid/scss/grid";
 
 .post {
 
@@ -32,6 +33,21 @@
     margin-bottom: pxToRem(30);
     overflow: auto;
   }
+  
+  &__grid {
+    background-color: #d4d4d4;
+    margin-bottom: 15px;
+  }
+
+  &__col {
+    padding: .625rem;
+    font-size: 80%;
+    background-color: #007fff;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    color: #fff;
+    text-align: center;
+  }
 }
 .hljs {
   background-color: #eaeaea;
@@ -49,6 +65,7 @@
   vertical-align: top;
   min-width: 25px;
 }
+
 .hljs-ln-code {
   margin-left: 10px !important;
 }
