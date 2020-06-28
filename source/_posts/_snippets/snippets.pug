@@ -144,6 +144,16 @@ include ../_utils/replacement
 
   `.row {
     @include row;
+  }`,
+
+  `mixin col {
+    flex: 1 0 0%;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  }`,
+
+  `.col {
+    @include col;
   }`
   ],
 
