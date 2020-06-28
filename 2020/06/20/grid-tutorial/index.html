@@ -1,0 +1,206 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content=""><meta name="keywords" content=""><meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<link rel="stylesheet" href="/css-alchemy/common.css">
+<link rel="stylesheet" href="post.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/styles/default.min.css"><link rel="apple-touch-icon" sizes="180x180" href="/css-alchemy/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/css-alchemy/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/css-alchemy/favicons/favicon-16x16.png"><link rel="manifest" href="/css-alchemy/favicons/site.webmanifest"><link rel="mask-icon" href="/css-alchemy/favicons/safari-pinned-tab.svg" color="#5bbad5"><link rel="shortcut icon" href="/css-alchemy/favicons/favicon.ico"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/css-alchemy/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><title>Исчерпывающее руководство по созданию модульной библиотеки, реализующей адаптивную сетку - Алхимия CSS</title></head><body><div id="menu-wrapper"></div><div class="page"><div class="wrapper"><header class="page-header"><div class="page__socials page__socials_header"><div class="socials"><a class="socials__link" href="https://github.com/encrypticus/" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/github-icon.svg" alt="мой github"/></a><a class="socials__link" href="https://t.me/encrypticus" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/telegram-icon.svg" alt="мой телеграм"/></a><a class="socials__link" href="mailto: encrypticus@gmail.com"><img class="socials__icon" src="/css-alchemy/img/gmail-icon.svg" alt="мое мыло"/></a></div></div><div class="site-logo"><a class="site-logo__link" href="/css-alchemy/"><span class="site-logo__link-text">css alchemy</span><img class="site-logo__icon" src="/css-alchemy/img/logo.svg" alt="site logo"/></a></div><a class="page-header__link-wrapper" href="#mmenu"><button class="hamburger hamburger--arrowturn"><span class="hamburger-inner"><span class="line-top"><span class="line-top-left"></span><span class="line-top-right"></span></span><span class="line-center"><span class="line-center-left"></span><span class="line-center-right"></span></span><span class="line-bottom"><span class="line-bottom-left"></span><span class="line-bottom-right"></span></span></span></button></a><nav class="mmenu mmenu_hidden" id="mmenu"><ul class="mmenu__list"><li class="mmenu__list-item"><a class="mmenu__link" href="/">Главная</a></li><li class="mmenu__list-item"><span>Категории</span><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/">javascript</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/">разработка</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/chrome-extensions/">chrome extensions</a></li></ul></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></li></ul></li></ul></li></ul></li><li class="mmenu__list-item"><span>Тэги</span><ul class="categories-widget-list" itemprop="keywords"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/chrome-extensions/" rel="tag">chrome extensions</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/javascript/" rel="tag">javascript</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/libs/" rel="tag">libs</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/sass/" rel="tag">sass</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/scss/" rel="tag">scss</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/" rel="tag">разработка</a></li></ul></li><li class="mmenu__list-item"><span>Архивы</span><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/06/">июнь 2020</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/04/">апрель 2020</a></li></ul></li></ul></nav></header><main class="page__content"><div class="page__content-inner"><section class="page__posts"><article class="post"><div class="post__thumb-wrapper"><img class="post__thumbnail" src="/css-alchemy/img/flexbox-grid-hero2.jpg"/></div><div class="post__content-wrapper"><div class="post__meta"><time class="post__date" datetime="2020-06-20T15:26:55.000Z">Опубликовано: 2020-06-20</time><div class="post__categories"><a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a>►<a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a>►<a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></div></div><h2 class="post__title">Исчерпывающее руководство по созданию модульной библиотеки, реализующей адаптивную сетку</h2><div class="post__content"><p class="post__text">Эта статья – пошаговое исчерпывающее руководство по созданию собственной "сеточной" системы с использованием препроцессора
+Sass. Подробно, шаг за шагом я покажу, как создать модульную, гибкую и легко кастомизируемую библиотеку, реализующую
+адаптивную сетку, наподобие той, что используется в фреймворках Bootstrap, Foundation, Bulma и многих других.
+Библиотека позволит быстро и без особых усилий создавать адаптивные, отзывчивые макеты. Все примеры кода будут показаны
+с применением scss-синтаксиса. Итак, приступим!</p><h2 class="heading">Два подхода при построении сетки</h2><p class="post__text">При построении сетки используются два основополагающих подхода:</p><ul class="post__list"><li><span class="post__list-item-span"></span>Первый подход – в разметке страницы необходимым html-элементам прописываются нужные сеточные классы.
+Все детали реализации скрыты в CSS:<pre><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col-12 col-sm-6 col-md-3 col-xs-2">&lt;/div>
+    &lt;div class="col col-sm-4 col-md-3 col-xs-1">&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre></li><li><span class="post__list-item-span"></span>Второй подход – все необходимые для реализации компонентов сетки правила
+прописываются в нужных селекторах в стилевом файле:<pre><code class="css">.main {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+
+.card__header,
+.card__body,
+.card__footer {
+  flex: 1 0 0%;
+  box-sizing: border-box;
+  margin: 0 15px 30px;
+}</code></pre><pre><code class="html">&lt;section class="main">
+  &lt;div class="card">
+    &lt;div class="card__header">&lt;/div>
+    &lt;div class="card__body">&lt;/div>
+    &lt;div class="card__footer">&lt;/div>
+  &lt;/div>
+&lt;/section></code></pre></li></ul><p class="post__text">Ни один из подходов не является более или менее правильным по отношению один к другому. У каждого имеются как свои плюсы,
+так и минусы. Какой из них выбрать – лишь вопрос ваших предпочтений. При первом подходе разметка засоряется большим
+количеством классов, которые к тому же приходится запоминать. При втором подходе усложняются стили. Мы в своей библиотеке
+реализуем оба этих подхода – библиотека будет включать как богатый набор предопределенных классов, так и набор готовых
+sass/scss миксинов и функций, в совокупности реализующих адаптивную сетку.</p><h2 class="heading">Элементы сетки</h2><p class="post__text">Каждая сетка должна включать элементы контейнера, рядов и колонок.</p><h2 class="heading">Структура каталогов</h2><pre><code class="bash">grid/         - корневая директория библиотеки
+  dist/       - скомпилированные css-файлы библиотеки
+  sass/       - реализиция бибиотеки в sass-синтаксисе
+  scss/       - реализация библиотеки в scss-синтаксисе
+    mixins/   - миксины библиотеки, реализующие ядро
+    partials/ - части библиотеки, реализующие генерацию предопределённых сеточных классов
+    base.scss - начальная инициализация сетки
+    grid.scss - главный файл, точка входа в библиотеку</code></pre><p class="post__text"><span class="code">grid/</span> – это основная директория, в которой будет храниться весь код нашей библиотеки</p><p class="post__text"><span class="code">dist/</span> – директория содержит скомпилированные минифицированный и неминифицированный css-файлы библиотеки</p><p class="post__text"><span class="code">sass/</span> – в этой директории будет храниться код библиотеки в sass-синтаксисе</p><p class="post__text"><span class="code">scss/</span> – в этой директории будет храниться код библиотеки в scss-синтаксисе</p><p class="post__text"><span class="code">mixins/</span> – директория с миксинами, реализующими основной функционал библиотеки</p><p class="post__text"><span class="code">partials/</span> – директория хранит код, отвечающий за генерацию предопределённых готовых классов библиотеки</p><p class="post__text"><span class="code">base.scss/base.sass/</span> – этот файл содержит код, отвечающий за начальную инициализацию библиотеки. В нём задаются
+основные классы: контейнера, ряда, колонки, а также генерируются "колоночные" классы и классы в медиазапросах</p><p class="post__text"><span class="code">grid.scss/grid.sass</span> – это так называемая точка входа в библиотеку. Именно этот файл будет указан в поле <span class='code'>main</span>
+в файле <span class='code'>package.json</span>. Файл будет содержать все глобальные переменные библиотеки, а также
+подключать все необходимые части библиотеки</p><h2 class="heading">Глобальные переменные</h2><p class="post__text">Для того чтобы пользователи нашей библиотеки имели возможность настраивать и кастомизировать сетку, необходимо определить
+переменные, которые можно будет переопределить и задать им свои значения. Все переменные по умолчанию и внутренние,
+необходимые для нужд библиотеки переменные будут находиться в основном файле <span class='code'>grid.scss</span>:</p><pre><code class="scss">$container-width: 1140px !default; // ширина контейнера
+$container-padding: 15px !default; // внутренние отступы контейнера
+$h-gutter: 30px !default; // расстояние между ячейками сетки по горизонтали
+$v-gutter: $h-gutter !default; // расстояние между ячейками сетки по вертикали
+$columns: 12 !default; // количество колонок сетки
+// флаг, указывающий, какой подход будет использован при формиравнии
+// медиазапросов - mobile first или desktop first
+$mobile-first: false !default;
+
+// возвращает ключевое слово min или max, которое будет использовано
+// при формировании всех медиазапросов библиотеки - min-width или max-width
+@function query-direction() {
+  @if($mobile-first) {
+    @return min;
+  } @else {
+    @return max;
+  }
+}
+
+$media-query: query-direction(); // min или max
+
+$grid-breakpoints: (
+  desktop: 1280px,
+  laptop: 1024px,
+  laptop-md: 960px,
+  tablet-landscape: 768px,
+  phone-landscape: 640px,
+  phone: 480px,
+  phone-md: 360px,
+  phone-sm: 320px
+) !default;
+
+// для уменьшения конечного css-файла можно переопределить переменную,
+// оставив лишь нужные части, или установить значение в false, что
+// предотвратит генерацию большого количества готовых библиотечных
+// классов - это значительно уменьшит размер скомпилированного css-файла
+$partials: (
+  alignment,
+  direction,
+  hide,
+  offset,
+  ordering,
+  show,
+  gutters
+) !default;
+
+@import 'mixins/mixins';
+@import 'partials/alignment';
+@import 'partials/ordering';
+@import 'partials/direction';
+@import 'partials/hide';
+@import 'partials/show';
+@import 'partials/offset';
+@import 'partials/gutters.scss';
+@import 'base';</code></pre><p class="post__text">Прежде чем подробно рассмотреть каждую переменную, хотелось бы сказать, что почти все объявления переменных,
+как вы могли заметить, оканчиваются флагом <span class='code'>!default</span>. Размещение этого флага в конце
+объявления переменной даёт нам следующий эффект – если переменная уже имеет присвоение, она не будет переназначена.
+Что в свою очередь даёт нам возможность переопределять переменные библиотеки перед её импортом в пользовательский код.
+Чтобы было понятен смысл сказанного, приведу пример:</p><p class="post__text">В файл <span class='code'>index.scss</span> импортируем файл <span class='code'>grid.scss</span>
+с объявленными в нём переменными, никак их не меняя:</p><pre><code class="scss">@import "grid.scss";</code></pre><p class="post__text">В следующем же примере мы сначала присваиваем значения двум переменным и только потом импортируем файл библиотеки.
+А так как обе эти переменные внутри <span class='code'>grid.scss</span> объявлены с флагом
+<span class='code'>!default</span>, значит они примут те значения, которые мы им задали выше. Иными словами мы
+переопределили значения по умолчанию. Подробнее про директиву <span class='code'>!default</span> можно почитать в
+официальной <a class='post__link' href='https://sass-lang.com' target='_blank'>документации</a> Sass.</p><pre><code class="scss">$container-width: 1600px;
+$container-padding: 20px;
+
+@import "grid.scss";</code></pre><p class="post__text">А теперь подробнее рассмотрим наши переменные.</p><p class="post__text"><span class="code">container-width</span> – максимальная ширина контейнера сетки</p><p class="post__text"><span class="code">container-padding</span> – внутренние горизонтальные отступы контейнера (paddings)</p><p class="post__text"><span class="code">h-gutter</span> – внешние горизонтальные отступы между колонками или ячейками сетки (margins)</p><p class="post__text"><span class="code">v-gutter</span> – внешние вертикальные отступы между колонками или ячейками сетки (margins)</p><p class="post__text"><span class="code">columns</span> – количество колонок, на которые будет разбита наша сетка. По умолчанию она будет состоять из классических
+двенадцати колонок</p><p class="post__text"><span class="code">mobile-first</span> – булева переменная, используемая внутренней служебной функцией <span class='code'>query-direction</span></p><p class="post__text"><span class="code">query-direction</span> – утилитарная внутрення функция, которая возвращает одно из значений - min или max, в зависимости от значения
+ переменной <span class='code'>mobil-first</span></p><p class="post__text"><span class="code">media-query</span> – это динамическая переменная, которая всегда будет содержать значение, возвращаемое вышеописанной
+функцией – min или max. Эта переменная будет использоваться при генерации всех медиазапросов библиотеки и определять,
+какой подход будет применяться при формировании этих медиазапросов - mobile-first или desktop-first.</p><p class="post__text">При <span class='code'>$mobile-first: true</span> система будет генерировать такой код:</p><pre><code class="scss">@media (min-width: 960px) {
+  //selectors
+}</code></pre><p class="post__text">При <span class='code'>$mobile-first: false</span> такой:</p><pre><code class="scss">@media (max-width: 960px) {
+  //selectors
+}</code></pre><p class="post__text">Далее по ходу статьи я ещё остановлюсь более подробно на механизме формирования медиазапросов.</p><p class="post__text"><span class="code">grid-breakpoints</span> – массив пар ключ-значение, описывающий набор контрольных точек сетки. По умолчанию наша сетка
+будет включать восемь контрольных точек. Но мы, так же, как и другие переменные, можем её переопределить, задав более
+распространённые класические названия и значения контрольных точек:</p><pre><code class="scss">$grid-breakpoints: (
+  lg: 1140px,
+  md: 960px,
+  sm: 768px,
+  xs: 500px
+);</code></pre><p class="post__text"><span class="code">partials</span> – список тех частей библиотеки, код в которых отвечает за генерирование всех классов сетки. Эти классы
+необходимы, если мы применим описанный выше первый подход для построения сетки - добавление классов в разметку документа.
+Если для построения сетки мы будем использовать миксины, то нет необходимости в генерировании большого количества
+классов, и поэтому мы можем переопределить список, установив его значение в <span class='code'>false</span>. Это
+значительно сократит скомпилированный css-файл библиотеки.</p><p class="post__text">Далее в <span class='code'>grid.scss</span> идёт импорт миксинов, частей и основного файла, инициализирующего библиотеку.</p><h2 class="heading">Создание контейнера сетки</h2><p class="post__text">Сетка должна содержать контейнер, определяющий её максимальную ширину, внешние и внутренние отступы. Все сущности сетки
+будут создаваться при помощи миксинов. Создадим контейнер, поместив следующий код в файл
+<span class='code'>mixins/_grid.scss</span>:</p><pre><code class="scss">@mixin container {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}</code></pre><p class="post__text">Мы задали нашему контейнеру максимальную ширину и внешние отступы для его центрирования. Также мы задали контейнеру
+внутренние отступы, чтобы контент в нём не прилипал к краям браузера. Размеры для ширины и отступов мы взяли из глобальных
+переменных, определённых в <span class='code'>grid.scss</span>. Теперь мы можем вызвать этот миксин на любом элементе
+в нашем sass-коде:</p><pre><code class="scss">.wrapper {
+  @include container();
+}</code></pre><p class="post__text">Таким образом наш элемент <span class='code'>wrapper</span> теперь является контейнером сетки. Но нам также нужен
+готовый предопределённый css-класс, реализующий этот же функционал, чтобы мы просто могли прописать его в нашей
+разметке, не заморачиваясь со стилями. Для этого в файл <span class='code'>base.scss</span> добавим следующий код:</p><pre><code class="scss">.container {
+  @include container;
+}</code></pre><p class="post__text">Теперь мы можем прописать этот класс в html-разметке нужному нам элементу:</p><pre><code class="html">&lt;div class="container">&lt;/div></code></pre><p class="post__text">Наш div также станет контейнером сетки. Подобным образом мы создадим другие наши элементы сетки и её функционал, тем
+самым реализовав оба подхода - "сетка в html" и "сетка в css".</p><h2 class="heading">Создание ряда сетки</h2><p class="post__text">Наряду с контейнером сетка обязательно должна включать такую сущность, как ряд (или строка). Ряд является в свою очередь
+контейнером для колонок (или ячеек) сетки. Ряд задаёт позиционирование и расположение колонок внутри себя. Сетка может
+содержать один и более элементов ряда. В <span class='code'>mixins/_grid.scss</span> добавим миксин, создающий ряд:</p><pre><code class="scss">@mixin row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -#{$h-gutter / 2};
+}</code></pre><p class="post__text">И не забудем в <span class='code'>base.scss</span> добавить селектор класса для ряда:</p><pre><code class="scss">.row {
+  @include row;
+}</code></pre><p class="post__text">Для элемента ряда мы устанавливаем значение <span class='code'>display: flex</span>: это нужно для того, чтобы
+поставить колонки в ряд. Правило <span class='code'>flex-wrap: wrap</span> мы устанавливаем для того, чтобы, когда
+для колонок задан размер, они не теснились на одной строке, а переносились на следующую. И наконец внешним горизонтальным
+отступам мы задаём отрицательное значение. Для чего это нужно? Как было показано выше, в файле
+<span class='code'>grid.scss</span> мы определили переменную <span class='code'>$h-gutter</span> - расстояние между
+колонками будущей сетки по горизонтали. По умолчанию оно равно 30px. Забегая вперёд скажу, что для элементов колонок мы
+установим внешние горизонтальные отступы (margins), равные <span class='code'>$h-gutter / 2</span>, так как марджины у
+флекс-элементов, каковыми являются наши колонки, внутри флекс-контейнера не схлопываются;
+<span class='code'>$h-gutter / 2</span> даст нам 15px. То есть по 15px внешнего отступа справа и слева у каждой колонки.
+Проблема в том, что элементы колонок своими марджинами будут отталкиваться не только друг от друга, но и от правого и
+левого краёв контейнера, что приведёт к появлению у него лишнего пустого пространства по краям. Это легко проверить,
+задав контейнеру фоновый цвет:</p><div class="post__grid"><div class="row" style="margin: 0"><div class="col post__col">col</div><div class="col post__col">col</div><div class="col post__col">col</div></div><div class="row" style="margin: 0"><div class="col post__col">col</div><div class="col post__col">col</div><div class="col post__col">col</div></div><div class="row" style="margin:0"><div class="col no-v-gutters post__col">col</div><div class="col no-v-gutters post__col">col</div><div class="col no-v-gutters post__col">col</div></div></div><p class="post__text">Возвращаясь к вопросу, для чего элементу ряда устанавливать отрицательные марджины. Дело в том, что это создаст эффект
+того, что дочерние элементы колонок как бы провалятся за границы родительского элемента строки:</p><div class="post__grid"><div class="row"><div class="col post__col">col</div><div class="col post__col">col</div><div class="col post__col">col</div></div><div class="row"><div class="col post__col">col</div><div class="col post__col">col</div><div class="col post__col">col</div></div><div class="row"><div class="col no-v-gutters post__col">col</div><div class="col no-v-gutters post__col">col</div><div class="col no-v-gutters post__col">col</div></div></div><p class="post__text">Таким образом первая и последняя колонка в каждом ряду будут вплотную прилегать к краям контейнера. Правило
+<span class='code'>margin: 0 -#{$h - gutter / 2};</span> буквально означает – вертикальные марджины установить в значение
+ноль, а горизонтальным присвоить значение, равное половине значения определённой нами переменной
+<span class='code'>$h-gutter</span>, то есть 15px; затем инвертировать полученное значение, поставив перед ним знак "–".
+Знак "#" в Sass означает интерполяцию переменной, подробнее о которой можно почитать в
+<a class='post__link' href='https://sass-lang.com/' target='_blank'>документации Sass</a>.</p><h2 class="heading">Создание колонки сетки</h2><p class="post__text">Последняя неотъемлемая сущность сетки - это колонка. Колонки располагаются внутри рядов. Элемент ряда может содержать
+один и более элементов колонок. В <span class='code'>mixins/_grid.scss</span> добавим миксин, создающий колонку:</p><pre><code class="scss">mixin col {
+  flex: 1 0 0%;
+  box-sizing: border-box;
+  margin: 0 $h-gutter / 2 $v-gutter;
+}</code></pre><p class="post__text">Здесь следует более подробно остановиться на каждом правиле селектора колонки. Правило во второй строке задаёт
+поведение элемента колонки как flex-элемента. Как мы знаем свойство  <span class='code'>flex</span> - это сокрщённая
+запись для трёх свойств: <span class='code'>flex-grow</span>, <span class='code'>flex-shrink</span> и
+<span class='code'>flex-basis</span>. Для <span class='code'>flex-grow</span> мы выставили значение в 1 для того,
+чтобы колонки были текучими и занимали всё свободное доступное пространство, не сжимаясь под содержащийся в них
+контент, и чтобы при этом они занимали равные доли свободного пространства. Для <span class='code'>flex-shrink</span>
+мы установили значение в 0, тем самым переопределив значение по умолчанию, равное 1. Это также сделано для того,
+чтобы колонки занимали равное пространство, не сжимаясь. И с этой же целью для свойства
+<span class='code'>flex-basis</span> мы выставили значение в 0%, которое по умолчанию равно auto, что также может
+привести к сжатию колонки до содержащегося в них контента.</p><p class="post__text">Во второй строке свойству <span class='code'>box-sizing</span> мы присвоили значеиние
+<span class='code'>border-box</span>, что позволит рассчитать значение ширины колонки, включив в неё (ширину) размеры
+<span class='code'>padding</span>, <span class='code'>margin</span> и <span class='code'>border</span>.
+То есть размеры внутренних и внешних отступов элемента колонки, а таже размер рамки будут не добавляться к значению
+ширины, а рассчитываться внутрь элемента.</p><p class="post__text">Третьей строкой мы задали внешние горизонтальные и вертикальные отступы, значение которых, как мы помним, равно
+глобальным  переменным <span class='code'>$h-gutter</span> и <span class='code'>$v-gutter</span> соответственно.</p><p class="post__text">Не забываем в <span class='code'>base.scss</span> добавить селектор для колонки:</p><pre><code class="scss">.col {
+  @include col;
+}</code></pre></div><div class="post__button-more"><a class="button-more button-more_type_back" href="#">Назад</a></div><div class="post__foot"><ul class="post__tags"><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/scss/">scss</a></li><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/sass/">sass</a></li><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/libs/">libs</a></li></ul></div></div></article><div class="page__heading page__heading_comments"><h2 class="heading">Комментарии</h2></div><section id="hyvor-talk-view"></section><script src="/css-alchemy/hyvor.js"></script><script async="async" src="//talk.hyvor.com/web-api/embed"></script></section><aside class="page__sidebar"><h2 class="heading  heading_sidebar">категории</h2><div class="categories-widget"><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/">javascript</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/">разработка</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/chrome-extensions/">chrome extensions</a></li></ul></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></li></ul></li></ul></li></ul></div><h2 class="heading  heading_sidebar">тэги</h2><div class="tags-widget"><ul class="tags-widget-list" itemprop="keywords"><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/chrome-extensions/" rel="tag">chrome extensions</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/javascript/" rel="tag">javascript</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/libs/" rel="tag">libs</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/sass/" rel="tag">sass</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/scss/" rel="tag">scss</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/" rel="tag">разработка</a></li></ul></div><h2 class="heading  heading_sidebar">архив</h2><div class="archive-widget"><ul class="archive-widget-list"><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/06/">июнь 2020</a></li><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/04/">апрель 2020</a></li></ul></div></aside></div></main><footer class="page-footer"><div class="page__socials"><div class="socials  socials_theme_light"><a class="socials__link" href="https://github.com/encrypticus/" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/github-icon.svg" alt="мой github"/></a><a class="socials__link" href="https://t.me/encrypticus" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/telegram-icon.svg" alt="мой телеграм"/></a><a class="socials__link" href="mailto: encrypticus@gmail.com"><img class="socials__icon" src="/css-alchemy/img/gmail-icon.svg" alt="мое мыло"/></a></div></div><p class="copyright">© Александр Тимофеев. Сайт собран с помощью гремучей смеси hexo + webpack + gulp.</span></p><div class="site-logo  site-logo_theme_light"><a class="site-logo__link" href="/css-alchemy/"><span class="site-logo__link-text">css alchemy</span><img class="site-logo__icon" src="/css-alchemy/img/logo.svg" alt="site logo"/></a></div></footer></div></div>
+<script src="/css-alchemy/npm.svg-injector.js"></script>
+<script src="/css-alchemy/npm.mmenu-js.js"></script>
+<script src="/css-alchemy/common.js"></script>
+<script src="/css-alchemy/npm.jquery.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script><script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>hljs.initLineNumbersOnLoad();</script></body></html>
