@@ -39,7 +39,14 @@
     margin-bottom: 15px;
   }
 
-  &__col {
+  &__col,
+  .logo,
+  .nav,
+  .login,
+  .sidebar,
+  .content,
+  .about,
+  .email {
     padding: .625rem;
     font-size: 80%;
     background-color: #007fff;
@@ -49,6 +56,28 @@
     letter-spacing: 1px;
   }
 }
+
+.wrap {
+  @include container;
+  padding: 0;
+}
+
+.header,
+.main,
+.footer {
+  @include row;
+}
+
+.logo,
+.nav,
+.login,
+.sidebar,
+.content,
+.about,
+.email {
+  @include col;
+}
+
 .hljs {
   background-color: #eaeaea;
 }

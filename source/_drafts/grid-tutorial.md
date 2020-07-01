@@ -329,3 +329,80 @@ mixin col {
     @include col;
   }
   ```
+# Начальная версия сетки
+Ниже представлен полный код, который мы написали к этому моменту:
+
+```base.scss```:
+
+```scss
+.container {
+  @include container;
+}
+
+.row {
+  @include row;
+}
+
+.col {
+  @include col;
+}
+```
+
+```mixins/_grid.scss```:
+
+```scss
+@mixin container {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}
+
+@mixin row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -#{$h-gutter / 2};
+}
+
+mixin col {
+  flex: 1 0 0%;
+  box-sizing: border-box;
+  margin: 0 $h-gutter / 2 $v-gutter;
+}
+```
+
+И уже на данном этапе мы можем построить сетку:
+
+Прописав нужные классы в html-разметке:
+
+```scss
+сниппет
+```
+
+```bash
+пример сетки
+```
+
+Подключив нужные миксины в селекторах в нашем sass-файле:
+
+```scss
+.wrap {
+  @include container;
+}
+
+.header,
+.main,
+.footer {
+  @include row;
+}
+
+.sidebar,
+.content,
+.logo,
+.nav,
+.login,
+.about,
+.email {
+  @include col;
+}
+```
+В первом примере сетка состоит из трёх рядов по четыре колонки в каждом, во втором – из трёх рядов по три колонки.

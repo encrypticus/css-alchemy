@@ -299,3 +299,52 @@ p.post__text
 
 p.post__text Не забываем в <span class='code'>base.scss</span> добавить селектор для колонки:
 +snippet(sass[13], 'scss')
+
+
++heading('Начальная версия сетки')
+p.post__text Ниже представлен полный код, который мы написали к этому моменту.
+p.post__text base.scss:
++snippet(sass[14], 'scss')
+
+p.post__text mixins/_grid.scss:
++snippet(sass[15], 'scss')
+
+p.post__text И уже на данном этапе мы можем построить сетку:
+p.post__text Прописав нужные классы в html-разметке:
++snippet(html[3])
+.container(style='padding: 0;')
+  .row
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+  .row
+    .col.post__col 5
+    .col.post__col 6
+    .col.post__col 7
+    .col.post__col 8
+  .row
+    .col.post__col 9
+    .col.post__col 10
+    .col.post__col 11
+    .col.post__col 12
+
+p.post__text Или подключив нужные миксины в селекторах в нашем sass-файле:
+.row
+  +snippet(html[4])(class='col col-phone-landscape-12')
+  +snippet(sass[16], scss)(class='col')
+.wrap
+  .header
+    .logo logo
+    .nav nav
+    .login login
+  .main
+    .sidebar sidebar
+    .content content
+    .sidebar sidebar
+  .footer
+    .logo logo
+    .about about
+    .email email
+
+p.post__text В первом примере сетка состоит из трёх рядов по четыре колонки в каждом, во втором – из трёх рядов по три колонки.

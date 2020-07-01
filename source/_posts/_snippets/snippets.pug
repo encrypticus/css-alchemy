@@ -20,7 +20,50 @@ include ../_utils/replacement
     </div>
   </section>`,
 
-  `<div class="container"></div>`
+  `<div class="container"></div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col">1</div>
+      <div class="col">2</div>
+      <div class="col">3</div>
+      <div class="col">4</div>
+    </div>
+
+    <div class="row">
+      <div class="col">5</div>
+      <div class="col">6</div>
+      <div class="col">7</div>
+      <div class="col">8</div>
+    </div>
+
+    <div class="row">
+      <div class="col">9</div>
+      <div class="col">10</div>
+      <div class="col">11</div>
+      <div class="col">12</div>
+    </div>
+  </div>`,
+
+  `<div class="wrap">
+    <div class="header">
+      <div class="logo">logo</div>
+      <div class="nav">nav</div>
+      <div class="login">login</div>
+    </div>
+
+    <div class="main">
+      <div class="sidebar">sidebar</div>
+      <div class="content">content</div>
+      <div class="sidebar">sidebar</div>
+    </div>
+
+    <div class="footer">
+      <div class="logo">logo</div>
+      <div class="about">about</div>
+      <div class="email">email</div>
+    </div>
+  </div>`
   ],
 
   sass: [
@@ -154,6 +197,56 @@ include ../_utils/replacement
 
   `.col {
     @include col;
+  }`,
+
+  `.container {
+    @include container;
+  }
+
+  .row {
+    @include row;
+  }
+
+  .col {
+    @include col;
+  }`,
+
+  `mixin container {
+    max-width: $container-width;
+    margin: 0 auto;
+    padding: 0 $container-padding;
+  }
+
+  mixin row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -#{$h-gutter / 2};
+  }
+
+  mixin col {
+    flex: 1 0 0%;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  }`,
+
+  `.wrap {
+    @include container;
+  }
+
+  .header,
+  .main,
+  .footer {
+    @include row;
+  }
+
+  .logo,
+  .nav,
+  .login,
+  .sidebar,
+  .content,
+  .about,
+  .email {
+    @include col;
   }`
   ],
 
@@ -171,6 +264,6 @@ include ../_utils/replacement
   }
 
 mixin snippet(snippet = '', type = 'html')
-  pre
+  pre&attributes(attributes)
     code(class= type)
       != replacement(snippet)
