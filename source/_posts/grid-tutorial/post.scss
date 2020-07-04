@@ -68,15 +68,15 @@
   @include row;
 }
 
-.logo,
-.nav,
-.login,
-.sidebar,
-.content,
-.about,
-.email {
-  @include col;
-}
+//.logo,
+//.nav,
+//.login,
+//.sidebar,
+//.content,
+//.about,
+//.email {
+//  @include col;
+//}
 
 .hljs {
   background-color: #eaeaea;

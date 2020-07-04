@@ -247,6 +247,21 @@ include ../_utils/replacement
   .about,
   .email {
     @include col;
+  }`,
+
+  `@mixin col($cols: 'false') {
+    @if ($cols != 'false' and type_of($cols) == number) {
+      @if ($cols > $columns) $cols: $columns;
+
+      width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+      flex: 0 0 auto;
+      box-sizing: border-box;
+      margin: 0 $h-gutter / 2 $v-gutter;
+    } @else {
+      flex: 1 0 0%;
+      box-sizing: border-box;
+      margin: 0 $h-gutter / 2 $v-gutter;
+    }
   }`
   ],
 

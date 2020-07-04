@@ -332,19 +332,58 @@ p.post__text Прописав нужные классы в html-разметке
 p.post__text Или подключив нужные миксины в селекторах в нашем sass-файле:
 .row
   +snippet(html[4])(class='col col-phone-landscape-12')
-  +snippet(sass[16], scss)(class='col')
+  +snippet(sass[16], 'scss')(class='col')
 .wrap
   .header
-    .logo logo
-    .nav nav
-    .login login
+    .logo.col logo
+    .nav.col nav
+    .login.col login
   .main
-    .sidebar sidebar
-    .content content
-    .sidebar sidebar
+    .sidebar.col sidebar
+    .content.col content
+    .sidebar.col sidebar
   .footer
-    .logo logo
-    .about about
-    .email email
+    .logo.col logo
+    .about.col about
+    .email.col email
 
 p.post__text В первом примере сетка состоит из трёх рядов по четыре колонки в каждом, во втором – из трёх рядов по три колонки.
+
+p.post__text
+  | В обоих примерах мы видим, что колонки в одном ряду имеют одинаковую ширину. Причём это поведение не зависит от
+  | количества колонок. Сколько бы колонок не находилось в одном ряду, все они будут иметь одинаковую ширину. Ниже
+  | представлена сетка, состоящая из двенадцати колонок. Если мы попытаемся просмотреть сайт на устройстве с маленьким
+  | экраном или уменьшим окно браузера, то увидим, что колонки при нехватке места переходят на следующий ряд, занимая
+  | всё доступное пространство. Это так называемый эффект автоколонок:
+.container(style='padding: 0;')
+  .row
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 5
+    .col.post__col 6
+    .col.post__col 7
+    .col.post__col 8
+    .col.post__col 9
+    .col.post__col 10
+    .col.post__col 11
+    .col.post__col 12
+
+p.post__text
+  | Теперь нам нужно реализовать возможность указывать количество колонок, которое будет занимать тот или иной элемент,
+  | что позволит нам рассчитать его ширину. Дополним миксин колонки в файле <span class='code'>mixins/_grid.scss</span>:
++snippet(sass[17], 'scss')
+
+.wrap
+  .header
+    .logo.col-3 logo
+    .nav.col-6 nav
+    .login.col-3 login
+  .main
+    .sidebar.col-3 sidebar
+    .content.col-6 content
+    .sidebar.col-3 sidebar
+  .footer
+    .logo.col-3 logo
+    .about.col-6 about
+    .email.col-3 email
