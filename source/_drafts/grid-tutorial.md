@@ -1755,3 +1755,218 @@ partials/alignment.scss:
 <span class='code'>false</span>, что значительно сократит скомпилированный css-файл нашей библиотеки.
 
 # Направление расположения колонок
+
+Направление колонок – это то, как будут выстраиваться колонки внутри ряда. Как и в случае с выравниванием колонок, лучше 
+это продемонстрировать наглядно.
+
+Направление по умолчанию – колонки располагаются слева направо вдоль основной оси:
+
+```html
+ пример
+```
+
+Колонки располагаются справа налево вдоль основной оси:
+
+```html
+пример
+```
+
+Колонки располагаются сверху вниз вдоль поперечной оси:
+
+```html
+пример
+```
+
+Колонки располагаются снизу вверх вдоль поперечной оси:
+```html
+пример
+```
+
+А теперь пошагово реализуем данный функционал. В директорию с нашими миксинами <span class='code'>mixins</span> я 
+добавляю файл <span class='code'>_direction.scss</span>. Файл будет содержать миксин следующего содержания:
+
+```scss
+/* Направление расположения колонок в ряду */
+
+/*
+  Задает направление главной оси, вдоль которой укладываются колонки сетки в ряду.
+  В качестве аргумента для первого параметра $direction должно быть передано одно
+  из следующиех значений: row, row-reverse, column, column-reverse.
+  Если вторым аргументом передано значение, соответствующее одному из имен ключей
+  глобального массива $grid-breakpoints, правило будет применено в медиазапросе.
+*/
+@mixin direction($direction: row, $breakpoint: 'false') {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @if ($direction == row) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        flex-direction: row;
+      }
+    } @else if ($direction == row-reverse) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        flex-direction: row-reverse;
+      }
+    } @else if ($direction == column) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        flex-direction: column;
+      }
+    } @else if ($direction == column-reverse) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        flex-direction: column-reverse;
+      }
+    } @else {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        flex-direction: row;
+      }
+    }
+  } @else {
+    @if ($direction == row) {
+      flex-direction: row;
+    } @else if ($direction == row-reverse) {
+      flex-direction: row-reverse;
+    } @else if ($direction == column) {
+      flex-direction: column;
+    } @else if ($direction == column-reverse) {
+      flex-direction: column-reverse;
+    } @else {
+      flex-direction: row;
+    }
+  }
+}
+```
+
+Разберём код. На вход миксин принимает два параметра. Первый параметр отвечает за то, в каком направлении будут раполагаться 
+колонки в ряду, и может принимать четыре значения: <span class='code'>row</span>, <span class='code'>row-reverse</span>, 
+<span class='code'>column</span>, <span class='code'>column-reverse</span>. Если мы внимательно посмотрим на миксин, то 
+увидим, что направление расположения колонок задаётся свойством <span class='code'>flex-direction</span>. Это неудивительно, 
+ведь колонки – это флекс-элементы внутри флекс-контейнера – элемента ряда. Поэтому стоит добавить, что миксин имеет смысл 
+вызывать лишь на элементе ряда сетки <span class='code'>row</span>. Второй параметр должен принимать одно из имён 
+брейкпоинтов, которые хранятся в глобальном свойстве <span class='code'>$grid-breakpoints</span>: 
+<span class='code'>desktop</span>, <span class='code'>laptop</span>, <span class='code'>laptop-md</span>, 
+<span class='code'>tablet-landscape</span> и т.д.
+
+Первой строкой внутри миксина условный оператор проверяет, содержит ли наш глобальный массив брейкпоинтов 
+<span class='code'>$grid-breakpoints</span> элемент, имеющий ключ, имя которого соответствует аргументу, переданному в 
+параметр <span class='code'>$breakpoint</span> при вызове миксина. Если условие выполняется, тогда все правила выравнивания 
+оборачиваются директивой <span class='code'>@media</span>, то есть выполняются внутри медиазапроса. Если же условие не 
+выполняется, тогда все правила выравнивания просто добавляются в селектор элемента.
+
+Во второй строке и ниже по коду также присутствуют блоки условий, зависящие от первого параметра 
+<span class='code'>$direction</span> и определяющие направление расположения колонок сетки.
+
+И конечно, не забудем написать код, отвечающий за генерацию готовых "направляющих" классов. Для этого в директорию 
+<span class='code'>partials</span> поместим файл <span class='code'>direction</span>. И напишем в нём такой код:
+
+```scss
+.direction-row {
+  @include direction(row);
+}
+
+.direction-row-reverse {
+  @include direction(row-reverse);
+}
+
+.direction-column {
+  @include direction(column);
+}
+
+.direction-column-reverse {
+  @include direction(column-reverse);
+}
+```
+
+Этот код добавляет готовые "направляющие" классы, которыми мы можем воспользоваться "как есть", всего лишь прописав их 
+в нашей html-разметке на нужных элементах страницы. Внутри себя селекторы классов всего лишь подключают написанные нами 
+ранее миксины. Нам также необходимо добавить "направляющие" классы с медиазапросами. Для этого достаточно реализовать 
+цикл, который пройдётся по массиву <span class='code'>$grid-breakpoints</span>, сгенерирует соответствующий имени 
+брейкпоинта селектор класса и вызовет внутри него созданный нами ранее миксин 
+<span class='code'>direction</span>, вторым параметром передав ему имена всех брейкпоинтов на каждом проходе цикла. Ведь 
+как мы помним, если нашему миксину <span class='code'>direction</span> вторым параметром передать имя брейкпоинта, то 
+заданные в результате правила будут обёрнуты в медиазапрос.
+
+```scss
+  // генерация "направляющих" классов в медиазапросах согласно заданным брейкпойнтам $grid-breakpoints
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .direction-#{$breakpoint-name}-row {
+      @include direction(row, $breakpoint-name);
+    }
+
+    .direction-#{$breakpoint-name}-row-reverse {
+      @include direction(row-reverse, $breakpoint-name);
+    }
+
+    .direction-#{$breakpoint-name}-column {
+      @include direction(column, $breakpoint-name);
+    }
+
+    .direction-#{$breakpoint-name}-column-reverse {
+      @include direction(column-reverse, $breakpoint-name);
+    }
+  }
+```
+
+Этот код сгенерирует классы вида <span class='code'>direction-desktop-row</span>, <span class='code'>direction-laptop-column</span>,
+<span class='code'>direction-phone-landscape-row-reverse</span> и т.д.
+
+Полный код <span class='code'>partials/direction.scss</span>:
+
+```scss
+@if (index($partials, direction)) {
+
+  .direction-row {
+    @include direction(row);
+  }
+
+  .direction-row-reverse {
+    @include direction(row-reverse);
+  }
+
+  .direction-column {
+    @include direction(column);
+  }
+
+  .direction-column-reverse {
+    @include direction(column-reverse);
+  }
+
+  // генерация "направляющих" классов в медиазапросах согласно заданным брейкпойнтам $grid-breakpoints
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .direction-#{$breakpoint-name}-row {
+      @include direction(row, $breakpoint-name);
+    }
+
+    .direction-#{$breakpoint-name}-row-reverse {
+      @include direction(row-reverse, $breakpoint-name);
+    }
+
+    .direction-#{$breakpoint-name}-column {
+      @include direction(column, $breakpoint-name);
+    }
+
+    .direction-#{$breakpoint-name}-column-reverse {
+      @include direction(column-reverse, $breakpoint-name);
+    }
+  }
+}
+```
+
+Теперь мы можем задавать направление колонок как в html, так и в sass:
+
+```html
+пример на html
+```
+
+```scss
+пример на scss
+```
+
+Оба варианта дадут аналогичный результат:
+
+```bash
+результат работы кода
+```
+
+Примеры.
+
+```bash
+примеры
+```
