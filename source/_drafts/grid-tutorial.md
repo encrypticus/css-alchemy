@@ -1970,3 +1970,255 @@ partials/alignment.scss:
 ```bash
 примеры
 ```
+
+# Смещение колонок
+
+Следующий модуль нашей библиотеки, который мы реализуем – это смещение колонок. Выражаясь более точно – это смещение 
+колонки вправо или влево на расстояние, равное размеру одной или более колонок. Как всегда, лучше начать с примеров. 
+В примерах ниже представлена сетка из двух рядов, первый из которых заполнен шестью элементами размером по две колонки 
+каждый. Этот ряд нужен для наглядности того, на сколько колонок смещён элемент во втором ряду.
+
+```html
+примеры
+```
+
+А теперь реализуем это в нашем коде. В директорию <span class='code'>mixins</span> добавим файл <span class='code'>_offset.scss</span>.
+Теперь поразмышляем, каким образом можно заставить колонку сместиться влево или вправо внутри ряда. Первое, что приходит 
+на ум – это внешние отступы элемента. То есть, чтобы сместить колонку в ту или иную сторону, мы должны добавить ей левый 
+или правый марджины. Очевидно также, что колонка может смещаться просто на всё свободное доступное пространство влево 
+или вправо, реализуя таким образом эффект автосмещения. И также, как и в двух других написанных нами ранее модулях – 
+выравнивания и направления, мы должны добавить возможность смещения колонок в медиазапросах. Начнём писать наш миксин. 
+
+```scss
+@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  //...
+}
+```
+
+Наш миксин принимает на вход три параметра. Параметр <span class='code'>$direction</span> отвечает за направление смещения 
+колонки и может принимать лишь два значения: <span class='code'>right</span> и <span class='code'>left</span> – вправо и 
+влево соответственно. По умолчанию равен <span class='code'>right</span>.
+
+Параметр <span class='code'>$offset</span> отвечает за расстояние, на которое может быть смещена 
+колонка, и может принимать либо целое неотрицательное число, указывающее число колонок смещения, либо ключевое слово 
+<span class='code'>auto</span>, указывающее, что колонка может быть смещена на всё доступное свободное пространство. 
+По умолчанию равен <span class='code'>auto</span>.
+
+Параметр <span class='code'>$breakpoint</span> отвечает за то, будут ли правила смещения колонки применяться внутри 
+медиазапроса. Может принимать одно из имён брейкпоинтов, хранящихся в глобальном массиве <span class='code'>$grid-breakpoints</span>.
+По умолчанию не передаётся.
+
+```scss
+@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    //...
+  } else {
+    //...
+  }
+}
+```
+
+В первой строке внутри миксина стоит условие, согласно которому, если при вызове было передано существующее имя брейкпоинта, 
+то выполнится код из блока <span class='code'>@if</span>. Иначе будет выполнен код из блока <span class='code'>@else</span>.
+
+```scss
+@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      //...
+    }
+  } else {
+    //...
+  }
+}
+```
+
+Если при вызове миксина было передано валидное имя брейкпоинта, то код из блока <span class='code'>@if</span> будет 
+обёрнут в медиавыражение. Все дальнейшие условия, которые мы рассмотрим и которые находятся дальше по коду, будут 
+одинаково присутствовать и внутри блока <span class='code'>@if</span>, и внутри блока <span class='code'>@else</span>.
+
+```scss
+@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      @if ($offset == auto) {
+        @if ($direction == right) {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        } @else if ($direction == left) {
+          margin-right: auto !important;
+          margin-left: $h-gutter / 2 !important;
+        } @else {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        }
+      }
+    }
+  } else {
+    @if ($offset == auto) {
+      @if ($direction == right) {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      } @else if ($direction == left) {
+        margin-right: auto !important;
+        margin-left: $h-gutter / 2 !important;
+      } @else {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      }
+    }
+  }
+}
+```
+
+В третьей и семнадцатой строке прописано условие, по которому если для <span class='code'>$offset</span> передано значение 
+<span class='code'>auto</span>, то возможны три варианта:
+  - если значение параметра <span class='code'>$direction</span> равно <span class='code'>right</span>, то колонка 
+    смещается на всё доступное пространство вправо
+  - если значение параметра <span class='code'>$direction</span> <span class='code'>left</span>, то колонка смещается 
+    на всё доступное пространство влево
+  - и по умолчанию колонка всегда смещается вправо
+  
+Давайте ещё более расширим наш миксин:
+
+```scss
+@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      @if ($offset == auto) {
+        @if ($direction == right) {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        } @else if ($direction == left) {
+          margin-right: auto !important;
+          margin-left: $h-gutter / 2 !important;
+        } @else {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        }
+      } @else if (type_of($offset) == number) {
+        //...
+      }
+    }
+  } else {
+    @if ($offset == auto) {
+      @if ($direction == right) {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      } @else if ($direction == left) {
+        margin-right: auto !important;
+        margin-left: $h-gutter / 2 !important;
+      } @else {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      }
+    } @else if (type_of($offset) == number) {
+      //...
+    }
+  }
+}
+```
+
+В четырнадцатой и тридцатой строках я добавил по условию, которые будут выполнены в том случае, если параметр 
+<span class='code'>$offset</span> при вызове не будет равен <span class='code'>auto</span>, а будет являться числом. И в 
+этом случае будет выполнен следующий код: 
+
+```scss
+@if ($offset > $columns) {
+  $offset: $columns;
+}
+
+@if ($offset < 1) {
+  $offset: 1;
+}
+
+@if ($direction == right) {
+  margin-left: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+} @else if ($direction == left) {
+  margin-right: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+}
+```
+
+Разберём его подробнее. Условие в первой строке защищает нас от ситуации, когда пользователь при подключении миксина 
+пытается передать число, большее общего числа колонок сетки, хранящегося в глобальной переменной 
+<span class='code'>$columns</span>. В этом случае параметр <span class='code'>$offset</span> автоматически будет равен 
+этому общему числу колонок.
+
+Условие в пятой строке защищает нас от ситуации, когда пользователь при подключении миксина попытается передать отрицатеьное 
+число или ноль. В этом случае параметр <span class='code'>$offset</span> автоматически станет равным единице.
+
+Условия в девятой и одиннадцатой строках зависят от значения параметра <span class='code'>$direction</span> и выполняют 
+код, отвечающий за смещение элементов вправо и влево на указанное число колонок.
+
+Итак полный код миксина:
+
+```scss
+  /* Смещение колонок */
+
+/*
+  Смещает колонку в ряду на $offset - целое число колонок, вправо - $direction: right или влево - $direction: left.
+  Если в качестве второго аргумента передано значение auto, колонка смещается на свободное пространство в ту или иную
+  сторону. Если значение аргумента $breakpoint соответствует одному из имен ключей глобального массива $grid-breakpoints,
+  правила применяются в соответствующем медиазапросе.
+*/
+@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      @if ($offset == auto) {
+        @if ($direction == right) {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        } @else if ($direction == left) {
+          margin-right: auto !important;
+          margin-left: $h-gutter / 2 !important;
+        } @else {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        }
+      } @else if (type_of($offset) == number) {
+        @if ($offset > $columns) {
+          $offset: $columns;
+        }
+
+        @if ($offset < 1) {
+          $offset: 1;
+        }
+
+        @if ($direction == right) {
+          margin-left: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+        } @else if ($direction == left) {
+          margin-right: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+        }
+      }
+    }
+  } @else {
+    @if ($offset == auto) {
+      @if ($direction == right) {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      } @else if ($direction == left) {
+        margin-right: auto !important;
+        margin-left: $h-gutter / 2 !important;
+      } @else {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      }
+    } @else if (type_of($offset == number)) {
+      @if ($offset > $columns) {
+        $offset: $columns;
+      }
+
+      @if ($offset < 1) {
+        $offset: 1;
+      }
+
+      @if ($direction == right) {
+        margin-left: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+      } @else if ($direction == left) {
+        margin-right: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+      }
+    }
+  }
+
+}
+```
