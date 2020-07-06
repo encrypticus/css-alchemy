@@ -477,7 +477,7 @@ mixin col {
 пример
 ```
 
-Теперь для элементов logo, sidebar, login и email установим ширину в две колонки, а для nav, content и about – в пять:
+Теперь для элементов logo, sidebar, login и email установим ширину в две колонки, а для nav, content и about – в восемь:
 
 ```scss
 .wrap {
@@ -507,3 +507,1251 @@ mixin col {
 ```bash
 пример
 ```
+
+# Генерация готовых колоночных классов
+
+Мы усовершенствовали миксин, создающий колонки. Но нам также нужно добавить код, генерирующий готовые колоночные классы, 
+которые мы сможем использовать в нашей разметке. В <span class='code'>base.scss</span> напишем:
+
+```scss
+@for $i from 1 through $columns {
+  .col-#{$i} {
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  }
+}
+```
+
+Здесь мы в цикле от одного до ```$columns``` генерируем колоночные классы и правила для них. Как мы помним ```$columns``` 
+– это глобальная переменная, содержащая установленное число колонок сетки. Таким образом у нас сгенерируются классы вида 
+col-1, col-2, col-3 и т. д. Этот код описывает общие правила для всех колоночных классов. Но также для разных классов
+мы должны задать разную ширину. Ведь очевидно, что элемент, занимающий допустим шесть колонок будет шире элемента, 
+занимающего четыре колонки. Для этого в ```mixins/_grid.scss``` я добавлю такой миксин:
+
+```scss
+@mixin generate-grid($cols: $columns) {
+  @for $i from 1 through $cols {
+    .col-#{$i} {
+      width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+    }
+  }
+}
+```
+
+Здесь нет ничего сложного. На вход миксин принимает общее количество колонок сетки и в цикле генерирует колоночные классы 
+и правило, задающее ширину для каждого такого класса.
+
+Для упрощения миксина ```generate-grid``` рассчет ширины колонки я решил вынести в отдельную функцию. Хотя это и 
+необязательно. В ```mixins/_grid.scss``` добавим:
+
+```scss
+@function col-width($cols: 1) {
+  @return calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+}
+```
+
+И перепишем миксин:
+
+```scss
+@mixin generate-grid($cols: $columns) {
+  @for $i from 1 through $cols {
+    .col-#{$i} {
+      width: col-width($i);
+    }
+  }
+}
+```
+
+Чтобы сгенерировать колоночные классы и правила для них, нужно вызвать наш миксин. Вызов миксина добавим в ```base.scss```: 
+
+```scss
+@include generate-grid();
+```
+Полный код ```base.scss``` на данный момент:
+
+```scss
+.container {
+  @include container;
+}
+
+.row {
+  @include row;
+}
+
+.col {
+  @include col;
+}
+
+/*
+  Генерация "колоночных" классов и правил для них исходя из глобальной переменной $columns - заданного количества
+  столбцов сетки
+*/
+@for $i from 1 through $columns {
+  .col-#{$i} {
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  }
+}
+
+// генерация "колоночных" классов
+@include generate-grid();
+```
+
+Полный код ```mixins/_grid.scss```:
+
+```scss
+// превращает элемент в контейнер сетки
+@mixin container {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}
+
+// превращает элемент в строку сетки
+@mixin row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -#{$h-gutter / 2};
+}
+
+// превращает элемент в колонку сетки
+@mixin col($cols: 'false') {
+  @if ($cols != 'false' and type_of($cols) == number) {
+    @if ($cols > $columns) $cols: $columns;
+ 
+    width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  } @else {
+    flex: 1 0 0%;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  }
+}
+
+// рассчитывает ширину столбца в зависимости от переданного количества столбцов $cols
+@function col-width($cols: 1) {
+  @return calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+}
+
+/*
+  Генерирует "колоночные" классы вида .col-1, .col-2, .col-3 и т.д. исходя из глабальной переменной $columns - заданного
+  количества колонок сетки
+*/
+@mixin generate-grid($cols: $columns) {
+  @for $i from 1 through $cols {
+    .col-#{$i} {
+      width: col-width($i);
+    }
+  }
+}
+```
+Теперь мы можем строить нашу сетку, лишь добавляя в разметку необходимые классы:
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-6"></div>
+    <div class="col-6"></div>
+  </div>
+  
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-4"></div>
+    <div class="col-5"></div>
+    <div class="col-1"></div>
+  </div>
+</div> 
+```
+
+# Колоночные классы в медиазапросах
+
+На данный момент в нашем коде уже реализовано создание контейнера сетки, рядов, колонок одинаковой и заданной ширины. 
+Также для всего этого мы реализовали генерацию предопределённых готовых классов. Заверщающий из основных шагов построения 
+сеточной системы – это добавление медиазапросов. Хотелось бы акцентировать внимание на том, что это именно последний из 
+основных шагов, после реализации которого мы получим в принципе готовую и работоспособную библиотеку. А все шаги, которые 
+мы будем рассматривать далее, будут добавлять дополнительный важный, но не необходимый функционал. Итак, реализуем наш 
+следующий шаг – добавим возможность генерации колонок в медиазапросах. Для начала дополним миксин, создающий колонку:
+
+```scss
+@mixin col($cols: 'false', $breakpoint: 'false') {
+
+  @if ($breakpoint != 'false' and map_has_key($grid-breakpoints, $breakpoint) and $cols != 'false' and type_of($cols) == number) {
+
+    @media screen and(#{$media-query}-width: map-get($grid-breakpoints, $breakpoint)) {
+      width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+      flex: 0 0 auto;
+      box-sizing: border-box;
+      margin: 0 $h-gutter / 2 $v-gutter;
+    }
+
+  } @else if ($breakpoint == 'false' and $cols != 'false' and type_of($cols) == number) {
+    width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  } @else {
+    flex: 1 0 0%;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  }
+}
+```
+
+Как мы видим, у миксина ```col``` появился дополнительный параметр ```$breakpoint```, по умолчанию равный ```false```. 
+Внутрь миксина я добавил условие, которое гласит, что если при вызове миксина значение ```$breakpoint``` не равно
+```false```, а равно одному из имён ключей глобального массива ```$grid-breakpoints``` (desktop, laptop, tablet-landscape, 
+phone и т.д.), то css-правила для элемента, на котором был вызван миксин, сработают в медиазапросе. Иными словами, если 
+мы вызовем миксин таким образом:
+
+```scss
+@include col(8, laptop);
+```
+
+то получим следующий сгенерированный css-код:
+
+```css
+@media screen and (max-width: 1024px) {
+  width: calc(100% / 12 * 8 - 30px);
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  margin: 0 15px 15px;
+}
+```
+
+Здесь стоит отметить, что в правиле ```@media``` значение ширины, как мы видим, было задано через ```max-width```. Это 
+поведение по умолчанию и зависит, как я упоминал вначале, от глобальной переменной ```$mobile-first``` в файле 
+```grid.scss```. Если перед импортом библиотеки переопределить переменную и присвоить ей значение ```true```:
+
+```scss
+$mobile-first: true;
+
+@import "grid.scss";
+```
+
+то получим следующий код:
+
+```css
+@media screen and (min-width: 1024px) {
+  width: calc(100% / 12 * 8 - 30px);
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  margin: 0 15px 15px;
+}
+```
+
+Пришло время испытать наш миксин на практике. Предположим, что мне нужно построить сетку, состоящую из шести элементов, 
+расположенных в ряд. Размер каждого элемента равен двум колонкам. При размере вьюпорта 1024px и меньше, размер каждого 
+элемента будет равен трём колонкам, при размере вьюпорта 960px и меньше – четырём колонкам, при размере вьюпорта 768px и 
+меньше – шести колонкам, и наконец, когда размер вьюпорта достигнет 640px, все элементы будут занимать по двенадцать 
+колонок каждый, то есть будут занимать всё доступное пространство. Попроубуйте поизменять размер окна браузера, чтобы 
+увидеть поведение сетки при различных размерах вьюпорта:
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">1</div>
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">2</div>
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">3</div>
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">4</div>
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">5</div>
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">6</div>
+  </div>
+</div>
+```
+
+А вот код, который позволил построить эту сетку:
+
+```scss
+ .wrap {
+   @include container;
+ }
+ 
+ .inner {
+   @include row;
+ }
+ 
+ .column {
+   @include col(2);
+   @include col(3, laptop);
+   @include col(4, laptop-md);
+   @include col(6, tablet-landscape);
+   @include col(12, phone-landscape);
+ }
+```
+
+Давайте более подробно остановимся на миксине ```col``` и посмотрим все возможные варианты его вызова.
+
+ - Когда мы вызываем миксин без аргументов:
+ 
+   ```scss
+   @include col;
+   ```
+   
+   то наш элемент получает правила из блока ```@else```:
+   
+   ```scss
+   flex: 1 0 0%;
+   box-sizing: border-box;
+   margin: 0 $h-gutter / 2 $v-gutter;
+   ```
+   
+ - Когда мы вызываем миксин с одним аргументом, который является числом:
+   
+   ```scss
+   @include col(3);
+   ```
+   то наш элемент получает правила из блока ```@else if```:
+   
+   ```scss
+   width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+   flex: 0 0 auto;
+   box-sizing: border-box;
+   margin: 0 $h-gutter / 2 $v-gutter;
+   ```
+ - Если же при вызове миксина мы передаём ему оба аргумента, при этом значение первого аргумента – число, а значение 
+   второго аргумента равно одному из имён ключей глобального массива ```$grid-breakpoints``` (desktop, laptop, phone и т. д.):
+   
+   ```scss
+   @include col(3, laptop);
+   ```
+   
+   то к элементу применятся правила из блока ```@if```:
+   
+   ```scss
+   @media screen and(#{$media-query}-width: map-get($grid-breakpoints, $breakpoint)) {
+     width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+     flex: 0 0 auto;
+     box-sizing: border-box;
+     margin: 0 $h-gutter / 2 $v-gutter;
+   }
+   ```
+   
+ - Во всех остальных случаях элемент получит правила из блока ```@else```, так, как будто миксин был вызван без аргументов.
+ 
+# Генерация готовых колоночных классов в медиазпросах
+
+Далее по аналогии с тем, как мы создали код, генерирующий классы контейнера, ряда и колонок, мы должны создать код, 
+генерирующий готовые классы колонок с медиазапросами, чтобы иметь возможность строить сетку, просто добавляя классы в нашу
+html-разметку. В файл ```mixins/_grid.scss``` я добавляю два новых миксина, код которых будет подробно разобран ниже.
+
+mixins/_grid.scss:
+
+```scss
+@mixin generate-breakpoint($cols, $screen-width, $name) {
+  .col-#{$name}-#{$cols} {
+    @media screen and (#{$media-query}-width: $screen-width) {
+      width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter}) !important;
+      flex: auto 0 0;
+    }
+  }
+}
+
+@mixin generate-grid-breakpoints($cols: $columns, $breakpoints: $grid-breakpoints) {
+  @for $i from 1 through $cols {
+    @each $name, $value in $breakpoints {
+      @include generate-breakpoint($i, $value, $name);
+    }
+  }
+}
+```
+
+Первый миксин вспомогательный и используется внутри второго миксина. Давайте разберём каждый из них более 
+подробно. 
+
+Миксин ```generate-breakpoint``` генерирует "колоночный" класс вида ```.col-tablet-8```, ```.col-laptop-12```, 
+```.col-phone-landscape-3```, ```.col-desktop-6``` и т. д. Имя класса генерируется по следующему принципу: к строке '.col-' 
+добавляется название брейкпойнта, которое берется из значения имени одного из ключей глобального массива 
+```$grid-breakpoints```. Затем к получившейся строке через дефис добавляется число, означающее количество колонок – 
+.col-laptop-5. Во второй строке для получившегося класса в соответствии с переданнами аргументами в медиазапросе задаются 
+правила.
+
+Миксин ```generate-grid-breakpoints``` генерирует все "колоночные" классы сетки и css-правила для них в медиазапросах 
+исходя из глобальной переменной $columns – заданного количества колонок сетки и глобальной переменной 
+```$grid-breakpoints``` – ассоциативного массива с брейкпойнтами. Миксин содержит цикл, который выполняет ```$cols``` 
+итераций (по умолчанию 12, в соответсвии количеством колонок сетки). На каждой итерации внутри этого цикла по массиву 
+```$breakpoints``` вызвается ещё один цикл, внутри которого вызывается миксин ```generate-breakpoint```, в который 
+передаются ```$i``` – количество колонок, ```$value``` – ширина экрана и ```$name``` – название брейкпойнта.
+
+Вот полный код файла ```mixins/_grid.scss``` с комментариями:
+
+```scss
+// превращает элемент в контейнер сетки
+@mixin container {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}
+
+// превращает элемент в строку сетки
+@mixin row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -#{$h-gutter / 2};
+}
+
+/*
+  Превращает элемент в ячейку сетки размером в $cols колонок.
+  Если при вызове примеси не передан ни один аргумент, к элементу будут применены правила, согласно которым элемент
+  будет компоноваться как флекс-элемент и будет занимать пространство, равное занимаемому пространству соседними
+  флекс-элментами
+  Если при вызове примеси переданы оба аргумента и при этом тип первого аргумента $cols - число, а значение второго
+  аргумента соответвствует одному из имен свойств глобального объекта $grid-breakpoints, то правило применяется только
+  в медиазапросе, значение которого берется из этого второго аргумента. При этом в качестве значения второго аргумента
+  должно использоваться одно из имен ключей глобального объекта $grid-breakpoints
+  Если же передан только первый аргумент или значение второго аргумента не соответствует
+  ни одному из имен ключей глобального объекта $grid-breakpoints, то элемент будет просто занимать количество ячеек,
+  равное $cols
+*/
+@mixin col($cols: 'false', $breakpoint: 'false') {
+
+  @if ($breakpoint != 'false' and map_has_key($grid-breakpoints, $breakpoint) and $cols != 'false' and type_of($cols) == number) {
+
+    @media screen and(#{$media-query}-width: map-get($grid-breakpoints, $breakpoint)) {
+      width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+      flex: 0 0 auto;
+      box-sizing: border-box;
+      margin: 0 $h-gutter / 2 $v-gutter;
+    }
+
+  } @else if ($breakpoint == 'false' and $cols != 'false' and type_of($cols) == number) {
+    width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  } @else {
+    flex: 1 0 0%;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  }
+}
+
+// рассчитывает ширину столбца в зависимости от переданного количества столбцов $cols
+@function col-width($cols: 1) {
+  @return calc(100% / #{$columns} * #{$cols} - #{$h-gutter});
+}
+
+/*
+  Генерирует "колоночные" классы вида .col-1, .col-2, .col-3 и т.д. исходя из глабальной переменной $columns - заданного
+  количества колонок сетки
+*/
+@mixin generate-grid($cols: $columns) {
+  @for $i from 1 through $cols {
+    .col-#{$i} {
+      width: col-width($i);
+    }
+  }
+}
+
+/*
+  Генерирует "колоночный" класс сетки вида .col-tablet-8 и css-правила для него в медиазапросе исходя из $cols - числа
+  столбцов, $screen-width - ширины экрана и $name - названия брейкпойнта, значение которого должно соответсвовать одному
+  из имен ключей глобального объекта $grid-breakpoints
+*/
+@mixin generate-breakpoint($cols, $screen-width, $name) {
+  .col-#{$name}-#{$cols} {
+    @media screen and (#{$media-query}-width: $screen-width) {
+      width: calc(100% / #{$columns} * #{$cols} - #{$h-gutter}) !important;
+      flex: auto 0 0;
+    }
+  }
+}
+
+/*
+  Генерирует "колоночные" классы сетки и css-правила для них в медиазапросе исходя из глобальной переменной
+  $columns - заданного количества колонок сетки и глобальной переменной $grid-breakpoints - объекта с брейкпойнтами
+*/
+@mixin generate-grid-breakpoints($cols: $columns, $breakpoints: $grid-breakpoints) {
+  @for $i from 1 through $cols {
+    @each $name, $value in $breakpoints {
+      @include generate-breakpoint($i, $value, $name);
+    }
+  }
+}
+```
+
+А это полный код файла ```base.scss``` с учетом генерации классов в медиазапросах:
+
+```scss
+.container {
+  @include container;
+}
+
+.row {
+  @include row;
+}
+
+.col {
+  @include col;
+}
+
+/*
+  Генерация "колоночных" классов и правил для них исходя из глобальной переменной $columns - заданного количества
+  столбцов сетки
+*/
+@for $i from 1 through $columns {
+  .col-#{$i} {
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    margin: 0 $h-gutter / 2 $v-gutter;
+  }
+}
+
+// генерация "колоночных" классов
+@include generate-grid();
+
+// генерация "колоночных" клоссов с медиазапросами
+@include generate-grid-breakpoints();
+```
+
+Теперь мы можем строить сетку не только в sass, но и в html: 
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">1</div>
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">2</div>
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">3</div>
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">4</div>
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">5</div>
+    <div class="col-2 col-laptop-3 col-laptop-md-4 col-tablet-landscape-6 col-phone-landscape-12">6</div>
+  </div>
+</div>
+```
+
+```bash
+пример результат
+```
+
+# Дальнейшие шаги
+
+К настоящему моменту у нас реализован основной функционал нашей системы – мы можем строить адаптивную сетку с колонками 
+разных размеров. Причём размеры колонок могут меняться в зависимости от размера экрана устройства, так как сетка 
+поддерживает медиазапросы. Хотя данного функционала достаточно для построения гибкой адаптивной сетки, однако его 
+недостаточно, чтобы считать такую сетку полноценной. Поэтому все дальнейшие шаги, которые мы реализуем, как раз и будут 
+направлены на наращивание этого дополнительного функционала.
+
+Вот список того, что мы реализуем дальше:
+  - выравнивание колонок внутри ряда
+  - направление расположения колонок
+  - смещение колонок
+  - изменение порядка расположения колонок
+  - скрытие и отображение элементов внутри колонок
+  - сброс внешних отступов у рядов и колонок
+  
+# Выравнивание колонок внутри ряда
+
+Выравнивание колонок внутри ряда – это по сути то же самое, что и выравнивание флекс-элементов внутри флекс-контейнера. 
+Ведь фактически колонки сетки и есть флекс-элементы внутри ряда сетки – флекс-контейнера. А как нам известно, для 
+флекс-элементов существует два вида выравнивания – выравнивание вдоль главной оси и выравнивание вдоль поперечной оси. 
+Лучше продемонстрировать это наглядно.
+
+Выравнивание колонок вдоль главной оси:
+
+Колонки распологаются вначале ряда:
+
+```html
+<div class="container">
+  <div class="row justify-content-start">
+  <div class="col-2">col</div>
+  <div class="col-2">col</div>
+  </div>
+</div>
+```
+
+Колонки распологаются по центру ряда:
+
+```html
+<div class="container">
+  <div class="row justify-content-center">
+  <div class="col-2">col</div>
+  <div class="col-2">col</div>
+  </div>
+</div>
+```
+
+Колонки распологаются в конце ряда:
+
+```html
+<div class="container">
+  <div class="row justify-content-end">
+  <div class="col-2">col</div>
+  <div class="col-2">col</div>
+  </div>
+</div>
+```
+Колонки распологаются равномерно по ширине ряда. Аналог <span class='code'>justify-content: space-between</span>:
+
+```html
+<div class="container">
+  <div class="row justify-content-space-between">
+  <div class="col-2">col</div>
+  <div class="col-2">col</div>
+  </div>
+</div>
+```
+
+Колонки распологаются равномерно по ширине ряда и имеют полуразмерное пространство. 
+Аналог<span class='code'>justify-content: space-around</span>:
+```html
+<div class="container">
+  <div class="row justify-content-space-around">
+  <div class="col-2">col</div>
+  <div class="col-2">col</div>
+  </div>
+</div>
+```
+
+Выравнивание колонок вдоль поперечной оси:
+
+Колонки распологаются в начале ряда:
+
+```html
+<div class="container">
+  <div class="row align-items-start">
+  <div class="col">col</div>
+  <div class="col">col</div>
+  </div>
+</div>
+```
+
+Колонки распологаются по центру ряда:
+
+```html
+<div class="container">
+  <div class="row align-items-center">
+  <div class="col">col</div>
+  <div class="col">col</div>
+  </div>
+</div>
+```
+
+Колонки распологаются в конце ряда:
+
+```html
+<div class="container">
+  <div class="row align-items-end">
+  <div class="col">col</div>
+  <div class="col">col</div>
+  </div>
+</div>
+```
+
+Колонки имеют "авто-размер", подстраиваясь под размер контейнера. Аналого <span class='code'>align-items: stretch</span>:
+
+```html
+<div class="container">
+  <div class="row align-items-end">
+  <div class="col">col</div>
+  <div class="col">col</div>
+  </div>
+</div>
+```
+
+Выравнивание отдельно взятой колонки вдоль поперечной оси:
+
+По центру ряда:
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col align-self-center"></div>
+    <div class="col"></div>
+  </div>
+</div> 
+```
+
+Теперь давайте посмотрим, как реализовать такой функционал.
+
+Для начала в директорию с миксинами <span class='code'>mixins</span> добавим новый файл <span class='code'>_alignment</span>, 
+в котором и будет храниться код, отвечающий за выравнивание элементов. Первым делом добавим миксин, отвечающий за 
+вырвнивание колонок вдоль главной оси: 
+
+```scss
+@mixin justify-content($align: flex-start, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      justify-content: $align;
+    }
+  } @else {
+    justify-content: $align;
+  }
+}
+```
+
+Миксин принимает на вход два параметра – <span class='code'>$align</span> и <span class='code'>$breakpoint</span>.
+Параметр <span class='code'>$align</span> задаёт способ выравнивания колонок и может принимать одно из следующих значений: 
+<span class='code'>flex-start</span>, <span class='code'>center</span>, <span class='code'>flex-end</span>, 
+<span class='code'>space-between</span>, <span class='code'>space-around</span>. По умолчанию колонки располагаются 
+вначале ряда.
+
+Параметр <span class='code'>$breakpoint</span> определяет, будет ли выравнивание колонок применяться внутри медиазапроса. 
+Если при вызове миксина ему будет передан второй аргумент и его значение будет соответствовать одному из имён ключей 
+глобального массива <span class='code'>$grid-breakpoints</span>, то заданное выравнивание сработает в медиазапросе.
+То есть, если мы вызовем миксин так:
+
+```scss
+.some {
+  @include justify-content(flex-end);
+}
+```
+
+тогда элемент будет расположен в конце ряда.
+
+Если же мы вызовем миксин так:
+
+```scss
+.some {
+  @include justify-content(flex-end, laptop);
+}
+```
+
+тогда элемент будет расположен в конце ряда, когда размер вьюпорта будет равен 1024px и меньше.
+
+Аналогично добавим миксин, отвечающий за выравнивание колонок вдоль поперечной оси:
+
+```scss
+@mixin align-items($align: flex-start, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      align-items: $align;
+    }
+  } @else {
+    align-items: $align;
+  }
+}
+```
+
+Этот миксин очень похож на предыдущий, за исключением того, что параметр <span class='code'>$align</span> задаёт 
+выравнивание колонок вдоль поперечной оси и должен принимать сдедующие значения: <span class='code'>flex-start</span>, 
+<span class='code'>flex-end</span>, <span class='code'>center</span>, <span class='code'>stretch</span>, 
+<span class='code'>baseline</span>.
+
+И наконец добавим последний миксин, отвечающий за выравнивание отдельно взятой колонки вдоль поперечной оси:
+
+```scss
+@mixin align-self($align: flex-start, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      align-self: $align;
+    }
+  } @else {
+    align-self: $align;
+  }
+}
+```
+
+Опять же, отличие данного миксина от двух предыдущих в том, что параметр <span class='code'>$align</span> задаёт 
+выравнивание отдельно взятой колонки внутри ряда, но должен принимать те же значения, что и в предыдущем миксине: 
+<span class='code'>flex-start</span>, <span class='code'>flex-end</span>, <span class='code'>center</span>, 
+<span class='code'>stretch</span>, <span class='code'>baseline</span>.
+
+Полный на данный момент код файла <span class='code'>mixins/_alignment.scss</span>:
+
+```scss
+@mixin justify-content($align: flex-start, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      justify-content: $align;
+    }
+  } @else {
+    justify-content: $align;
+  }
+}
+
+@mixin align-items($align: flex-start, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      align-items: $align;
+    }
+  } @else {
+    align-items: $align;
+  }
+}
+
+@mixin align-self($align: flex-start, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      align-self: $align;
+    }
+  } @else {
+    align-self: $align;
+  }
+}
+```
+
+Как мы помним, нам также нужно сгенерировать готовые предопределённые классы, которые позволят нам строить сетку 
+исключительно в html-разметке. В директорию <span class='code'>partials</span> добавим файл <span class='code'>alignment.scss</span> 
+и напишём в нём такой код:
+
+```scss
+.justify-content-start {
+  @include justify-content(flex-start);
+}
+
+.justify-content-center {
+  @include justify-content(center);
+}
+
+.justify-content-end {
+  @include justify-content(flex-end);
+}
+
+.justify-content-space-between {
+  @include justify-content(space-between);
+}
+
+.justify-content-space-around {
+  @include justify-content(space-around);
+}
+
+.align-items-start {
+  @include align-items(flex-start);
+}
+
+.align-items-center {
+  @include align-items(center);
+}
+
+.align-items-end {
+  @include align-items(flex-end);
+}
+
+.align-items-stretch {
+  @include align-items(stretch);
+}
+
+.align-items-baseline {
+  @include align-items(baseline);
+}
+
+.align-self-start {
+  @include align-self(flex-start);
+}
+
+.align-self-center {
+  @include align-self(center);
+}
+
+.align-self-end {
+  @include align-self(flex-end);
+}
+
+.align-self-stretch {
+  @include align-self(stretch);
+}
+
+.align-self-baseline {
+  @include align-self(baseline);
+}
+```
+
+В этих классах нет ничего особенного, они всего лишь подключают написанные выше миксины, тем самым добавляя правила 
+выравнивания.
+
+Как мы помним, вторым параметром наши миксины принимают имя брейкпойнта, при котором срабатывает выравнивание. Это значит, 
+что наш код также должен генерировать классы выравнивания в медиазапросах. Чтобы было понятнее, я добавлю миксин, который 
+при вызове генерирует "выравнивающие" классы в медиазапросах. Итак, в файл <span class='code'>mixins/_alignment</span> я 
+добавляю следующий миксин:
+
+```scss
+@mixin generate-h-alignment-breakpoints() {
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    @each $className, $value in $h-alignment-classes {
+      .justify-content-#{$breakpoint-name}-#{$className} {
+        @include justify-content($value, $breakpoint-name);
+      }
+    }
+  }
+}
+```
+
+Как видите, у нас появилась новая переменная <span class='code'>$h-alignment-classes</span>. Поэтому также добавим её в 
+начало файла <span class='code'>mixins/_alignment</span>:
+
+```scss
+$h-alignment-classes: (
+  start: flex-start,
+  center: center,
+  end: flex-end,
+  between: space-between,
+  around: space-around,
+);
+```
+<span class='code'>$h-alignment-classes</span> – это массив, содержащий пары "ключ-значение", который нужен нам внутри 
+миксина <span class='code'>generate-h-alignment-breakpoints</span>. Стоит более подробно рассмотреть этот миксин. Внутри 
+миксина выполняется двойной цикл. Внешний цикл совершает проход по списку брейкпойнтов, хранящихся в глобальной переменной 
+<span class='code'>$grid-breakpoints</span>. На каждой итерации этого цикла выполняется внутринний цикл, совершающий 
+проход по списку <span class='code'>$h-alignment-classes</span>. В свою очередь на каждой итерации внутреннего цикла 
+происходит формирование "выравнивающего" класса, внутри которого происходит подключение миксина, отвечающего за добавление 
+правил, необходимых для выравнивания элемента вдоль основной оси. Причём все правила выравнивания формируются внутри 
+директивы <span class='code'>@media</span>.
+
+То есть в итоге вызов миксина сгенерирует классы вида: <span class='code'>.justify-content-desktop-start</span>, 
+<span class='code'>.justify-content-laptop-center</span>, <span class='code'>.justify-content-phone-end</span> и т. д. 
+
+Аналогично я добавлю ещё два миксина, отвечающих за генерирование классов, "выравнивающих" колонки вдоль поперечной 
+оси, и классов, "выравнивающих" отдельно взятую колонку вдоль поперечной оси внутри ряда сетки:
+
+```scss
+@mixin generate-v-alignment-breakpoints() {
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    @each $className, $value in $v-alignment-classes {
+      .align-items-#{$breakpoint-name}-#{$className} {
+        @include align-items($value, $breakpoint-name);
+      }
+    }
+  }
+}
+
+@mixin generate-self-alignment-breakpoints() {
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    @each $className, $value in $v-alignment-classes {
+      .align-self-#{$breakpoint-name}-#{$className} {
+        @include align-self($value, $breakpoint-name);
+      }
+    }
+  }
+}
+```
+
+И снова в начало файла добавлю дополнительную переменную:
+
+```scss
+$v-alignment-classes: (
+  start: flex-start,
+  center: center,
+  end: flex-end,
+  stretch: stretch,
+  baseline: baseline
+);
+```
+
+Эти два дополнительных миксина не нуждаются в подробном разборе, так как они по своему принципу действия аналогичны 
+предыдущему миксину. Единственно, что стоит упомянуть, это то, что миксины генерируют классы, отвечающие за выравнивание 
+элементов вдоль поперечной оси.
+
+Теперь нам нужно вызвать эти миксины, чтобы сгенерировать все необходимые классы. Добавим вызов миксинов в файл 
+<span class='code'>partials/alignment</span>:
+
+```scss
+// генерация "выравнивающих" классов вдоль главной оси внутри медиазапросов
+@include generate-h-alignment-breakpoints();
+// // генерация "выравнивающих" классов вдоль поперечной оси внутри медиазапросов
+@include generate-v-alignment-breakpoints();
+// // генерация "выравнивающих" классов вдоль главной оси внутри медиазапросов для отдельно взятой колонки
+@include generate-self-alignment-breakpoints();
+```
+
+А теперь приведу полоный код с подробными комментариями.
+
+mixins/_alignment.scss:
+
+```scss
+/* Выравнивание колонок внутри ряда вдоль основной и поперечной осей */
+
+$h-alignment-classes: (
+  start: flex-start,
+  center: center,
+  end: flex-end,
+  between: space-between,
+  around: space-around,
+);
+
+$v-alignment-classes: (
+  start: flex-start,
+  center: center,
+  end: flex-end,
+  stretch: stretch,
+  baseline: baseline
+);
+
+/* ГОРИЗОНТАЛЬНОЕ ВЫРАВНИВАНИЕ */
+
+/*
+  Выкладывает колонки сетки в ряду согласно параметру $align, который должен принимать одно из следующих значений:
+  flex-start, flex-end, center, space-between, space-around.
+  Применяется к элементам ряда ($row) сетки.
+  Если передан аргумент $breakpoint, выравнивание сработает в медиазапросе согласно значению этого аргумента.
+  Значением аргумента должно быть одно из имен ключей глобального массива $grid-breakpoints.
+*/
+@mixin justify-content($align: flex-start, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      justify-content: $align;
+    }
+  } @else {
+    justify-content: $align;
+  }
+}
+
+/* ВЕРТИКАЛЬНОЕ ВЫРАВНИВАНИЕ */
+
+/*
+  Выкладывает колонки сетки в ряду согласно параметру $align, который должен принимать одно из следующих значений:
+  flex-start, flex-end, center, stretch, baseline.
+  Применяется к элементам ряда ($row) сетки.
+  Если передан аргумент $breakpoint, выравнивание сработает в медиазапросе согласно значению этого аргумента.
+  Значением аргумента должно быть одно из имен ключей глобального массива $grid-breakpoints.
+*/
+@mixin align-items($align: flex-start, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      align-items: $align;
+    }
+  } @else {
+    align-items: $align;
+  }
+}
+
+/*
+  Выкладывает отдельно взятую колонку сетки в ряду согласно параметру $align, который должен принимать одно из следующих значений:
+  flex-start, flex-end, center, stretch, baseline.
+  Применяется к элементу отдельно взятой колонки ($col).
+  Если передан аргумент $breakpoint, выравнивание сработает в медиазапросе согласно значению этого аргумента.
+  Значением аргумента должно быть одно из имен ключей глобального массива $grid-breakpoints.
+*/
+@mixin align-self($align: flex-start, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      align-self: $align;
+    }
+  } @else {
+    align-self: $align;
+  }
+}
+
+/*
+  Генерирует классы выравнивания колонок сетки вдоль главной оси. Внутри класоов правила генерируются внутри директивы 
+  @media, то есть внутри медиазапроса. Например: .justify-content-desktop-start, .justify-content-laptop-center и т.д. 
+  Применяется к элементам строки ($row). Для формирования классов и брейкпоинтов в медиазапросах использует массивы 
+  $h-alignment-classes и $grid-breakpoints.
+*/
+@mixin generate-h-alignment-breakpoints() {
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    @each $className, $value in $h-alignment-classes {
+      .justify-content-#{$breakpoint-name}-#{$className} {
+        @include justify-content($value, $breakpoint-name);
+      }
+    }
+  }
+}
+
+/*
+  Генерирует классы выравнивания колонок сетки вдоль поперечной оси. Внутри класоов правила генерируются внутри директивы 
+  @media, то есть внутри медиазапроса. Например: .align-items-desktop-start, .align-items-laptop-center и т.д. 
+  Применяется к элементам строки ($row).
+  Для формирования классов и брейкпойнтов в медиазапросах использует массивы $v-alignment-classes и $grid-breakpoints.
+*/
+@mixin generate-v-alignment-breakpoints() {
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    @each $className, $value in $v-alignment-classes {
+      .align-items-#{$breakpoint-name}-#{$className} {
+        @include align-items($value, $breakpoint-name);
+      }
+    }
+  }
+}
+
+/*
+  Генерирует классы выравнивания отдельно взятой колонки сетки вдоль поперечной оси.
+  Внутри класоов правила генерируются внутри директивы @media, то есть внутри медиазапроса.
+  Например: .align-self-desktop-start, .align-self-laptop-center и т.д. Применяется к элементам колонки ($col).
+  Для формирования классов и брейкпойнтов в медиазапросах использует массивы $v-alignment-classes и $grid-breakpoints.
+*/
+@mixin generate-self-alignment-breakpoints() {
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    @each $className, $value in $v-alignment-classes {
+      .align-self-#{$breakpoint-name}-#{$className} {
+        @include align-self($value, $breakpoint-name);
+      }
+    }
+  }
+}
+```
+
+partials/alignment.scss:
+
+```scss
+.justify-content-start {
+  @include justify-content(flex-start);
+}
+
+.justify-content-center {
+  @include justify-content(center);
+}
+
+.justify-content-end {
+  @include justify-content(flex-end);
+}
+
+.justify-content-space-between {
+  @include justify-content(space-between);
+}
+
+.justify-content-space-around {
+  @include justify-content(space-around);
+}
+
+.align-items-start {
+  @include align-items(flex-start);
+}
+
+.align-items-center {
+  @include align-items(center);
+}
+
+.align-items-end {
+  @include align-items(flex-end);
+}
+
+.align-items-stretch {
+  @include align-items(stretch);
+}
+
+.align-items-baseline {
+  @include align-items(baseline);
+}
+
+.align-self-start {
+  @include align-self(flex-start);
+}
+
+.align-self-center {
+  @include align-self(center);
+}
+
+.align-self-end {
+  @include align-self(flex-end);
+}
+
+.align-self-stretch {
+  @include align-self(stretch);
+}
+
+.align-self-baseline {
+  @include align-self(baseline);
+}
+
+// генерация "выравнивающих" классов вдоль главной оси внутри медиазапросов
+@include generate-h-alignment-breakpoints();
+// генерация "выравнивающих" классов вдоль поперечной оси внутри медиазапросов
+@include generate-v-alignment-breakpoints();
+// генерация "выравнивающих" классов вдоль главной оси внутри медиазапросов для отдельно взятой колонки
+@include generate-self-alignment-breakpoints();
+```
+
+Теперь для выравнивания колонок мы можем воспользоваться как нашими миксинами, так и готовыми сгенерированными классами: 
+
+```html
+пример на html
+```
+
+```scss
+пример на sass
+```
+
+В заключение этого раздела хотелось бы добавить ещё кое-что. Помните в начале я говорил о том, что пользователь сам волен 
+выбрать, как ему строить сетку – добавлять готовые классы в разметку или же подключать готовые миксины в sass-файлах. 
+Так вот, если пользователь решит использовать готовые миксины, то ему совсем необязательно генерировать большое 
+количество предопределённых классов. Так вот, чтобы предотвратить генерацию классов, отвечающих за выравнивание колонок, 
+мы обернём уже написанный код из файла <span class='code'>partials/alignment.scss</span> в условный блок так, как 
+показано ниже:
+
+```scss
+@if index($partials, alignment) {
+
+  .justify-content-start {
+    @include justify-content(flex-start);
+  }
+
+  .justify-content-center {
+    @include justify-content(center);
+  }
+
+  .justify-content-end {
+    @include justify-content(flex-end);
+  }
+
+  .justify-content-space-between {
+    @include justify-content(space-between);
+  }
+
+  .justify-content-space-around {
+    @include justify-content(space-around);
+  }
+
+  .align-items-start {
+    @include align-items(flex-start);
+  }
+
+  .align-items-center {
+    @include align-items(center);
+  }
+
+  .align-items-end {
+    @include align-items(flex-end);
+  }
+
+  .align-items-stretch {
+    @include align-items(stretch);
+  }
+
+  .align-items-baseline {
+    @include align-items(baseline);
+  }
+
+  .align-self-start {
+    @include align-self(flex-start);
+  }
+
+  .align-self-center {
+    @include align-self(center);
+  }
+
+  .align-self-end {
+    @include align-self(flex-end);
+  }
+
+  .align-self-stretch {
+    @include align-self(stretch);
+  }
+
+  .align-self-baseline {
+    @include align-self(baseline);
+  }
+
+  // генерирация классов горизонтального выравнивания ячеек сетки в строке в медиазапросах
+  @include generate-h-alignment-breakpoints();
+  // генерация классов вертикального выравнивания ячеек сетки в столбце в медиазапросах
+  @include generate-v-alignment-breakpoints();
+  // генерация классов вертикального выравнивания отдельно взятой ячейки сетки в столбце в медиазапросах
+  @include generate-self-alignment-breakpoints();
+}
+```
+
+И переопределим нашу глобальную переменную <span class='code'>$partials</span> так, чтобы она больше не содержала элемент 
+<span class='code'>alignment</span>.
+
+Таким образом у нас не выполнится условие: 
+
+```scss
+@if index($partials, alignment) {
+  // ...code
+}
+```
+
+Напомню, что функция <span class='code'>index</span> вернёт позицию в списке для <span class='code'>alignment</span> или 
+вернёт <span class='code'>null</span>, если элемент в списке не был найден. То есть найденная позиция интерпретируется как 
+истинное значение условия, а <span class='code'>null</span> – как ложное.
+
+Забегая вперёд скажу, что подобным образом мы реализуем остальные части нашей библиотеки, которые будут отвечать за 
+генерацию предопределённых готовых классов. Для исключения тех или иных наборов классов мы можем переопределить переменную 
+<span class='code'>$paritals</span>, хранящую список частей библиотеки, отвечающих за генерацию готовых классов. Мы 
+можем вовсе отменить генерацию всех готовых классов, присвоив переменной <span class='code'>$partials</span> значение 
+<span class='code'>false</span>, что значительно сократит скомпилированный css-файл нашей библиотеки.
+
+# Направление расположения колонок

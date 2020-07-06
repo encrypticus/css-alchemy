@@ -369,11 +369,39 @@ p.post__text
     .col.post__col 11
     .col.post__col 12
 
+
++heading('Разное число колонок')
 p.post__text
   | Теперь нам нужно реализовать возможность указывать количество колонок, которое будет занимать тот или иной элемент,
   | что позволит нам рассчитать его ширину. Дополним миксин колонки в файле <span class='code'>mixins/_grid.scss</span>:
 +snippet(sass[17], 'scss')
 
+p.post__text
+  | Теперь миксин имеет параметр <span class='code'>$cols</span> со значением по умолчанию – количество колонок,
+  | занимаемое элементом. Внутри миксина мы проверяем, что значение переданного аргумента – не false и что тип
+  | аргумента – число. Далее мы проверяем, что значение аргумента не больше значения переменной
+  | <span class='code'>$columns</span>: как мы помним – это глобальная переменная, хранящая количество колонок сетки.
+  | Если при передаче аргумента мы укажем число большее, чем установленное  количество колонок, значение переменной
+  | <span class='code'>$cols</span> просто будет равно этому количеству.
+
+p.post__text
+  | Затем мы указываем ширину колонки, которая рассчитывается по такой нехитрой логике: если принять, что ширина ряда
+  | равна100%, а сетка содержит двенадать колонок, то ширина одной колонки равна 100% / 12 = 8,333333333333333%. Дальше
+  | значение ширины одной колонки мы умножаем на <span class='code'>$cols</span> – количество необходимых нам колонок.
+  | Также не забываем вычесть значение горизонтальных марджинов <span class='code'>$h-gutter</span>. Таким образом мы
+  | получаем ширину элемента, равную указанному числу колонок.
+
+p.post__text
+  | Что касается свойства  <span class='code'>flex</span>:
+  | если при вызове миксина мы указываем количество колонок, то свойству <span class='code'>flex-grow</span> мы должны
+  | присвоить значение 0, а свойству <span class='code'>flex-basis</span> – значение <span class='code'>auto</span>.
+  | Это нужно для того, чтобы ширина колонок рассчитывалась не автоматически, а согласно числу переданных колонок.
+
+p.post__text
+  | Подкрепим теорию практикой, чтобы увидеть результат наших вычислений в действии. Перепишем наш старый пример,
+  | содержащий элементы logo, nav, login и другие. Сделаем так, чтобы элементы logo, sidebar, login и email занимали по
+  | три колонки, а элементы nav, content и about – по шесть:
++snippet(sass[18], 'scss')
 .wrap
   .header
     .logo.col-3 logo
@@ -387,3 +415,307 @@ p.post__text
     .logo.col-3 logo
     .about.col-6 about
     .email.col-3 email
+
+p.post__text
+  | Теперь для элементов logo, sidebar, login и email установим ширину в две колонки, а для nav, content и about – в восемь:
++snippet(sass[19], 'scss')
+.wrap
+  .header
+    .logo.col-2 logo
+    .nav.col-8 nav
+    .login.col-2 login
+  .main
+    .sidebar.col-2 sidebar
+    .content.col-8 content
+    .sidebar.col-2 sidebar
+  .footer
+    .logo.col-2 logo
+    .about.col-8 about
+    .email.col-2 email
+
+
+
++heading('Генерация готовых колоночных классов')
+p.post__text
+  | Мы усовершенствовали миксин, создающий колонки. Но нам также нужно добавить код, генерирующий готовые колоночные
+  | классы, которые мы сможем использовать в нашей разметке. В <span class='code'>base.scss</span> напишем:
++snippet(sass[20], 'scss')
+
+p.post__text
+  | Здесь мы в цикле от одного до <span class='code'>$columns</span> генерируем колоночные классы и правила для них.
+  | Как мы помним <span class='code'>$columns</span> – это глобальная переменная, содержащая установленное число колонок
+  | сетки. Таким образом у нас сгенерируются классы вида col-1, col-2, col-3 и т. д. Этот код описывает общие правила
+  | для всех колоночных классов. Но также для разных классов мы должны задать разную ширину. Ведь очевидно, что элемент,
+  | занимающий допустим шесть колонок будет шире элемента, занимающего четыре колонки. Для этого в
+  | <span class='code'>mixins/_grid.scss</span> я добавлю такой миксин:
++snippet(sass[21], 'scss')
+
+p.post__text
+  | Здесь нет ничего сложного. На вход миксин принимает общее количество колонок сетки и в цикле генерирует колоночные
+  | классы и правило, задающее ширину для каждого такого класса.
+
+p.post__text
+  | Для упрощения миксина <span class='code'>generate-grid</span> рассчет ширины колонки я решил вынести в отдельную
+  | функцию. Хотя это и необязательно. В <span class='code'>mixins/_grid.scss</span> добавим:
++snippet(sass[22], 'scss')
+
+p.post__text
+  | И перепишем миксин:
++snippet(sass[23], 'scss')
+
+p.post__text
+  | Чтобы сгенерировать колоночные классы и правила для них, нужно вызвать наш миксин. Вызов миксина добавим в
+  | <span class='code'>base.scss</span>:
++snippet(sass[24], 'scss')
+
+p.post__text Полный код <span class='code'>base.scss</span> на данный момент:
++snippet(sass[25], 'scss')
+
+p.post__text Полный код <span class='code'>mixins/_grid.scss</span>:
++snippet(sass[26], 'scss')
+
+p.post__text Теперь мы можем строить нашу сетку, лишь добавляя в разметку необходимые классы:
++snippet(html[6])
+.container(style='padding: 0')
+  .row
+    .col-6.post__col col 6
+    .col-6.post__col col 6
+  .row
+    .col-2.post__col col 2
+    .col-3.post__col col 3
+    .col-4.post__col col 4
+    .col-3.post__col col 3
+
+
++heading('Колоночные классы в медиазапросах')
+p.post__text
+  | На данный момент в нашем коде уже реализовано создание контейнера сетки, рядов, колонок одинаковой и заданной ширины.
+  | Также для всего этого мы реализовали генерацию предопределённых готовых классов. Заверщающий из основных шагов построения
+  | сеточной системы – это добавление медиазапросов. Хотелось бы акцентировать внимание на том, что это именно последний из
+  | основных шагов, после реализации которого мы получим в принципе готовую и работоспособную библиотеку. А все шаги, которые
+  | мы будем рассматривать далее, будут добавлять дополнительный важный, но не необходимый функционал. Итак, реализуем наш
+  | следующий шаг – добавим возможность генерации колонок в медиазапросах. Для начала дополним миксин, создающий колонку:
++snippet(sass[27], 'scss')
+
+p.post__text
+  | Как мы видим, у миксина <span class='code'>col</span> появился дополнительный параметр
+  | <span class='code'>$breakpoint</span>, по умолчанию равный <span class='code'>false</span>. Внутрь миксина я добавил
+  | условие, которое гласит, что если при вызове миксина значение <span class='code'>$breakpoint</span> не равно
+  | <span class='code'>false</span>, а равно одному из имён ключей глобального массива
+  | <span class='code'>$grid-breakpoints</span> (desktop, laptop, tablet-landscape, phone и т.д.), то css-правила для
+  | элемента, на котором был вызван миксин, сработают в медиазапросе. Иными словами, если мы вызовем миксин таким образом:
++snippet(sass[28], 'scss')
+
+p.post__text то получим следующий сгенерированный css-код:
++snippet(sass[29], 'css')
+
+p.post__text
+  | Пришло время испытать наш миксин на практике. Предположим, что мне нужно построить сетку, состоящую из шести элементов,
+  | расположенных в ряд. Размер каждого элемента равен двум колонкам. При размере вьюпорта 1024px и меньше, размер каждого
+  | элемента будет равен трём колонкам, при размере вьюпорта 960px и меньше – четырём колонкам, при размере вьюпорта 768px и
+  | меньше – шести колонкам, и наконец, когда размер вьюпорта достигнет 640px, все элементы будут занимать по двенадцать
+  | колонок каждый, то есть будут занимать всё доступное пространство. Попроубуйте поизменять размер окна браузера, чтобы
+  | увидеть поведение сетки при различных размерах вьюпорта:
+.container(style='padding: 0')
+  .row
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 1
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 2
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 3
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 4
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 5
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 6
+
+p.post__text А вот код, который позволил построить эту сетку:
+.row
+  +snippet(html[7])(class='col col-phone-landscape-12')
+  +snippet(sass[30], 'scss')(class='col')
+
+p.post__text
+  | Давайте более подробно остановимся на миксине <span class='code'>col</span> и посмотрим все возможные варианты его вызова.
+ul.post__list
+  li Когда мы вызываем миксин без аргументов:
+    +snippet('@include col;', 'scss')
+    p.post__text то наш элемент получает правила из блока <span class='code'>@else</span>:
+    +snippet(sass[31], 'scss')
+
+  li Когда мы вызываем миксин с одним аргументом, который является числом:
+    +snippet('@include col(3);', 'scss')
+    p.post__text то наш элемент получает правила из блока <span class='code'>@else if</span>:
+    +snippet(sass[32], 'scss')
+
+  li
+    | Если же при вызове миксина мы передаём ему оба аргумента, при этом значение первого аргумента – число, а значение
+    | второго аргумента равно одному из имён ключей глобального массива <span class='code'>$grid-breakpoints</span>
+    | (desktop, laptop, phone и т. д.):
+    +snippet('@include col(3, laptop);', 'scss')
+    p.post__tex то к элементу применятся правила из блока <span class='code'>@if</span>:
+    +snippet(sass[33], 'scss')
+
+  li
+    | Во всех остальных случаях элемент получит правила из блока <span class='code'>@else</span>, так, как будто миксин
+    | был вызван без аргументов.
+
+
++heading('Генерация готовых колоночных классов в медиазпросах')
+p.post__text
+  | Далее по аналогии с тем, как мы создали код, генерирующий классы контейнера, ряда и колонок, мы должны создать код,
+  | генерирующий готовые классы колонок с медиазапросами, чтобы иметь возможность строить сетку, просто добавляя классы
+  | в нашу html-разметку. В файл <span class='code'>mixins/_grid.scss</span> я добавляю два новых миксина, код которых
+  | будет подробно разобран ниже.
+
+p.post__tex mixins/_grid.scss:
++snippet(sass[34], 'scss')
+
+p.post__text Первый миксин вспомогательный и используется внутри второго миксина. Давайте разберём каждый из них более
+  | подробно.
+
+p.post__text
+  | Миксин <span class='code'>generate-breakpoint</span> генерирует "колоночный" класс вида
+  | <span class='code'>.col-tablet-8</span>, <span class='code'>.col-laptop-12</span>,
+  | <span class='code'>.col-phone-landscape-3</span>, <span class='code'>.col-desktop-6</span> и т. д. Имя класса
+  | генерируется по следующему принципу: к строке '.col-' добавляется название брейкпойнта, которое берется из значения
+  | имени одного из ключей глобального массива <span class='code'>$grid-breakpoints</span>. Затем к получившейся строке
+  | через дефис добавляется число, означающее количество колонок – .col-laptop-5. Во второй строке для получившегося
+  | класса в соответствии с переданнами аргументами в медиазапросе задаются правила.
+
+p.post__text
+  | Миксин <span class='code'>generate-grid-breakpoints</span> генерирует все "колоночные" классы сетки и css-правила
+  | для них в медиазапросах исходя из глобальной переменной <span class='code'>$columns</span> – заданного количества
+  | колонок сетки и глобальной переменной<span class='code'>$grid-breakpoints</span> – ассоциативного массива с
+  | брейкпойнтами. Миксин содержит цикл, который выполняет <span class='code'>$cols</span> итераций (по умолчанию 12,
+  | в соответсвии количеством колонок сетки). На каждой итерации внутри этого цикла по массиву
+  | <span class='code'>$breakpoints</span> вызвается ещё один цикл, внутри которого вызывается миксин
+  | <span class='code'>generate-breakpoint</span>, в который  передаются <span class='code'>$i</span> – количество
+  | колонок, <span class='code'>$value</span> – ширина экрана и <span class='code'>$name</span> – название брейкпойнта.
+
+p.post__text Вот полный код файла <span class='code'>mixins/_grid.scss</span> с комментариями:
++snippet(sass[35], 'scss')
+
+p.post__tex А это полный код файла <span class='code'>base.scss</span> с учетом генерации классов в медиазапросах:
++snippet(sass[36], 'scss')
+
+p.post__text Теперь мы можем строить сетку не только в sass, но и в html:
++snippet(html[5])
+.container(style='padding: 0')
+  .row
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 1
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 2
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 3
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 4
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 5
+    .col-2.col-laptop-3.col-laptop-md-4.col-tablet-landscape-6.col-phone-landscape-12.post__col 6
+
+
++heading('Дальнейшие шаги')
+p.post__text
+  | К настоящему моменту у нас реализован основной функционал нашей системы – мы можем строить адаптивную сетку с колонками
+  | разных размеров. Причём размеры колонок могут меняться в зависимости от размера экрана устройства, так как сетка
+  | поддерживает медиазапросы. Хотя данного функционала достаточно для построения гибкой адаптивной сетки, однако его
+  | недостаточно, чтобы считать такую сетку полноценной. Поэтому все дальнейшие шаги, которые мы реализуем, как раз и будут
+  | направлены на наращивание этого дополнительного функционала.
+
+p.post__text Вот список того, что мы реализуем дальше:
+ul.post__list
+  li выравнивание колонок внутри ряда
+  li направление расположения колонок
+  li смещение колонок
+  li изменение порядка расположения колонок
+  li скрытие и отображение элементов внутри колонок
+  li сброс внешних отступов у рядов и колонок
+
+
++heading('Выравнивание колонок внутри ряда')
+p.post__text
+  | Выравнивание колонок внутри ряда – это по сути то же самое, что и выравнивание флекс-элементов внутри флекс-контейнера.
+  | Ведь фактически колонки сетки и есть флекс-элементы внутри ряда сетки – флекс-контейнера. А как нам известно, для
+  | флекс-элементов существует два вида выравнивания – выравнивание вдоль главной оси и выравнивание вдоль поперечной оси.
+  | Лучше продемонстрировать это наглядно.
+
+p.post__text Выравнивание колонок вдоль главной оси:
+
+p.post__text Колонки распологаются в начале ряда:
+.post__grid
+  .row.justify-content-start
+    .col-2.no-v-gutters.post__col 1
+    .col-2.no-v-gutters.post__col 2
+
+p.post__text Колонки распологаются по центру ряда:
+.post__grid
+  .row.justify-content-center
+    .col-2.no-v-gutters.post__col 1
+    .col-2.no-v-gutters.post__col 2
+
+p.post__text Колонки распологаются в конце ряда:
+.post__grid
+  .row.justify-content-end
+    .col-2.no-v-gutters.post__col 1
+    .col-2.no-v-gutters.post__col 2
+
+p.post__text
+  | Колонки распологаются равномерно по ширине ряда. Аналог <span class='code'>justify-content: space-between</span>:
+.post__grid
+  .row.justify-content-space-between
+    .col-2.no-v-gutters.post__col 1
+    .col-2.no-v-gutters.post__col 2
+
+p.post__text
+  | Колонки распологаются равномерно по ширине ряда и имеют полуразмерное пространство.
+  | Аналог<span class='code'>justify-content: space-around</span>:
+.post__grid
+  .row.justify-content-space-around
+    .col-2.no-v-gutters.post__col 1
+    .col-2.no-v-gutters.post__col 2
+
+p.post__text Выравнивание колонок вдоль поперечной оси:
+
+p.post__text Колонки располагаются в начале ряда:
+
+.post__grid
+  .row.align-items-start(style='height: 200px')
+    .col.no-v-gutters.post__col 1
+    .col.no-v-gutters.post__col 2
+
+p.post__text Колонки располагаются по центру ряда:
+.post__grid
+  .row.align-items-center(style='height: 200px')
+    .col.no-v-gutters.post__col 1
+    .col.no-v-gutters.post__col 2
+
+p.post__text Колонки располагаются в конце ряда:
+.post__grid
+  .row.align-items-end(style='height: 200px')
+    .col.no-v-gutters.post__col 1
+    .col.no-v-gutters.post__col 2
+
+p.post__text
+  | Колонки имеют "авто-размер", подстраиваясь под размер контейнера. Аналог <span class='code'>align-items: stretch</span>:
+.post__grid
+  .row.align-items-stretch(style='height: 200px')
+    .col.no-v-gutters.post__col 1
+    .col.no-v-gutters.post__col 2
+
+p.post__text Выравнивание отдельно взятой колонки вдоль поперечной оси:
+p.post__text В начале ряда:
+.post__grid
+  .row(style='height: 200px')
+    .col.no-v-gutters.align-self-start.post__col 1
+    .col.no-v-gutters.post__col 2
+
+p.post__text В центре ряда:
+.post__grid
+  .row(style='height: 200px')
+    .col.no-v-gutters.align-self-center.post__col 1
+    .col.no-v-gutters.post__col 2
+
+p.post__text В конце ряда:
+.post__grid
+  .row(style='height: 200px')
+    .col.no-v-gutters.align-self-end.post__col 1
+    .col.no-v-gutters.post__col 2
+
+p.post__text Теперь давайте посмотрим, как реализовать такой функционал.
+
+p.post__text
+  | Для начала в директорию с миксинами <span class='code'>mixins</span> добавим новый файл <span class='code'>_alignment</span>,
+  | в котором и будет храниться код, отвечающий за выравнивание элементов. Первым делом добавим миксин, отвечающий за
+  | вырвнивание колонок вдоль главной оси:
