@@ -2222,3 +2222,452 @@ partials/alignment.scss:
 
 }
 ```
+
+Теперь мы можем подключить наш миксин. Думаю излишне уточнять, что миксин нужно подключать к элементу колонки.
+
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-3"></div>
+  </div>
+</div>
+```
+
+```scss
+.container {
+  
+  .col-3 {
+    @include offset(right, 5);
+  }
+}
+```
+
+Приведённый выше код сместит колонку на пять колонок вправо.
+
+Нам осталось написать модуль, ответственный за генерацию готовых классов смещения. В директорию <span class='code'>partials</span> 
+добавим файла <span class='code'>offset.scss</span>.
+
+partials/offset.scss:
+
+Пишем цикл от одного до 12 – общего количества колонок:
+
+```scss
+@if (index($partials, offset)) {
+  @for $i from 1 through $columns {
+    //...
+  }
+}
+```
+
+Внутри цикла генерируются 12 селекторов "смещающих" классов вида <span class='code'>.offset-right-1</span>, 
+<span class='code'>.offset-right-2</span>, <span class='code'>.offset-right-3</span> и т.д.:
+
+```scss
+@if (index($partials, offset)) {
+  @for $i from 1 through $columns {
+    .offset-right-#{$i} {
+      //...
+    }
+  }
+}
+```
+
+Внутри селектора на каждом проходе цикла подключается наш миксин <span class='code'>offset</span>, в который первым 
+аргументом передаётся ключевое слово <span class='code'>right</span>, а вторым – число колонок смещения:
+
+```scss
+@if (index($partials, offset)) {
+  @for $i from 1 through $columns {
+    .offset-right-#{$i} {
+      @include offset(right, $i);
+    }
+  }
+}
+```
+
+Аналогичным образом генерируются и "левые смещающие" классы:
+
+```scss
+@if (index($partials, offset)) {
+  @for $i from 1 through $columns {
+    .offset-right-#{$i} {
+      @include offset(right, $i);
+    }
+    
+    .offset-left-#{$i} {
+      @include offset(left, $i);
+    }
+  }
+}
+```
+
+Ниже внутри этого же цикла генерируются "смещающие адаптивные" классы вида <span class='code'>offset-desktop-right-2</span>, 
+<span class='code'>offset-laptop-left-4</span>, <span class='code'>offset-phone-landscape-6</span> и т.д. Это происходит 
+внутри ещё одного цикла, который проходит по каждому элементу списка брейкпоинтов <span class='code'>$grid-breakpoints</span>, 
+на каждой итерации генерирует селектор класса, внутри которого подключает наш миксин, но уже с передачей ему имени 
+брейкпоинта третьим параметром.
+
+```scss
+@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+  .offset-#{$breakpoint-name}-right-#{$i} {
+    @include offset(right, $i, $breakpoint-name);
+  }
+
+  .offset-#{$breakpoint-name}-left-#{$i} {
+    @include offset(left, $i, $breakpoint-name);
+  }
+}
+```
+
+Затем идёт формирование "автосмещающих" классов, не нуждающееся в подробном разборе:
+
+```scss
+.offset-right-auto {
+  @include offset(right);
+}
+
+.offset-left-auto {
+  @include offset(left);
+}
+```
+
+И наконец формирование "автосмещающих адаптивных" классов:
+
+```scss
+@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+  .offset-#{$breakpoint-name}-right-auto {
+    @include offset(right, auto, $breakpoint-name);
+  }
+
+  .offset-#{$breakpoint-name}-left-auto {
+    @include offset(left, auto, $breakpoint-name);
+  }
+}
+```
+
+В последнем примере осуществляется циклический проход по списку брейкпоинтов. На каждой итерации цикла генерируется 
+селектор класса вида <span class='code'>.offset-desktop-right-auto</span>, <span class='code'>.offset-desktop-left-auto</span> 
+и т.д. Внутри селектора происходит подключение миксина с передачей в него ключевого слова <span class='code'>right</span> 
+или <span class='code'>left</span>, ключевого слов <span class='code'>auto</span> и имени брейкпоинта.
+
+Полный код <span class='code'>partials/offset.scss</span>:
+
+```scss
+@if (index($partials, offset)) {
+
+  // генерация "смещающих" классов соответственно числу колонок и соответственно числу колонок и медиазапросам
+  @for $i from 1 through $columns {
+    .offset-right-#{$i} {
+      @include offset(right, $i);
+    }
+
+    .offset-left-#{$i} {
+      @include offset(left, $i);
+    }
+
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      .offset-#{$breakpoint-name}-right-#{$i} {
+        @include offset(right, $i, $breakpoint-name);
+      }
+
+      .offset-#{$breakpoint-name}-left-#{$i} {
+        @include offset(left, $i, $breakpoint-name);
+      }
+    }
+  }
+
+  // генерация "автосмещающих" классов, правила в которых применяются в медиазапросах
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .offset-#{$breakpoint-name}-right-auto {
+      @include offset(right, auto, $breakpoint-name);
+    }
+
+    .offset-#{$breakpoint-name}-left-auto {
+      @include offset(left, auto, $breakpoint-name);
+    }
+  }
+
+  .offset-right-auto {
+    @include offset(right);
+  }
+
+  .offset-left-auto {
+    @include offset(left);
+  }
+}
+```
+
+Теперь мы можем осуществлять смещение колонок простым добавлением классов элементам в разметке:
+
+```html
+примеры
+```
+
+# Упорядочивание колонок
+
+Следующий модуль нашей библиотеки, который мы реализуем – это упорядочивание колонок. Упорядочивание колонок – это задание 
+колонкам порядка их следования внутри ряда. Примеры ниже демонстрируют изменение порядка расположения колонок.
+
+Первая колонка расположена на втором месте:
+
+```html
+пример
+```
+
+Пятая колонка расположена на шестом месте:
+
+```html
+пример
+```
+
+Последняя колонка расположена на первом месте:
+
+```html
+пример
+```
+
+Первая колонка расположена на последнем месте:
+
+```html
+пример
+```
+
+А теперь добавим данный модуль в нашу библиотеку.
+
+В директорию <span class='code'>mixins</span> добавим файл <span class='code'>_ordering.scss</span>, в котором начнём 
+писать миксин, реализующий необходимый функционал.
+
+Нам известно, что наши колонки являются флекс-элементами внутри флекс-контейнера ряда. Поэтому очевидно, что изменения 
+порядка следования колонок мы можем добиться, устанавливая различные значения для их css-свойства 
+<span class='code'>order</span>. Итак, миксин: 
+
+```scss
+@mixin order($order: 0, $breakpoint: null) {
+  //...
+}
+``` 
+
+На вход миксин принимает два параметра. Первый параметр <span class='code'>$order</span> – это целое число, определяющее 
+порядок следования ячейки: чем меньше число, тем ближе к началу ряда будет расположена ячейка.
+
+Если при вызове миксина в него будет передан второй аргумент $breakpoint, и при этом его значение будет соотвествовать
+одному из имен ключей глобального массива $grid-breakpoints, то правило упорядочивания будет срабытывать лишь в медиазапросе.
+
+```scss
+@mixin order($order: 0, $breakpoint: null) {
+  @if ($order > $columns) {
+    $order: $columns;
+  }
+  
+  @if ($order < 0) {
+    $order: 0;
+  }
+  
+  //...
+}
+```
+
+В примере выше мы определили два условия, защищающие нас от случаев, когда пользователь первым аргументом передаст число, 
+которое будет больше, чем общее число колонок сетки, либло меньше нуля. Это нужно потому, что ниже мы создадим ещё два 
+миксина, один из которых служит для расположения колонки в начале ряда, а другой – в конце. И если мы не предусмотрим 
+подобной защиты, то эти дополнительные миксины могут не работать должным образом. Итак, код из первого 
+<span class='code'>@if</span> присваивает параметру <span class='code'>$order</span> значение 
+<span class='code'>$columns</span> – общее число колонок, если при вызове миксина первым аргументом было передано число, 
+превышающее <span class='code'>$columns</span>.
+
+Код из второго <span class='code'>@if</span> устанавливает параметр <span class='code'>$order</span> в ноль, если при 
+вызове миксина первым аргументом ему было передано отрицательное число.
+
+```scss
+@mixin order($order: 0, $breakpoint: null) {
+  @if ($order > $columns) {
+    $order: $columns;
+  }
+
+  @if ($order < 0) {
+    $order: 0;
+  }
+
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      order: $order;
+    }
+  } @else {
+    order: $order;
+  }
+}
+```
+
+В десятой строке мы имеем условие. Если при подключении миксина вторым аргументом ему было передано существующее имя 
+брейкпоинта из списка <span class='code'>$grid-breakpoints</span>, то правило упорядочивания будет обёрнуто в медиазапрос.
+
+Дальше добавим уже упомянутые ранне миксины, отвечающие за расположение колонок в начале и конце ряда:
+
+```scss
+@mixin order-first($breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      order: -1;
+    }
+  } @else {
+    order: -1;
+  }
+
+}
+```
+
+Миксин <span class='code'>order-first</span> располагает колонку в начале ряда. Это достигается за счёт того, что свойству 
+<span class='code'>order</span> элемента значение устанавливается в -1. Ну и единственный параметр 
+<span class='code'>$breakpoint</span> определяет, будет ли правило обёрнуто в директиву <span class='code'>@media</span>.
+
+Следующий миксин по принципу действия очень похож на предыдущий: 
+
+```scss
+@mixin order-last($breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      order: $columns + 1;
+    }
+  } @else {
+    order: $columns + 1;
+  }
+}
+```
+
+Отличие в том, что свойство <span class='code'>order</span> элемента он устанавливает равным <span class='code'>$columns</span> 
+плюс единица. То есть свойство <span class='code'>order</span> всегда будет на единицу больше общего числа колонок, что 
+позволит гарантированно располагать колонку в конце ряда.
+
+```html
+примеры
+```
+
+Ну и по традиции добавим автоматическую генерацию "упорядочивающих" классов. Добавим в директорию <span class='code'>partials</span>
+файл <span class='code'>ordering</span>:
+
+```scss
+@for $i from 0 through $columns {
+  .order-#{$i} {
+    order: #{$i};
+  }
+}
+```
+
+Этот цикл сгенерирует набор селекторов классов вида <span class='code'>.order-0</span>, <span class='code'>.order-1</span>, 
+<span class='code'>.order-2</span> и т.д. и правил для них.
+
+Далее нам нужно сгенерировать набор "адаптивных упорядочивающих" классов. Для этого добавим миксин следующего содержания: 
+
+```scss
+@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+  @for $i from 0 through $columns {
+    .order-#{$breakpoint-name}-#{$i} {
+      @include order($i, $breakpoint-name);
+    }
+  }
+}
+```
+
+Миксин в цикле проходится по списку наших глобальных брейкпоинтов, генерирует селекторы классов вида 
+<span class='code'>order-desktop-3</span>, <span class='code'>order-tablet-8</span>, <span class='code'>order-laptop-md-2</span> 
+и т.д. и внутри каждого селектора вызывает миксин <span class='code'>order</span>, передавая в него число порядка следования 
+колонки и имя брейкпоинта, тем самым формируя правила для селектора.
+
+Также создадим два готовых селектора класса, ответственных за расположение колонки в самом конце и самом начале ряда:
+
+```scss
+.order-first {
+  @include order-first;
+}
+
+.order-last {
+  @include order-last;
+}
+```
+
+Полагаю, эти классы не нуждаются в подробном рассмотрении, так как они всего лишь подключают созданные нами ранее миксины, 
+которые как раз и добавляют правила расположения колонок.
+
+И конечно не забудем сгенерировать для этих классов их "адаптивные" варианты: 
+
+```scss
+@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+  .order-#{$breakpoint-name}-first {
+    @include order-first($breakpoint-name);
+  }
+}
+
+@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+  .order-#{$breakpoint-name}-last {
+    @include order-last($breakpoint-name);
+  }
+}
+```
+
+Циклом мы проходимся по списку брейкпоинтов и формируем селекторы классов вида <span class='code'>.order-desktop-last</span>, 
+<span class='code'>.order-desktop-first</span>, <span class='code'>.order-phone-sm-first</span>, 
+<span class='code'>.order-laptop-last</span> и т.д. Внутри селекторов мы подключаем миксины <span class='code'>order-first</span> 
+и <span class='code'>order-last</span> соответственно, в которые на каждом проходе цикла передаём имена наших брейкпоинтов.
+
+Полный код файла <span class='code'>partials/ordering.scss</span> с подробными комментариями: 
+
+```scss
+@if (index($partials, ordering)) {
+
+  /*
+  Генерация "упорядочавающих" классов и правил для них: order-1, order-2, order-3 и т.д. согласно количеству заданных
+  колонок $columns
+  */
+  @for $i from 0 through $columns {
+    .order-#{$i} {
+      order: #{$i};
+    }
+  }
+
+  /*
+    Генерация "упорядочивающих" классов в медиазапросах и правил для них: order-desktop-3, order-tablet-8, order-laptop-md-2 и т.д.
+    согласно количеству заданных колонок $columns и значениям для медиазапросов $grid-breakpoints
+  */
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    @for $i from 0 through $columns {
+      .order-#{$breakpoint-name}-#{$i} {
+        @include order($i, $breakpoint-name);
+      }
+    }
+  }
+
+  /*
+    Генерация "упорядочивающих" классов, перемещающих колонку в самое начало ряда, в медиазапросах: order-desktop-first,
+    order-laptop-first, order-phone-sm-first и т.д. согласно заданным значениям в глобальном объекте $grid-breakpoints
+  */
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .order-#{$breakpoint-name}-first {
+      @include order-first($breakpoint-name);
+    }
+  }
+
+  /*
+    Генерация "упорядочивающих" классов, перемещающих колонку в самый конец ряда, в медиазапросах: order-desktop-last,
+    order-laptop-last, order-phone-sm-last и т.д. согласно заданным значениям в глобальном объекте $grid-breakpoints
+  */
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .order-#{$breakpoint-name}-last {
+      @include order-last($breakpoint-name);
+    }
+  }
+
+  .order-first {
+    @include order-first;
+  }
+
+  .order-last {
+    @include order-last;
+  }
+}
+```
+
+Теперь мы можем задавать порядок расположения колонок прямо в html-разметке: 
+
+```html
+примеры
+```
