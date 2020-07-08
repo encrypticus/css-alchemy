@@ -2671,3 +2671,444 @@ partials/offset.scss:
 ```html
 примеры
 ```
+
+# Скрытие и отображение элементов сетки
+
+Следующий модуль, который мы реализуем – это скрытие и отображение элементов сетки. Для чего может пригодиться данный 
+модуль? Например для организации мобильного меню на сайте – на малых разрешениях экрана меню будет скрыто, а на больших 
+разрешениях будет отображаться как обычно. Конечно, можно скрывать не только элементы сетки, но и другие элементы на 
+странице. Но стоит отметить, что касательно сетки имеет смысл скрывать лишь её элементы колонок. Пример ниже 
+демонстрирует концепцию скрытия элементов. При уменьшении ширины вьюпорта до 960px и меньше, вторая и четвёртая колонка 
+будут скрыты:
+
+```html
+<div class="container">
+  <div class="example row">
+    <div class="example__col col">1</div>
+    <div class="example__col col hide-laptop-md">2</div>
+    <div class="example__col col">3</div>
+    <div class="example__col col hide-laptop-md">4</div>
+  </div>
+</div>
+```
+
+Давайте напишем миксин, реализующий данный функционал. В директорию <span class='code'>mixins</span> добавим файл 
+<span class='code'>_hide.scss</span> и в нём напишем: 
+
+```scss
+@mixin hide($breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      display: none;
+    }
+  } @else {
+    display: none;
+  }
+}
+```
+
+Миксин <span class='code'>hide</span> принимает на вход единственный параметр <span class='code'>$breakpoint</span>, по 
+умолчанию равный <span class='code'>null</span>. Этот параметр отвечает за то, будут ли css-правила, добавляемые к 
+подключающему миксин элемнту обёрнуты в директиву <span class='code'>@media</span>. Иными словами, будут ли правила 
+применены внутри медиазапроса. И если при подключении миксина аргументом ему будет передано валидное имя брейкпоинта, то 
+скрытие элемента сработает в соответствии со значением этого брейкпоинта. Напомню, что валидным именем будет являться 
+любой из ключей глобального массива <span class='code'>$grid-breakpoints</span>. Если же при подключении миксина ему 
+будет передано невалидное имя брейкпоинта, или же миксин будет вызван со значением по умолчанию, то правило скрытия будет 
+просто применено к элементу.
+
+Ниже приведены примеры, демонстрирующие миксин в действии. Для того, чтобы увидеть результат, поизменяйте размер окна 
+браузера.
+
+```html
+примеры
+```
+
+И конечно, нам нужно реализовать генерацию готовых классов. Добавим в директорию <span class='code'>partials</span> файл 
+<span class='code'>hide.scss</span>, в котором напишем:
+
+```scss
+@if (index($partials, hide)) {
+
+  .hide {
+    @include hide();
+  }
+
+  /*
+    Генерация "скрывающих" классов в медиазапросах исходя из глобального массива $grid-breakpoints, содержащего значения 
+    для медиазапросов
+  */
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .hide-#{$breakpoint-name} {
+      @include hide($breakpoint-name);
+    }
+  }
+}
+```
+
+Миксин генерирует селектор класса <span class='code'>.hide</span>, внутри которого подключается наш миксин. И так как 
+миксин подключен без явной передачи ему аргумента, то внутрь селектора просто добавится css-правило, скрывающее элемент.
+
+Затем в цикле по массиву <span class='code'>$grid-breakpoints</span> происходит генерирование селекторов классов вида 
+<span class='code'>.hide-desktop</span>, <span class='code'>.hide-laptop</span>, <span class='code'>.hide-phone</span>, 
+<span class='code'>.hide-tablet-landscape</span> и т.д., внутри которых наш миксин подключается уже с передачей ему 
+имён брейкпоинтов.
+
+Испытаем наши сгенерированные классы. Как и в предыдущих примерах, поизменяйте окно браузера.
+
+```html
+примеры
+```
+
+А теперь напишем код, позволяющий отображать скрытые ранее элементы. В директорию <span class='code'>mixins</span> 
+добавим файл <span class='code'>_show.scss</span> и в нём напишем такой миксин: 
+
+```scss
+/* Отображение скрытых элементов */
+
+/*
+  Устанавливает свойство display у элемента, на котором вызван миксин. Если значение аргумента $breakpoint соответствует
+  одному из имен ключей глобального массива $grid-breakpoints, правило будет применено в соответствующем медиазапросе
+*/
+@mixin show($display: initial, $breakpoint: null) {
+  @if ($display == none) {
+    $display: initial;
+  }
+
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      display: $display;
+    }
+  } @else {
+    display: $display;
+  }
+}
+```
+
+По принципу дейтсвия этот миксин схож с миксином <span class='code'>hide</span>. Отличие в том, что он производит действие, 
+обратное миксину <span class='code'>hide</span> – он отображает скрытые элементы. Это достигается за счёт установления 
+свойства <span class='code'>display</span> элемента в значение <span class='code'>initial</span>, которое сбрасывает 
+свойство в начальное значение. Например, если для элемента <span class='code'>div</span> было установлено 
+<span class='code'>display: none</span>, то <span class='code'>display: initial</span> установит 
+<span class='code'>display</span> в <span class='code'>block</span>. Для элемента <span class='code'>span</span> 
+<span class='code'>display: initial</span> установит <span class='code'>display</span> в <span class='code'>inline</span>.
+
+Обращу внимание на блок с условием в первой строке миксина. Это условие защищает нас от ситуации, когда пользователь 
+библиотеки первым аргументом решит передать ключевое слово <span class='code'>none</span>. В таком случае параметр 
+<span class='code'>$display</span> будет установлен в <span class='code'>initial</span>.
+
+Ниже приведены примеры, демонстрирующие отображение скрытых элементов при изменении размера вьюпорта.
+
+```html
+примеры
+```
+
+Генерацию "отображающих" классов мы поместим в файл <span class='code'>show</span> в директории <span class='code'>partials</span>:
+
+```scss
+@if (index($partials, show)) {
+
+  .show {
+    @include show(initial);
+  }
+
+  /*
+    Генерация "отображающих" классов в медиазапросах исходя из глобального объекта со значениями для медиазапросов
+    $grid-breakpoints
+  */
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .show-#{$breakpoint-name} {
+      @include show(initial, $breakpoint-name);
+    }
+  }
+}
+```
+
+Думаю, что код не нуждается в особых пояснениях, потому как он аналогичен коду из предыдущего примера. Теперь мы можем 
+добавлять наши сгенерированные классы в разметку:
+
+```html
+примеры
+```
+# Управление внешними отступами элементов
+
+Последний модуль, который мы реализуем в нашей библиотеке, позволит нам управлять внешними отступами элементов сетки. 
+Если быть точным, модуль даст нам возможность обнулять заданные элементам марджины. Ведь, как мы помним, по умолчанию 
+колонки сетки имеют горизонтальные и нижний вертикальный отступы. Но может возникнуть ситуация, когда нам нужно обнулить 
+только горизонтальные или только вертикальные марджины у одной колонки, или обнулить определённые марджины у колонок 
+в одном из рядов сетки, или же вовсе обнулить отступы у всех колонок у одной сетки на странице, не касаясь колонок другой 
+сетки. Некоторые из миксинов модуля, как мы увидим, будет возможно применять не только к колонкам сетки, но и при 
+необходимости к любому элементу на странице. Итак, добавим в директорию <span class='code'>mixins</span> файл 
+<span class='code'>_gutters.scss</span>. В него добавим первый миксин: 
+
+```scss
+// обнуляет внешние отступы элемента
+@mixin no-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      margin: 0 !important;
+    }
+  } @else {
+    margin: 0 !important;
+  }
+}
+```
+
+Этот миксин просто обнуляет все внешние отступы элемента, на котором он вызван. Очевидно, что миксин может быть вызван 
+на любом элементе страницы, а не только на элементах колонок нашей сетки. Миксин принимает параметр 
+<span class='code'>$breakpoint</span>, равный по умолчанию <span class='code'>null</span> и определяющий, будет ли 
+сброс отступов осуществляться внутри медиазапроса. Если аргумент при вызыове будет валидным именем одного из брейкпоинтов 
+<span class='code'>$grid-breakpoints</span>, то привило будет применено в медиавыражении. Ниже представлен пример с сеткой, 
+состоящей из одного ряда и нескольких колонок, у которых сброшены все внешние отступы:
+
+```html
+пример
+```
+
+Теперь добавим второй миксин, реализующий сброс только горизонтальных отступов у элементов:
+
+```scss
+// обнуляет внешние горизонтальные отступы элемента
+@mixin no-h-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+    }
+  } @else {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+}
+```
+
+Второй миксин аналогичен первому, за исключением того, что он обнуляет только горизонтальные отступы элемента, на котором 
+он был вызван. Ниже представлен пример с сеткой, состоящей из одного ряда и нескольких колонок, у которых сброшены 
+горизонтальные отступы:
+
+```scss
+пример
+```
+
+И третий миксин, сбрасывающий только вертикальные отступы элемента:
+
+```scss
+// обнуляет внешние вертикальные отступы элемента
+@mixin no-v-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+  } @else {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+}
+```
+
+Пример сброса вертикальных отступов:
+
+```html
+пример
+```
+
+А теперь добавим миксины, реализующие сборос отступов лишь у элементов колонок сетки:
+
+```scss
+// обнуляет внешние отступы колонок сетки
+@mixin no-children-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      > .col,
+      > [class*='col-'] {
+        margin: 0 !important;
+      }
+    }
+  } @else {
+    > .col,
+    > [class*='col-'] {
+      margin: 0 !important;
+    }
+  }
+}
+
+// обнуляет внешние горизонтальные отступы колонок сетки
+@mixin no-children-h-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      > .col,
+      > [class*='col-'] {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    }
+  } @else {
+    > .col,
+    > [class*='col-'] {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+}
+
+// обнуляет внешние вертикальные отступы колонок сетки
+@mixin no-children-v-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      > .col,
+      > [class*='col-'] {
+        margin-bottom: 0 !important;
+      }
+    }
+  } @else {
+    > .col,
+    > [class*='col-'] {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+```
+
+Эти три миксина, как и предыдующие три, отвечают за сброс всех отступов, только горизонтальных отступов и только 
+вертикальных отступов соответственно. Коренное отличие в том, что данные миксины обнуляют отступы только у элементов 
+колонок, на что укзывают селекторы <span class='code'>> .col</span> и <span class='code'>> [class*='col-']</span>. 
+Очевидно, что данные миксины имеет смысл подключать только к элементам ряда <span class='code'>row</span>, так как 
+селекторы указывают на прямых потомков <span class='code'>.col</span>, <span class='code'>.col-1</span>, 
+<span class='code'>.col-2</span>, <span class='code'>.col-3</span> и т.д.
+
+Вот примеры сброса отступов у колонок:
+
+```html
+примеры
+```
+
+Теперь по аналогии с другими, написанными нами ранее модулями, реализуем генерирование классов, отвечающих за сброс 
+отступов. В директорию <span class='code'>partials</span> добавим файл <span class='code'>gutters.scss</span> и начнём 
+добавлять в него код:
+
+```scss
+.no-gutters {
+  @include no-gutters;
+}
+
+.no-h-gutters {
+  @include no-h-gutters;
+}
+
+.no-v-gutters {
+  @include no-v-gutters;
+}
+```
+
+Выше мы добавили три селектора класса, подключающие миксины, добавляющие селектору правила сброса всех марджинов, только 
+горизонтальных марджинов и только вертикальных марджинов элемента соответственно.
+
+Теперь добавим селекторы с миксинами, сбрасывающими отступы только у элементов колонок:
+
+```scss
+.no-children-gutters {
+  @include no-children-gutters;
+}
+
+.no-children-h-gutters {
+  @include no-children-h-gutters;
+}
+
+.no-children-v-gutters {
+  @include no-children-v-gutters
+}
+```
+
+И напоследок сгенерируем классы в медиазапросах:
+
+```scss
+@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+  .no-gutters-#{$breakpoint-name} {
+    @include no-gutters($breakpoint-name);
+  }
+
+  .no-h-gutters-#{$breakpoint-name} {
+    @include no-h-gutters($breakpoint-name);
+  }
+
+  .no-v-gutters-#{$breakpoint-name} {
+    @include no-v-gutters($breakpoint-name);
+  }
+
+  .no-children-gutters-#{$breakpoint-name} {
+    @include no-children-gutters($breakpoint-name);
+  }
+
+  .no-children-h-gutters-#{$breakpoint-name} {
+    @include no-children-h-gutters($breakpoint-name);
+  }
+
+  .no-children-v-gutters-#{$breakpoint-name} {
+    @include no-children-v-gutters($breakpoint-name);
+  }
+}
+```
+
+Классы будут сгенерированы по тому же принципу, что и в других наших модулях: по списку определённых нами брейкпоинтов 
+осуществляется проход цикла, на каждой итерации которого генерируются селекторы вида 
+<span class='code'>.no-gutters-desktop</span>, <span class='code'>.no-h-gutters-laptop</span>,
+<span class='code'>.no-children-v-gutters-phone-landscape</span> и т.д., внутри которых подключаются миксины, добавляющие 
+селектору css-правила сброса марджинов.
+
+Полный код файла <span class='code'>partials/gutters.scss</span>:
+
+```scss
+@if (index($partials, gutters)) {
+  .no-gutters {
+    @include no-gutters;
+  }
+
+  .no-h-gutters {
+    @include no-h-gutters;
+  }
+
+  .no-v-gutters {
+    @include no-v-gutters;
+  }
+
+  .no-children-gutters {
+    @include no-children-gutters;
+  }
+
+  .no-children-h-gutters {
+    @include no-children-h-gutters;
+  }
+
+  .no-children-v-gutters {
+    @include no-children-v-gutters
+  }
+
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .no-gutters-#{$breakpoint-name} {
+      @include no-gutters($breakpoint-name);
+    }
+
+    .no-h-gutters-#{$breakpoint-name} {
+      @include no-h-gutters($breakpoint-name);
+    }
+
+    .no-v-gutters-#{$breakpoint-name} {
+      @include no-v-gutters($breakpoint-name);
+    }
+
+    .no-children-gutters-#{$breakpoint-name} {
+      @include no-children-gutters($breakpoint-name);
+    }
+
+    .no-children-h-gutters-#{$breakpoint-name} {
+      @include no-children-h-gutters($breakpoint-name);
+    }
+
+    .no-children-v-gutters-#{$breakpoint-name} {
+      @include no-children-v-gutters($breakpoint-name);
+    }
+  }
+}
+```
+А теперь на примерах посмотрим, как мы можем использовать наши новые готовые классы в нашей html-разметке: 
