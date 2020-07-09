@@ -20,7 +20,6 @@ html, body {
   margin: auto;
   max-width: 1750px;
   min-width: 320px;
-  background-image: url(/css-alchemy/img/bg.png);
   background-repeat: no-repeat;
   
   @media (min-width: 1400px) {
@@ -82,7 +81,7 @@ html, body {
     }
 
     &_header {
-      @include for-phone-only {
+      @include for-laptop-down {
         display: none;
       }
     }
