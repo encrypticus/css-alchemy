@@ -1789,7 +1789,7 @@ partials/alignment.scss:
 /* Направление расположения колонок в ряду */
 
 /*
-  Задает направление главной оси, вдоль которой укладываются колонки сетки в ряду.
+  Задает направление оси, вдоль которой укладываются колонки сетки в ряду.
   В качестве аргумента для первого параметра $direction должно быть передано одно
   из следующиех значений: row, row-reverse, column, column-reverse.
   Если вторым аргументом передано значение, соответствующее одному из имен ключей
@@ -1928,7 +1928,7 @@ partials/alignment.scss:
     @include direction(column-reverse);
   }
 
-  // генерация "направляющих" классов в медиазапросах согласно заданным брейкпойнтам $grid-breakpoints
+  // генерация "направляющих" классов в медиазапросах согласно заданным брейкпоинтам $grid-breakpoints
   @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
     .direction-#{$breakpoint-name}-row {
       @include direction(row, $breakpoint-name);
