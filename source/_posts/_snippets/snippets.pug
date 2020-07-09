@@ -101,6 +101,35 @@ include ../_utils/replacement
       <div class="column">5</div>
       <div class="column">6</div>
     </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="example row justify-content-start">
+      <div class="example__col col-2">col-2</div>
+      <div class="example__col col-2">col-2</div>
+    </div>
+
+    <div class="example row justify-content-center">
+      <div class="example__col col-2">col-2</div>
+      <div class="example__col col-2">col-2</div>
+    </div>
+
+    <div class="example row justify-content-end">
+      <div class="example__col col-2">col-2</div>
+      <div class="example__col col-2">col-2</div>
+    </div>
+
+    <div class="example row justify-content-space-between">
+      <div class="example__col col-2">col-2</div>
+      <div class="example__col col-2">col-2</div>
+      <div class="example__col col-2">col-2</div>
+    </div>
+
+    <div class="examplerow justify-content-space-around">
+      <div class="example__col col-2">col-2</div>
+      <div class="example__col col-2">col-2</div>
+      <div class="example__col col-2">col-2</div>
+    </div>
   </div>`
   ],
 
@@ -654,7 +683,482 @@ include ../_utils/replacement
   @include generate-grid();
 
   // генерация "колоночных" клоссов с медиазапросами
-  @include generate-grid-breakpoints();`
+  @include generate-grid-breakpoints();`,
+
+  `@mixin justify-content($align: flex-start, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        justify-content: $align;
+      }
+    } @else {
+      justify-content: $align;
+    }
+  }`,
+
+  `.some {
+    @include justify-content(flex-end);
+  }`,
+
+  `.some {
+    @include justify-content(flex-end, laptop);
+  }`,
+
+  `@mixin align-items($align: flex-start, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        align-items: $align;
+      }
+    } @else {
+      align-items: $align;
+    }
+  }`,
+
+  `@mixin align-self($align: flex-start, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        align-self: $align;
+      }
+    } @else {
+      align-self: $align;
+    }
+  }`,
+
+  `@mixin justify-content($align: flex-start, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        justify-content: $align;
+      }
+    } @else {
+      justify-content: $align;
+    }
+  }
+
+  @mixin align-items($align: flex-start, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        align-items: $align;
+      }
+    } @else {
+      align-items: $align;
+    }
+  }
+
+  @mixin align-self($align: flex-start, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        align-self: $align;
+      }
+    } @else {
+      align-self: $align;
+    }
+  }`,
+
+  `.justify-content-start {
+    @include justify-content(flex-start);
+  }
+
+  .justify-content-center {
+    @include justify-content(center);
+  }
+
+  .justify-content-end {
+    @include justify-content(flex-end);
+  }
+
+  .justify-content-space-between {
+    @include justify-content(space-between);
+  }
+
+  .justify-content-space-around {
+    @include justify-content(space-around);
+  }
+
+  .align-items-start {
+    @include align-items(flex-start);
+  }
+
+  .align-items-center {
+    @include align-items(center);
+  }
+
+  .align-items-end {
+    @include align-items(flex-end);
+  }
+
+  .align-items-stretch {
+    @include align-items(stretch);
+  }
+
+  .align-items-baseline {
+    @include align-items(baseline);
+  }
+
+  .align-self-start {
+    @include align-self(flex-start);
+  }
+
+  .align-self-center {
+    @include align-self(center);
+  }
+
+  .align-self-end {
+    @include align-self(flex-end);
+  }
+
+  .align-self-stretch {
+    @include align-self(stretch);
+  }
+
+  .align-self-baseline {
+    @include align-self(baseline);
+  }`,
+
+  `@mixin generate-h-alignment-breakpoints() {
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      @each $className, $value in $h-alignment-classes {
+        .justify-content-#{$breakpoint-name}-#{$className} {
+          @include justify-content($value, $breakpoint-name);
+        }
+      }
+    }
+  }`,
+
+  `$h-alignment-classes: (
+    start: flex-start,
+    center: center,
+    end: flex-end,
+    between: space-between,
+    around: space-around,
+  );`,
+
+  `@mixin generate-v-alignment-breakpoints() {
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      @each $className, $value in $v-alignment-classes {
+        .align-items-#{$breakpoint-name}-#{$className} {
+          @include align-items($value, $breakpoint-name);
+        }
+      }
+    }
+  }
+
+  @mixin generate-self-alignment-breakpoints() {
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      @each $className, $value in $v-alignment-classes {
+        .align-self-#{$breakpoint-name}-#{$className} {
+          @include align-self($value, $breakpoint-name);
+        }
+      }
+    }
+  }`,
+
+  `$v-alignment-classes: (
+    start: flex-start,
+    center: center,
+    end: flex-end,
+    stretch: stretch,
+    baseline: baseline
+  );`,
+
+  `// генерация "выравнивающих" классов вдоль главной оси внутри медиазапросов
+  @include generate-h-alignment-breakpoints();
+  // // генерация "выравнивающих" классов вдоль поперечной оси внутри медиазапросов
+  @include generate-v-alignment-breakpoints();
+  // // генерация "выравнивающих" классов вдоль главной оси внутри медиазапросов для отдельно взятой колонки
+  @include generate-self-alignment-breakpoints();`,
+
+  `/* Выравнивание колонок внутри ряда вдоль основной и поперечной осей */
+
+  $h-alignment-classes: (
+    start: flex-start,
+    center: center,
+    end: flex-end,
+    between: space-between,
+    around: space-around,
+  );
+
+  $v-alignment-classes: (
+    start: flex-start,
+    center: center,
+    end: flex-end,
+    stretch: stretch,
+    baseline: baseline
+  );
+
+  /* ГОРИЗОНТАЛЬНОЕ ВЫРАВНИВАНИЕ */
+
+  /*
+    Выкладывает колонки сетки в ряду согласно параметру $align, который должен принимать одно из следующих значений:
+    flex-start, flex-end, center, space-between, space-around.
+    Применяется к элементам ряда ($row) сетки.
+    Если передан аргумент $breakpoint, выравнивание сработает в медиазапросе согласно значению этого аргумента.
+    Значением аргумента должно быть одно из имен ключей глобального массива $grid-breakpoints.
+  */
+  @mixin justify-content($align: flex-start, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        justify-content: $align;
+      }
+    } @else {
+      justify-content: $align;
+    }
+  }
+
+  /* ВЕРТИКАЛЬНОЕ ВЫРАВНИВАНИЕ */
+
+  /*
+    Выкладывает колонки сетки в ряду согласно параметру $align, который должен принимать одно из следующих значений:
+    flex-start, flex-end, center, stretch, baseline.
+    Применяется к элементам ряда ($row) сетки.
+    Если передан аргумент $breakpoint, выравнивание сработает в медиазапросе согласно значению этого аргумента.
+    Значением аргумента должно быть одно из имен ключей глобального массива $grid-breakpoints.
+  */
+  @mixin align-items($align: flex-start, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        align-items: $align;
+      }
+    } @else {
+      align-items: $align;
+    }
+  }
+
+  /*
+    Выкладывает отдельно взятую колонку сетки в ряду согласно параметру $align, который должен принимать одно из следующих значений:
+    flex-start, flex-end, center, stretch, baseline.
+    Применяется к элементу отдельно взятой колонки ($col).
+    Если передан аргумент $breakpoint, выравнивание сработает в медиазапросе согласно значению этого аргумента.
+    Значением аргумента должно быть одно из имен ключей глобального массива $grid-breakpoints.
+  */
+  @mixin align-self($align: flex-start, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and(#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        align-self: $align;
+      }
+    } @else {
+      align-self: $align;
+    }
+  }
+
+  /*
+    Генерирует классы выравнивания колонок сетки вдоль главной оси. Внутри класоов правила генерируются внутри директивы
+    @media, то есть внутри медиазапроса. Например: .justify-content-desktop-start, .justify-content-laptop-center и т.д.
+    Применяется к элементам строки ($row). Для формирования классов и брейкпоинтов в медиазапросах использует массивы
+    $h-alignment-classes и $grid-breakpoints.
+  */
+  @mixin generate-h-alignment-breakpoints() {
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      @each $className, $value in $h-alignment-classes {
+        .justify-content-#{$breakpoint-name}-#{$className} {
+          @include justify-content($value, $breakpoint-name);
+        }
+      }
+    }
+  }
+
+  /*
+    Генерирует классы выравнивания колонок сетки вдоль поперечной оси. Внутри класоов правила генерируются внутри директивы
+    @media, то есть внутри медиазапроса. Например: .align-items-desktop-start, .align-items-laptop-center и т.д.
+    Применяется к элементам строки ($row).
+    Для формирования классов и брейкпойнтов в медиазапросах использует массивы $v-alignment-classes и $grid-breakpoints.
+  */
+  @mixin generate-v-alignment-breakpoints() {
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      @each $className, $value in $v-alignment-classes {
+        .align-items-#{$breakpoint-name}-#{$className} {
+          @include align-items($value, $breakpoint-name);
+        }
+      }
+    }
+  }
+
+  /*
+    Генерирует классы выравнивания отдельно взятой колонки сетки вдоль поперечной оси.
+    Внутри класоов правила генерируются внутри директивы @media, то есть внутри медиазапроса.
+    Например: .align-self-desktop-start, .align-self-laptop-center и т.д. Применяется к элементам колонки ($col).
+    Для формирования классов и брейкпойнтов в медиазапросах использует массивы $v-alignment-classes и $grid-breakpoints.
+  */
+  @mixin generate-self-alignment-breakpoints() {
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      @each $className, $value in $v-alignment-classes {
+        .align-self-#{$breakpoint-name}-#{$className} {
+          @include align-self($value, $breakpoint-name);
+        }
+      }
+    }
+  }`,
+
+  `.justify-content-start {
+    @include justify-content(flex-start);
+  }
+
+  .justify-content-center {
+    @include justify-content(center);
+  }
+
+  .justify-content-end {
+    @include justify-content(flex-end);
+  }
+
+  .justify-content-space-between {
+    @include justify-content(space-between);
+  }
+
+  .justify-content-space-around {
+    @include justify-content(space-around);
+  }
+
+  .align-items-start {
+    @include align-items(flex-start);
+  }
+
+  .align-items-center {
+    @include align-items(center);
+  }
+
+  .align-items-end {
+    @include align-items(flex-end);
+  }
+
+  .align-items-stretch {
+    @include align-items(stretch);
+  }
+
+  .align-items-baseline {
+    @include align-items(baseline);
+  }
+
+  .align-self-start {
+    @include align-self(flex-start);
+  }
+
+  .align-self-center {
+    @include align-self(center);
+  }
+
+  .align-self-end {
+    @include align-self(flex-end);
+  }
+
+  .align-self-stretch {
+    @include align-self(stretch);
+  }
+
+  .align-self-baseline {
+    @include align-self(baseline);
+  }
+
+  // генерация "выравнивающих" классов вдоль главной оси внутри медиазапросов
+  @include generate-h-alignment-breakpoints();
+  // генерация "выравнивающих" классов вдоль поперечной оси внутри медиазапросов
+  @include generate-v-alignment-breakpoints();
+  // генерация "выравнивающих" классов вдоль главной оси внутри медиазапросов для отдельно взятой колонки
+  @include generate-self-alignment-breakpoints();`,
+
+  `.container {
+    @include container();
+
+    .example {
+      @include row();
+
+      &:first-child {
+        @include justify-content(flex-start);
+      }
+
+      &:nth-child(2) {
+        @include justify-content(center);
+      }
+
+      &:nth-child(3) {
+        @include justify-content(flex-end);
+      }
+
+      &:nth-child(4) {
+        @include justify-content(space-between);
+      }
+
+      &:nth-child(5) {
+        @include justify-content(space-around);
+      }
+
+      &__col {
+        @include col(2);
+      }
+    }
+  }`,
+
+  `@if index($partials, alignment) {
+
+    .justify-content-start {
+      @include justify-content(flex-start);
+    }
+
+    .justify-content-center {
+      @include justify-content(center);
+    }
+
+    .justify-content-end {
+      @include justify-content(flex-end);
+    }
+
+    .justify-content-space-between {
+      @include justify-content(space-between);
+    }
+
+    .justify-content-space-around {
+      @include justify-content(space-around);
+    }
+
+    .align-items-start {
+      @include align-items(flex-start);
+    }
+
+    .align-items-center {
+      @include align-items(center);
+    }
+
+    .align-items-end {
+      @include align-items(flex-end);
+    }
+
+    .align-items-stretch {
+      @include align-items(stretch);
+    }
+
+    .align-items-baseline {
+      @include align-items(baseline);
+    }
+
+    .align-self-start {
+      @include align-self(flex-start);
+    }
+
+    .align-self-center {
+      @include align-self(center);
+    }
+
+    .align-self-end {
+      @include align-self(flex-end);
+    }
+
+    .align-self-stretch {
+      @include align-self(stretch);
+    }
+
+    .align-self-baseline {
+      @include align-self(baseline);
+    }
+
+    // генерирация классов горизонтального выравнивания ячеек сетки в строке в медиазапросах
+    @include generate-h-alignment-breakpoints();
+    // генерация классов вертикального выравнивания ячеек сетки в столбце в медиазапросах
+    @include generate-v-alignment-breakpoints();
+    // генерация классов вертикального выравнивания отдельно взятой ячейки сетки в столбце в медиазапросах
+    @include generate-self-alignment-breakpoints();
+  }`,
+
+  `@if index($partials, alignment) {
+    // ...code
+  }`
   ],
 
   bash: [
