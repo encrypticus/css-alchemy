@@ -1,0 +1,100 @@
+@import '../../../webpack-boilerplate/src/sass/utils';
+@import '../../../node_modules/flexbox-grid-pro/grid/scss/grid';
+
+.post {
+
+  &__link {
+    color: blue;
+  }
+
+  &__text {
+    margin-bottom: pxToRem(15);
+  }
+
+  &__list {
+    list-style-type: initial;
+    list-style-position: inside;
+    margin-bottom: pxToRem(30);
+  }
+
+  .code {
+    padding: .2rem .4rem;
+    font-size: 85%;
+    background-color: rgba(27, 31, 35, .05);
+    border-radius: 3px;
+  }
+
+  pre {
+    font-size: 90%;
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    font-style: normal;
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-bottom: pxToRem(30);
+    overflow: auto;
+  }
+  
+  &__grid {
+    background-color: #d4d4d4;
+    margin-bottom: 15px;
+  }
+
+  &__col,
+  .logo,
+  .nav,
+  .login,
+  .sidebar,
+  .content,
+  .about,
+  .email {
+    padding: .625rem;
+    font-size: 80%;
+    background-color: #007fff;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    letter-spacing: 1px;
+  }
+}
+
+.wrap {
+  @include container;
+  padding: 0;
+}
+
+.header,
+.main,
+.footer {
+  @include row;
+}
+
+//.logo,
+//.nav,
+//.login,
+//.sidebar,
+//.content,
+//.about,
+//.email {
+//  @include col;
+//}
+
+.hljs {
+  background-color: #eaeaea;
+}
+
+.hljs-ln tr:nth-child(odd) td:last-child {
+  width: 100%;
+  background-color: #dad7d7;
+}
+
+.hljs-ln-numbers {
+  color: #c1c1c1;
+  text-align: center;
+  border-right: 1px solid #c1c1c1;
+  vertical-align: top;
+  min-width: 25px;
+}
+
+.hljs-ln-code {
+  margin-left: 10px !important;
+}
