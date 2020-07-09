@@ -2228,7 +2228,7 @@ partials/alignment.scss:
 ```html
 <div class="container">
   <div class="row">
-    <div class="col-3"></div>
+    <div class="col-3 offset-right-5"></div>
   </div>
 </div>
 ```
