@@ -130,6 +130,36 @@ include ../_utils/replacement
       <div class="example__col col-2">col-2</div>
       <div class="example__col col-2">col-2</div>
     </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="example row">
+      <div class="example__col col-3">1</div>
+      <div class="example__col col-3">2</div>
+      <div class="example__col col-3">3</div>
+      <div class="example__col col-3">4</div>
+    </div>
+
+    <div class="example row direction-row-reverse">
+      <div class="example__col col-3">1</div>
+      <div class="example__col col-3">2</div>
+      <div class="example__col col-3">3</div>
+      <div class="example__col col-3">4</div>
+    </div>
+
+    <div class="example row direction-column">
+      <div class="example__col col-3">1</div>
+      <div class="example__col col-3">2</div>
+      <div class="example__col col-3">3</div>
+      <div class="example__col col-3">4</div>
+    </div>
+
+    <div class="example row direction-column-reverse">
+      <div class="example__col col-3">1</div>
+      <div class="example__col col-3">2</div>
+      <div class="example__col col-3">3</div>
+      <div class="example__col col-3">4</div>
+    </div>
   </div>`
   ],
 
@@ -1158,6 +1188,150 @@ include ../_utils/replacement
 
   `@if index($partials, alignment) {
     // ...code
+  }`,
+
+  `/* Направление расположения колонок в ряду */
+
+  /*
+    Задает направление оси, вдоль которой укладываются колонки сетки в ряду.
+    В качестве аргумента для первого параметра $direction должно быть передано одно
+    из следующиех значений: row, row-reverse, column, column-reverse.
+    Если вторым аргументом передано значение, соответствующее одному из имен ключей
+    глобального массива $grid-breakpoints, правило будет применено в медиазапросе.
+  */
+  @mixin direction($direction: row, $breakpoint: 'false') {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @if ($direction == row) {
+        @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+          flex-direction: row;
+        }
+      } @else if ($direction == row-reverse) {
+        @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+          flex-direction: row-reverse;
+        }
+      } @else if ($direction == column) {
+        @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+          flex-direction: column;
+        }
+      } @else if ($direction == column-reverse) {
+        @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+          flex-direction: column-reverse;
+        }
+      } @else {
+        @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+          flex-direction: row;
+        }
+      }
+    } @else {
+      @if ($direction == row) {
+        flex-direction: row;
+      } @else if ($direction == row-reverse) {
+        flex-direction: row-reverse;
+      } @else if ($direction == column) {
+        flex-direction: column;
+      } @else if ($direction == column-reverse) {
+        flex-direction: column-reverse;
+      } @else {
+        flex-direction: row;
+      }
+    }
+  }`,
+
+  `.direction-row {
+    @include direction(row);
+  }
+
+  .direction-row-reverse {
+    @include direction(row-reverse);
+  }
+
+  .direction-column {
+    @include direction(column);
+  }
+
+  .direction-column-reverse {
+    @include direction(column-reverse);
+  }`,
+
+  `// генерация "направляющих" классов в медиазапросах согласно заданным брейкпоинтам $grid-breakpoints
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .direction-#{$breakpoint-name}-row {
+      @include direction(row, $breakpoint-name);
+    }
+
+    .direction-#{$breakpoint-name}-row-reverse {
+      @include direction(row-reverse, $breakpoint-name);
+    }
+
+    .direction-#{$breakpoint-name}-column {
+      @include direction(column, $breakpoint-name);
+    }
+
+    .direction-#{$breakpoint-name}-column-reverse {
+      @include direction(column-reverse, $breakpoint-name);
+    }
+  }`,
+
+  `@if (index($partials, direction)) {
+
+    .direction-row {
+      @include direction(row);
+    }
+
+    .direction-row-reverse {
+      @include direction(row-reverse);
+    }
+
+    .direction-column {
+      @include direction(column);
+    }
+
+    .direction-column-reverse {
+      @include direction(column-reverse);
+    }
+
+    // генерация "направляющих" классов в медиазапросах согласно заданным брейкпойнтам $grid-breakpoints
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      .direction-#{$breakpoint-name}-row {
+        @include direction(row, $breakpoint-name);
+      }
+
+      .direction-#{$breakpoint-name}-row-reverse {
+        @include direction(row-reverse, $breakpoint-name);
+      }
+
+      .direction-#{$breakpoint-name}-column {
+        @include direction(column, $breakpoint-name);
+      }
+
+      .direction-#{$breakpoint-name}-column-reverse {
+        @include direction(column-reverse, $breakpoint-name);
+      }
+    }
+  }`,
+
+  `.container {
+    @include container();
+
+    .example {
+      @include row();
+
+      &:nth-child(2) {
+        @include direction(row-reverse);
+      }
+
+      &:nth-child(3) {
+        @include direction(column);
+      }
+
+      &:nth-child(4) {
+        @include direction(column-reverse);
+      }
+
+      &__col {
+        @include col(3);
+      }
+    }
   }`
   ],
 

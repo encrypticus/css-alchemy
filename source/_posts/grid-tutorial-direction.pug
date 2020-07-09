@@ -23,4 +23,120 @@ include _snippets/snippets
 p.post__text
   | В <a class='post__link' href='/css-alchemy/2020/06/21/grid-tutorial-alignment/'>предыдущей</a> части мы добавили в
   | нашу библиотеку модуль выравнивания колонок. В этой части библиотека пополнится ещё одним модулем, позволяющим
-  | задавать направление расположения колонок в сетке.
+  | задавать направление расположения колонок в сетке. Направление колонок – это то, как будут выстраиваться колонки
+  | внутри ряда. Как и в случае с выравниванием колонок, лучше это продемонстрировать наглядно.
+
+p.post__text Направление по умолчанию – колонки располагаются слева направо вдоль основной оси:
+.container(style='padding: 0')
+  .row
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+
+p.post__text Колонки располагаются справа налево вдоль основной оси:
+.container(style='padding: 0')
+  .row.direction-row-reverse
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+
+p.post__text Колонки располагаются сверху вниз вдоль поперечной оси:
+.container(style='padding: 0')
+  .row.direction-column
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+
+p.post__text Колонки располагаются снизу вверх вдоль поперечной оси:
+.container(style='padding: 0')
+  .row.direction-column-reverse
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+
+p.post__text
+  | А теперь реализуем данный функционал. В директорию с нашими миксинами <span class='code'>mixins</span> я
+  | добавляю файл <span class='code'>_direction.scss</span>. В файле будет находиться миксин следующего содержания:
++snippet(sass[54], 'scss')
+
+p.post__text
+  | Пошагово разберём код. На вход миксин принимает два параметра. Первый параметр отвечает за то, в каком направлении будут раполагаться
+  | колонки в ряду, и может принимать четыре значения: <span class='code'>row</span>, <span class='code'>row-reverse</span>,
+  | <span class='code'>column</span>, <span class='code'>column-reverse</span>. Если мы внимательно посмотрим на миксин, то
+  | увидим, что направление расположения колонок задаётся свойством <span class='code'>flex-direction</span>. Это неудивительно,
+  | ведь колонки – это флекс-элементы внутри флекс-контейнера – элемента ряда. Поэтому стоит добавить, что миксин имеет смысл
+  | вызывать лишь на элементе ряда сетки <span class='code'>row</span>. Второй параметр должен принимать одно из имён
+  | брейкпоинтов, которые хранятся в глобальном свойстве <span class='code'>$grid-breakpoints</span>:
+  | <span class='code'>desktop</span>, <span class='code'>laptop</span>, <span class='code'>laptop-md</span>,
+  | <span class='code'>tablet-landscape</span> и т.д.
+
+p.post__text
+  | На одиннадцатой стрке внутри миксина условный оператор проверяет, содержит ли наш глобальный массив брейкпоинтов
+  | <span class='code'>$grid-breakpoints</span> элемент, имеющий ключ, имя которого соответствует аргументу, переданному в
+  | параметр <span class='code'>$breakpoint</span> при вызове миксина. Если условие выполняется, тогда все правила выравнивания
+  | оборачиваются директивой <span class='code'>@media</span>, то есть выполняются внутри медиазапроса. Если же условие не
+  | выполняется, тогда все правила выравнивания просто добавляются в селектор элемента.
+
+p.post__text
+  | На двенадцатой строке и ниже по коду также присутствуют блоки условий, зависящие от первого параметра
+  | <span class='code'>$direction</span> и определяющие направление расположения колонок сетки.
+
+p.post__text
+  | И конечно, не забудем написать код, отвечающий за генерацию готовых "направляющих" классов. Для этого в директорию
+  | <span class='code'>partials</span> поместим файл <span class='code'>direction.scss</span>, в котором напишем такой код:
++snippet(sass[55], 'scss')
+
+p.post__text
+  | Этот код добавляет готовые "направляющие" классы, которыми мы можем воспользоваться "как есть", всего лишь прописав их
+  | в нашей html-разметке на нужных элементах страницы. Внутри себя селекторы классов всего лишь подключают написанные нами
+  | ранее миксины. Нам также необходимо добавить "направляющие" классы с медиазапросами. Для этого достаточно реализовать
+  | цикл, который пройдётся по массиву <span class='code'>$grid-breakpoints</span>, сгенерирует соответствующий имени
+  | брейкпоинта селектор класса и вызовет внутри него созданный нами ранее миксин
+  | <span class='code'>direction</span>, вторым параметром передав ему имена всех брейкпоинтов на каждом проходе цикла. Ведь
+  | как мы помним, если нашему миксину <span class='code'>direction</span> вторым параметром передать имя брейкпоинта, то
+  | заданные в результате правила будут обёрнуты в медиазапрос.
+
+p.post__text
+  | А следующий код сгенерирует классы вида <span class='code'>direction-desktop-row</span>,
+  | <span class='code'>direction-laptop-column</span>,  <span class='code'>direction-phone-landscape-row-reverse</span>
+  | и т.д.:
++snippet(sass[56], 'scss')
+
+p.post__text Полный код <span class='code'>partials/direction.scss</span>:
++snippet(sass[57], 'scss')
+
+p.post__text Теперь мы можем задавать направление колонок как в html, так и в sass:
+.row
+  +snippet(html[9])(class='col col-laptop-12')
+  +snippet(sass[58], 'scss')(class='col')
+
+p.post__text Оба варианта дадут аналогичный результат:
+.container(style='margin-bottom: 30px')
+  .row
+    .col-3.post__col 1
+    .col-3.post__col 2
+    .col-3.post__col 3
+    .col-3.post__col 4
+  .row.direction-row-reverse
+    .col-3.post__col 1
+    .col-3.post__col 2
+    .col-3.post__col 3
+    .col-3.post__col 4
+  .row.direction-column(style='background-color: #d4d4d4; margin-bottom: 10px')
+    .col-3.post__col 1
+    .col-3.post__col 2
+    .col-3.post__col 3
+    .col-3.post__col 4
+  .row.direction-column-reverse(style='background-color: #d4d4d4;')
+    .col-3.post__col 1
+    .col-3.post__col 2
+    .col-3.post__col 3
+    .col-3.post__col 4
+
+p.post__text
+  | В следцющей части нашего руководства мы добавим модуль, реализующий функционал смещения колонок в ряду.
+  | Читайте <a class='post__link' href='/css-alchemy/2020/06/23/grid-tutorial-offset/'>продолжение</a>
