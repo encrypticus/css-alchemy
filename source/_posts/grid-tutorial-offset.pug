@@ -19,3 +19,242 @@ include _snippets/snippets
   const html = snippets.grid.html;
   const sass = snippets.grid.sass;
   const bash= snippets.grid.bash;
+
+p.post__text
+  | В <a class='post__link' href='/css-alchemy/2020/06/22/grid-tutorial-direction/'>предыдущей</a> части мы реализовали
+  | модуль, отвечающий за направление расположения колонок. В этой части мы сосредоточимся на создании модуля,
+  | отвечающего за смещение колонок в ряду. Смещение колоноки – это её перемещение вправо или влево относительно её
+  | первоначального положения на расстояние, равное размеру одной или более колонок. Как всегда, лучше начать с примеров.
+  | В примерах ниже представлена сетка из двух рядов, первый из которых заполнен шестью элементами размером по две колонки
+  | каждый. Этот ряд нужен для наглядности того, на сколько колонок смещён элемент во втором ряду.
+
+p.post__text Элемент смещён на две колонки вправо:
+.post__grid
+  .row
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+
+.post__grid
+  .row
+    .col-2.offset-right-2.post__col col-2
+
+p.post__text Элемент смещён на четыре колонки вправо:
+.post__grid
+  .row
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+
+.post__grid
+  .row
+    .col-2.offset-right-4.post__col col-2
+
+p.post__text Элемент смещён на шесть колонок вправо:
+.post__grid
+  .row
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+
+.post__grid
+  .row
+    .col-2.offset-right-6.post__col col-2
+
+p.post__text Элемент смещён на восемь колонок вправо:
+.post__grid
+  .row
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+
+.post__grid
+  .row
+    .col-2.offset-right-8.post__col col-2
+
+p.post__text Элемент смещён на десять колонок вправо:
+.post__grid
+  .row
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+    .col-2.post__col col-2
+
+.post__grid
+  .row
+    .col-2.offset-right-10.post__col col-2
+
+p.post__text
+  | А теперь реализуем это в нашем коде. В директорию <span class='code'>mixins</span> добавим файл <span class='code'>_offset.scss</span>.
+  | Теперь поразмышляем, каким образом можно заставить колонку сместиться влево или вправо внутри ряда. Первое, что приходит
+  | на ум – это внешние отступы элемента. То есть, чтобы сместить колонку в ту или иную сторону, мы должны добавить ей левый
+  | или правый марджины. Очевидно также, что колонка может смещаться просто на всё свободное доступное пространство влево
+  | или вправо, реализуя таким образом эффект автосмещения. И также, как и в двух других написанных нами ранее модулях –
+  | выравнивания и направления, мы должны добавить возможность смещения колонок в медиазапросах. Начнём писать наш миксин:
++snippet(sass[59], 'scss')
+
+p.post__text
+  | Наш миксин принимает на вход три параметра. Параметр <span class='code'>$direction</span> отвечает за направление смещения
+  | колонки и может принимать лишь два значения: <span class='code'>right</span> и <span class='code'>left</span> – вправо и
+  | влево соответственно. По умолчанию параметр равен <span class='code'>right</span>.
+
+p.post__text
+  | Параметр <span class='code'>$offset</span> отвечает за расстояние, на которое может быть смещена
+  | колонка, и может принимать либо целое неотрицательное число, указывающее число колонок смещения, либо ключевое слово
+  | <span class='code'>auto</span>, указывающее, что колонка может быть смещена на всё доступное свободное пространство.
+  | По умолчанию равен <span class='code'>auto</span>.
+
+p.post__text
+  | Параметр <span class='code'>$breakpoint</span> отвечает за то, будут ли правила смещения колонки применяться внутри
+  | медиазапроса. Может принимать одно из имён брейкпоинтов, хранящихся в глобальном массиве <span class='code'>$grid-breakpoints</span>.
+  | По умолчанию не передаётся.
+
++snippet(sass[60], 'scss')
+p.post__text
+  | В примере выше в первой строке внутри миксина стоит условие, согласно которому, если при вызове было передано
+  | существующее имя брейкпоинта, то выполнится код из блока <span class='code'>@if</span>. Иначе будет выполнен код из
+  | блока <span class='code'>@else</span>.
+
++snippet(sass[61], 'scss')
+p.post__text
+  | Если при вызове миксинав в примере выше было передано валидное имя брейкпоинта, то код из блока
+  | <span class='code'>@if</span> будет обёрнут в медиавыражение. Все дальнейшие условия, которые мы рассмотрим и которые
+  | находятся дальше по коду, будут одинаково присутствовать и внутри блока <span class='code'>@if</span>, и внутри блока
+  | <span class='code'>@else</span>.
+
++snippet(sass[62], 'scss')
+p.post__text
+  | В четвёртой и восемнадцатой строках в примере выше прописано условие, по которому если для <span class='code'>$offset</span>
+  | передано значение <span class='code'>auto</span>, то возможны три варианта:
+ul.post__list
+  li
+    | если значение параметра <span class='code'>$direction</span> равно <span class='code'>right</span>, то колонка
+    | смещается на всё доступное пространство вправо.
+  li
+    | если значение параметра <span class='code'>$direction</span> равно <span class='code'>left</span>, то колонка смещается
+    | на всё доступное пространство влево.
+  li и по умолчанию колонка всегда смещается вправо.
+
+p.post__tex Давайте ещё более расширим наш миксин:
++snippet(sass[63], 'scss')
+
+p.post__text
+  | В пятнадцатой и тридцать первой строках в примере выше я добавил по условию, которые будут выполнены в том случае,
+  | если параметр<span class='code'>$offset</span> при вызове не будет равен <span class='code'>auto</span>, а будет
+  | являться числом. И в этом случае будет выполнен следующий код:
++snippet(sass[64], 'scss')
+
+p.post__text
+  | Разберём его подробнее. Условие в первой строке защищает нас от ситуации, когда пользователь при подключении миксина
+  | пытается передать число, большее общего числа колонок сетки, хранящегося в глобальной переменной
+  | <span class='code'>$columns</span>. В этом случае параметр <span class='code'>$offset</span> автоматически будет равен
+  | этому общему числу колонок.
+
+p.post__text
+  | Условие в пятой строке защищает нас от ситуации, когда пользователь при подключении миксина попытается передать
+  | отрицательное число или ноль. В этом случае параметр <span class='code'>$offset</span> автоматически станет равным единице.
+
+p.post__text
+  | Условия в девятой и одиннадцатой строках зависят от значения параметра <span class='code'>$direction</span> и выполняют
+  | код, отвечающий за смещение элементов вправо и влево на указанное число колонок.
+
+p.post__text Итак, полный код миксина:
++snippet(sass[65], 'scss')
+
+p.post__text Теперь мы можем подключить наш миксин. Думаю излишне уточнять, что миксин нужно подключать к элементу колонки:
+.row
+  +snippet(html[10])(class='col col-laptop-12')
+  +snippet(sass[66], 'scss')(class='col')
+
+p.post__text Приведённый выше код сместит колонку на пять колонок вправо:
+.post__grid
+  .row
+    .col-3.offset-right-3.post__col col-3
+
+p.post__text
+  | Нам осталось написать модуль, ответственный за генерацию готовых классов смещения. В директорию
+  | <span class='code'>partials</span> добавим файла <span class='code'>offset.scss</span>.
+
+p.post__tex partials/offset.scss:
+
+p.post__text Пишем цикл от одного до 12 – общего количества колонок:
++snippet(sass[67], 'scss')
+
+p.post__text
+  | Внутри цикла генерируются 12 селекторов "смещающих" классов вида <span class='code'>.offset-right-1</span>,
+  | <span class='code'>.offset-right-2</span>, <span class='code'>.offset-right-3</span> и т.д.:
++snippet(sass[68], 'scss')
+
+p.post__text
+  | Внутри селектора на каждом проходе цикла подключается наш миксин <span class='code'>offset</span>, в который первым
+  | аргументом передаётся ключевое слово <span class='code'>right</span>, а вторым – число колонок смещения:
++snippet(sass[69], 'scss')
+
+p.post__text Аналогичным образом генерируются и "левые смещающие" классы:
++snippet(sass[70], 'scss')
+
+p.post__text
+  | Ниже внутри этого же цикла генерируются "смещающие адаптивные" классы вида <span class='code'>offset-desktop-right-2</span>,
+  | <span class='code'>offset-laptop-left-4</span>, <span class='code'>offset-phone-landscape-6</span> и т.д. Это происходит
+  | внутри ещё одного цикла, который проходит по каждому элементу списка брейкпоинтов <span class='code'>$grid-breakpoints</span>,
+  | на каждой итерации генерирует селектор класса, внутри которого подключает наш миксин, но уже с передачей ему имени
+  | брейкпоинта третьим параметром:
++snippet(sass[71], 'scss')
+
+p.post__text Затем идёт формирование "автосмещающих" классов, не нуждающееся в подробном разборе:
++snippet(sass[72], 'scss')
+
+p.post__text И наконец формирование "автосмещающих адаптивных" классов:
++snippet(sass[73], 'scss')
+
+p.post__text
+  | В примере выше осуществляется циклический проход по списку брейкпоинтов. На каждой итерации цикла генерируется
+  | селектор класса вида <span class='code'>.offset-desktop-right-auto</span>, <span class='code'>.offset-desktop-left-auto</span>
+  | и т.д. Внутри селектора происходит подключение миксина с передачей в него ключевого слова <span class='code'>right</span>
+  | или <span class='code'>left</span>, ключевого слов <span class='code'>auto</span> и имени брейкпоинта.
+
+p.post__text Полный код <span class='code'>partials/offset.scss</span>:
++snippet(sass[74], 'scss')
+
+p.post__text Теперь мы можем осуществлять смещение колонок простым добавлением классов элементам в разметке:
++snippet(html[10])
+
+.container(style='margin-bottom: 30px')
+  .row.post__row_colored
+    .col-1.offset-right-1.post__col 1
+  .row.post__row_colored
+    .col-1.offset-right-2.post__col 2
+  .row.post__row_colored
+    .col-1.offset-right-3.post__col 3
+  .row.post__row_colored
+    .col-1.offset-right-4.post__col 4
+  .row.post__row_colored
+    .col-1.offset-right-5.post__col 5
+  .row.post__row_colored
+    .col-1.offset-right-6.post__col 6
+  .row.post__row_colored
+    .col-1.offset-right-7.post__col 7
+  .row.post__row_colored
+    .col-1.offset-right-8.post__col 8
+  .row.post__row_colored
+    .col-1.offset-right-9.post__col 9
+  .row.post__row_colored
+    .col-1.offset-right-10.post__col 10
+
+p.post__text
+  | Читайте <a class='post__link' href='/css-alchemy/2020/06/24/grid-tutorial-ordering/'>пятую часть</a> руководоства,
+  | в которой мы шаг за шагом реализуем и добавим в нашу библиотеку модуль, отвечающий за упорядочивание колонок в сетке.

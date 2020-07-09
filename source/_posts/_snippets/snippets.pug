@@ -160,6 +160,48 @@ include ../_utils/replacement
       <div class="example__col col-3">3</div>
       <div class="example__col col-3">4</div>
     </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col-1 offset-right-1">of-1</div>
+    </div>
+
+    <div class="row">
+      <div class="col-1 offset-right-2">of-2</div>
+    </div>
+
+    <div class="row">
+      <div class="col-1 offset-right-3">of-3</div>
+    </div>
+
+    <div class="row">
+      <div class="col-1 offset-right-4">of-4</div>
+    </div>
+
+    <div class="row">
+      <div class="col-1 offset-right-5">of-5</div>
+    </div>
+
+    <div class="row">
+      <div class="col-1 offset-right-6">of-6</div>
+    </div>
+
+    <div class="row">
+      <div class="col-1 offset-right-7">of-7</div>
+    </div>
+
+    <div class="row">
+      <div class="col-1 offset-right-8">of-8</div>
+    </div>
+
+    <div class="row">
+      <div class="col-1 offset-right-9">of-9</div>
+    </div>
+
+    <div class="row">
+      <div class="col-1 offset-right-10">of-10</div>
+    </div>
   </div>`
   ],
 
@@ -1331,6 +1373,291 @@ include ../_utils/replacement
       &__col {
         @include col(3);
       }
+    }
+  }`,
+
+  `@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+    //...
+  }`,
+
+  `@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      //...
+    } else {
+      //...
+    }
+  }`,
+
+  `@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        //...
+      }
+    } else {
+      //...
+    }
+  }`,
+
+  `@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        @if ($offset == auto) {
+          @if ($direction == right) {
+            margin-left: auto !important;
+            margin-right: $h-gutter / 2 !important;
+          } @else if ($direction == left) {
+            margin-right: auto !important;
+            margin-left: $h-gutter / 2 !important;
+          } @else {
+            margin-left: auto !important;
+            margin-right: $h-gutter / 2 !important;
+          }
+        }
+      }
+    } else {
+      @if ($offset == auto) {
+        @if ($direction == right) {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        } @else if ($direction == left) {
+          margin-right: auto !important;
+          margin-left: $h-gutter / 2 !important;
+        } @else {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        }
+      }
+    }
+  }`,
+
+  `@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        @if ($offset == auto) {
+          @if ($direction == right) {
+            margin-left: auto !important;
+            margin-right: $h-gutter / 2 !important;
+          } @else if ($direction == left) {
+            margin-right: auto !important;
+            margin-left: $h-gutter / 2 !important;
+          } @else {
+            margin-left: auto !important;
+            margin-right: $h-gutter / 2 !important;
+          }
+        } @else if (type_of($offset) == number) {
+          //...
+        }
+      }
+    } else {
+      @if ($offset == auto) {
+        @if ($direction == right) {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        } @else if ($direction == left) {
+          margin-right: auto !important;
+          margin-left: $h-gutter / 2 !important;
+        } @else {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        }
+      } @else if (type_of($offset) == number) {
+        //...
+      }
+    }
+  }`,
+
+  `@if ($offset > $columns) {
+    $offset: $columns;
+  }
+
+  @if ($offset < 1) {
+    $offset: 1;
+  }
+
+  @if ($direction == right) {
+    margin-left: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+  } @else if ($direction == left) {
+    margin-right: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+  }`,
+
+  `  /* Смещение колонок */
+
+  /*
+    Смещает колонку в ряду на $offset - целое число колонок, вправо - $direction: right или влево - $direction: left.
+    Если в качестве второго аргумента передано значение auto, колонка смещается на свободное пространство в ту или иную
+    сторону. Если значение аргумента $breakpoint соответствует одному из имен ключей глобального массива $grid-breakpoints,
+    правила применяются в соответствующем медиазапросе.
+  */
+  @mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        @if ($offset == auto) {
+          @if ($direction == right) {
+            margin-left: auto !important;
+            margin-right: $h-gutter / 2 !important;
+          } @else if ($direction == left) {
+            margin-right: auto !important;
+            margin-left: $h-gutter / 2 !important;
+          } @else {
+            margin-left: auto !important;
+            margin-right: $h-gutter / 2 !important;
+          }
+        } @else if (type_of($offset) == number) {
+          @if ($offset > $columns) {
+            $offset: $columns;
+          }
+
+          @if ($offset < 1) {
+            $offset: 1;
+          }
+
+          @if ($direction == right) {
+            margin-left: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+          } @else if ($direction == left) {
+            margin-right: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+          }
+        }
+      }
+    } @else {
+      @if ($offset == auto) {
+        @if ($direction == right) {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        } @else if ($direction == left) {
+          margin-right: auto !important;
+          margin-left: $h-gutter / 2 !important;
+        } @else {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        }
+      } @else if (type_of($offset == number)) {
+        @if ($offset > $columns) {
+          $offset: $columns;
+        }
+
+        @if ($offset < 1) {
+          $offset: 1;
+        }
+
+        @if ($direction == right) {
+          margin-left: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+        } @else if ($direction == left) {
+          margin-right: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+        }
+      }
+    }
+
+  }`,
+
+  `.container {
+
+    .col-3 {
+      @include offset(right, 5);
+    }
+  }`,
+
+  `@if (index($partials, offset)) {
+    @for $i from 1 through $columns {
+      //...
+    }
+  }`,
+
+  `@if (index($partials, offset)) {
+    @for $i from 1 through $columns {
+      .offset-right-#{$i} {
+        //...
+      }
+    }
+  }`,
+
+  `@if (index($partials, offset)) {
+    @for $i from 1 through $columns {
+      .offset-right-#{$i} {
+        @include offset(right, $i);
+      }
+    }
+  }`,
+
+  `@if (index($partials, offset)) {
+    @for $i from 1 through $columns {
+      .offset-right-#{$i} {
+        @include offset(right, $i);
+      }
+
+      .offset-left-#{$i} {
+        @include offset(left, $i);
+      }
+    }
+  }`,
+
+  `@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .offset-#{$breakpoint-name}-right-#{$i} {
+      @include offset(right, $i, $breakpoint-name);
+    }
+
+    .offset-#{$breakpoint-name}-left-#{$i} {
+      @include offset(left, $i, $breakpoint-name);
+    }
+  }`,
+
+  `.offset-right-auto {
+    @include offset(right);
+  }
+
+  .offset-left-auto {
+    @include offset(left);
+  }`,
+
+  `@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .offset-#{$breakpoint-name}-right-auto {
+      @include offset(right, auto, $breakpoint-name);
+    }
+
+    .offset-#{$breakpoint-name}-left-auto {
+      @include offset(left, auto, $breakpoint-name);
+    }
+  }`,
+
+  `@if (index($partials, offset)) {
+
+    // генерация "смещающих" классов соответственно числу колонок и соответственно числу колонок и медиазапросам
+    @for $i from 1 through $columns {
+      .offset-right-#{$i} {
+        @include offset(right, $i);
+      }
+
+      .offset-left-#{$i} {
+        @include offset(left, $i);
+      }
+
+      @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+        .offset-#{$breakpoint-name}-right-#{$i} {
+          @include offset(right, $i, $breakpoint-name);
+        }
+
+        .offset-#{$breakpoint-name}-left-#{$i} {
+          @include offset(left, $i, $breakpoint-name);
+        }
+      }
+    }
+
+    // генерация "автосмещающих" классов, правила в которых применяются в медиазапросах
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      .offset-#{$breakpoint-name}-right-auto {
+        @include offset(right, auto, $breakpoint-name);
+      }
+
+      .offset-#{$breakpoint-name}-left-auto {
+        @include offset(left, auto, $breakpoint-name);
+      }
+    }
+
+    .offset-right-auto {
+      @include offset(right);
+    }
+
+    .offset-left-auto {
+      @include offset(left);
     }
   }`
   ],

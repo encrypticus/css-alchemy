@@ -55,6 +55,14 @@
     border-radius: 5px;
     letter-spacing: 1px;
   }
+
+  &__row {
+
+    &_colored {
+      background-color: #d4d4d4;
+      margin-bottom: 10px;
+    }
+  }
 }
 
 .wrap {
@@ -67,16 +75,6 @@
 .footer {
   @include row;
 }
-
-//.logo,
-//.nav,
-//.login,
-//.sidebar,
-//.content,
-//.about,
-//.email {
-//  @include col;
-//}
 
 .hljs {
   background-color: #eaeaea;
