@@ -19,3 +19,278 @@ include _snippets/snippets
   const html = snippets.grid.html;
   const sass = snippets.grid.sass;
   const bash= snippets.grid.bash;
+
+p.post__text
+  | В <a class='post__link' href='/css-alchemy/2020/06/25/grid-tutorial-hide-show/'>предыдущей</a> статье мы добавили в
+  | нашу библиотеку модуль, позволяющий скрывать и отображать элементы. Последний модуль, который мы реализуем в нашей
+  | библиотеке, позволит нам управлять внешними отступами элементов сетки.
+  | Если быть точным, модуль даст нам возможность обнулять заданные элементам марджины. Ведь, как мы помним, по умолчанию
+  | колонки сетки имеют горизонтальные и нижний вертикальный отступы. Но может возникнуть ситуация, когда нам нужно обнулить
+  | только горизонтальные или только вертикальные марджины у одной колонки, или обнулить определённые марджины у колонок
+  | в одном из рядов сетки, или же вовсе обнулить отступы у всех колонок у одной сетки на странице, не касаясь колонок другой
+  | сетки. Некоторые из миксинов модуля, как мы увидим, будет возможно применять не только к колонкам сетки, но и при
+  | необходимости к любому элементу на странице. Итак, добавим в директорию <span class='code'>mixins</span> файл
+  | <span class='code'>_gutters.scss</span>. В него добавим первый миксин:
++snippet(sass[93], 'scss')
+
+p.post__text
+  | Этот миксин просто обнуляет все внешние отступы элемента, на котором он вызван. Очевидно, что миксин может быть вызван
+  | на любом элементе страницы, а не только на элементах колонок нашей сетки. Миксин принимает параметр
+  | <span class='code'>$breakpoint</span>, равный по умолчанию <span class='code'>null</span> и определяющий, будет ли
+  | сброс отступов осуществляться внутри медиазапроса. Если аргумент при вызыове будет валидным именем одного из брейкпоинтов
+  | <span class='code'>$grid-breakpoints</span>, то привило будет применено в медиавыражении. Ниже представлен пример с сеткой,
+  | состоящей из двух рядов и нескольких колонок, у которых сброшены все внешние отступы:
+.row
+  +snippet(html[17])(class='col col-laptop-md-12')
+  +snippet(sass[94], 'scss')(class='col')
+.container(style='margin-bottom: 30px')
+  .row
+    .col.no-gutters.post__col 1
+    .col.no-gutters.post__col 2
+    .col.no-gutters.post__col 3
+    .col.no-gutters.post__col 4
+  .row
+    .col.no-gutters.post__col 5
+    .col.no-gutters.post__col 6
+    .col.no-gutters.post__col 7
+    .col.no-gutters.post__col 8
+
+p.post__text
+  | Обратите внимание, что у колонок сброшены не только горизонтальные, но и вертикальные отступы, поэтому между рядами
+  | сетки тоже отсутствуют отступы.
+
+p.post__text Теперь добавим второй миксин, реализующий сброс только горизонтальных отступов у элементов:
++snippet(sass[95], 'scss')
+
+p.post__text
+  | Второй миксин аналогичен первому, за исключением того, что он обнуляет только горизонтальные отступы элемента, на котором
+  | он был вызван. Ниже представлен пример с сеткой, состоящей из двух рядов и нескольких колонок, у которых сброшены
+  | горизонтальные отступы:
+.row
+  +snippet(html[17])(class='col col-laptop-md-12')
+  +snippet(sass[96], 'scss')(class='col')
+.container(style='margin-bottom: 30px')
+  .row
+    .col.no-h-gutters.post__col 1
+    .col.no-h-gutters.post__col 2
+    .col.no-h-gutters.post__col 3
+    .col.no-h-gutters.post__col 4
+  .row
+    .col.no-h-gutters.post__col 5
+    .col.no-h-gutters.post__col 6
+    .col.no-h-gutters.post__col 7
+    .col.no-h-gutters.post__col 8
+
+p.post__text И третий миксин, сбрасывающий только вертикальные отступы элемента:
++snippet(sass[97], 'scss')
+
+p.post__text Пример сброса вертикальных отступов:
+.row
+  +snippet(html[17])(class='col col-laptop-md-12')
+  +snippet(sass[98], 'scss')(class='col')
+.container.page__container_no-padding(style='margin-bottom: 30px')
+  .row
+    .col.no-v-gutters.post__col 1
+    .col.no-v-gutters.post__col 2
+    .col.no-v-gutters.post__col 3
+    .col.no-v-gutters.post__col 4
+  .row
+    .col.no-v-gutters.post__col 5
+    .col.no-v-gutters.post__col 6
+    .col.no-v-gutters.post__col 7
+    .col.no-v-gutters.post__col 8
+
+p.post__text А теперь добавим миксины, реализующие сборос отступов лишь у элементов колонок сетки:
++snippet(sass[99], 'scss')
+
+p.post__text
+  | Эти три миксина, как и предыдующие три, отвечают за сброс всех отступов, только горизонтальных отступов и только
+  | вертикальных отступов соответственно. Коренное отличие в том, что данные миксины обнуляют отступы только у элементов
+  | колонок, на что укзывают селекторы <span class='code'>> .col</span> и <span class='code'>> [class*='col-']</span>.
+  | Очевидно, что данные миксины имеет смысл подключать только к элементам ряда <span class='code'>row</span>, так как
+  | селекторы указывают на прямых потомков <span class='code'>.col</span>, <span class='code'>.col-1</span>,
+  | <span class='code'>.col-2</span>, <span class='code'>.col-3</span> и т.д.
+
+p.post__text Вот примеры сброса отступов у колонок:
+
+p.post__text сброшены все отступы у колонок в первом ряду:
+.row
+  +snippet(html[17])(class='col col-laptop-md-12')
+  +snippet(sass[100], 'scss')(class='col')
+.container
+  .row.no-children-gutters
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+  .row
+    .col.post__col 5
+    .col.post__col 6
+    .col.post__col 7
+    .col.post__col 8
+
+p.post__text сброшены только горизонтальные отступы у колонок в первом ряду:
+.row
+  +snippet(html[17])(class='col col-laptop-md-12')
+  +snippet(sass[101], 'scss')(class='col')
+.container
+  .row.no-children-h-gutters
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+  .row
+    .col.post__col 5
+    .col.post__col 6
+    .col.post__col 7
+    .col.post__col 8
+
+p.post__text сброшены только вертикальные отступы у колонок в первом ряду:
+.row
+  +snippet(html[17])(class='col col-laptop-md-12')
+  +snippet(sass[102], 'scss')(class='col')
+.container.page__container_no-padding
+  .row.no-children-v-gutters
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+  .row
+    .col.post__col 5
+    .col.post__col 6
+    .col.post__col 7
+    .col.post__col 8
+
+p.post__text
+  | Теперь по аналогии с другими, написанными нами ранее модулями, реализуем генерирование классов, отвечающих за сброс
+  | отступов. В директорию <span class='code'>partials</span> добавим файл <span class='code'>gutters.scss</span> и начнём
+  | добавлять в него код:
++snippet(sass[103], 'scss')
+
+p.post__text
+  | Выше мы добавили три селектора класса, подключающие миксины, добавляющие селектору правила сброса всех марджинов, только
+  | горизонтальных марджинов и только вертикальных марджинов элемента соответственно.
+
+p.post__text Теперь добавим селекторы с миксинами, сбрасывающими отступы только у элементов колонок:
++snippet(sass[104], 'scss')
+
+p.post__text И напоследок сгенерируем классы в медиазапросах:
++snippet(sass[105], 'scss')
+
+p.post__text
+  | Классы будут сгенерированы по тому же принципу, что и в других наших модулях: по списку определённых нами брейкпоинтов
+  | осуществляется проход цикла, на каждой итерации которого генерируются селекторы вида
+  | <span class='code'>.no-gutters-desktop</span>, <span class='code'>.no-h-gutters-laptop</span>,
+  | <span class='code'>.no-children-v-gutters-phone-landscape</span> и т.д., внутри которых подключаются миксины, добавляющие
+  | селектору css-правила сброса марджинов.
+
+p.post__text Полный код файла <span class='code'>partials/gutters.scss</span>:
++snippet(sass[106], 'scss')
+
+p.post__text А теперь на примерах посмотрим, как мы можем использовать наши новые готовые классы в нашей html-разметке.
+
+p.post__text Сброс всех отступов у всех колонок сетки:
++snippet(html[18])
+.container(style='margin-bottom: 30px')
+  .row
+    .col.no-gutters.post__col 1
+    .col.no-gutters.post__col 2
+    .col.no-gutters.post__col 3
+    .col.no-gutters.post__col 4
+  .row
+    .col.no-gutters.post__col 5
+    .col.no-gutters.post__col 6
+    .col.no-gutters.post__col 7
+    .col.no-gutters.post__col 8
+
+p.post__text Сброс только горизонтальных отступов всех колонок сетки:
++snippet(html[19])
+.container
+  .row
+    .col.no-h-gutters.post__col 1
+    .col.no-h-gutters.post__col 2
+    .col.no-h-gutters.post__col 3
+    .col.no-h-gutters.post__col 4
+  .row
+    .col.no-h-gutters.post__col 5
+    .col.no-h-gutters.post__col 6
+    .col.no-h-gutters.post__col 7
+    .col.no-h-gutters.post__col 8
+
+p.post__text Сброс только вертикальных отступов всех колонок сетки:
++snippet(html[20])
+.container.page__container_no-padding(style='margin-bottom: 30px')
+  .row
+    .col.no-v-gutters.post__col 1
+    .col.no-v-gutters.post__col 2
+    .col.no-v-gutters.post__col 3
+    .col.no-v-gutters.post__col 4
+  .row
+    .col.no-v-gutters.post__col 5
+    .col.no-v-gutters.post__col 6
+    .col.no-v-gutters.post__col 7
+    .col.no-v-gutters.post__col 8
+
+p.post__text Сброс всех отступов всех колонок сетки при ширине вьюпорта 960px и ниже:
++snippet(html[21])
+.container.page__container_no-padding
+  .row
+    .col.no-gutters-laptop-md.post__col 1
+    .col.no-gutters-laptop-md.post__col 2
+    .col.no-gutters-laptop-md.post__col 3
+    .col.no-gutters-laptop-md.post__col 4
+  .row
+    .col.no-gutters-laptop-md.post__col 5
+    .col.no-gutters-laptop-md.post__col 6
+    .col.no-gutters-laptop-md.post__col 7
+    .col.no-gutters-laptop-md.post__col 8
+
+p.post__text Сброс всех отступов у колонок в первом ряду:
++snippet(html[22])
+.container
+  .row.no-children-gutters
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+  .row
+    .col.post__col 5
+    .col.post__col 6
+    .col.post__col 7
+    .col.post__col 8
+
+p.post__text Сброс всех отступов у колонок в первом ряду при ширине вьюпортм 768px и меньше:
++snippet(html[23])
+.container.page__container_no-padding
+  .row.no-children-gutters-tablet-landscape
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+  .row
+    .col.post__col 5
+    .col.post__col 6
+    .col.post__col 7
+    .col.post__col 8
+
+p.post__text Сброс горизонтальных отступов у второй колонки:
++snippet(html[24])
+.container.page__container_no-padding
+  .row
+    .col.post__col 1
+    .col.no-h-gutters.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+
+p.post__text Сброс горизонтальных отступов у второй и третьей колонок при ширине вьюпорта 1024px и ниже:
++snippet(html[25])
+.container.page__container_no-padding
+  .row
+    .col.post__col 1
+    .col.no-h-gutters-laptop.post__col 2
+    .col.no-h-gutters-laptop.post__col 3
+    .col.post__col 4
+
+p.post__text
+  | В заключительной части нашего руководства мы поговорим про оптимизацию кода скомпилированного css-файла
+  | нашей библиотеки. Читайте <a class='post__link' href='/css-alchemy/2020/06/27/grid-tutorial-optimization/'>продолжение</a>.

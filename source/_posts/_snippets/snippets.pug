@@ -260,6 +260,136 @@ include ../_utils/replacement
       <div class="col">5</div>
       <div class="col hide-laptop-md">6</div>
     </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col">1</div>
+      <div class="col">2</div>
+      <div class="col">3</div>
+      <div class="col">4</div>
+    </div>
+
+    <div class="row">
+      <div class="col">5</div>
+      <div class="col">6</div>
+      <div class="col">7</div>
+      <div class="col">8</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col no-gutters">1</div>
+      <div class="col no-gutters">2</div>
+      <div class="col no-gutters">3</div>
+      <div class="col no-gutters">4</div>
+    </div>
+
+    <div class="row">
+      <div class="col no-gutters">5</div>
+      <div class="col no-gutters">6</div>
+      <div class="col no-gutters">7</div>
+      <div class="col no-gutters">8</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col no-h-gutters">1</div>
+      <div class="col no-h-gutters">2</div>
+      <div class="col no-h-gutters">3</div>
+      <div class="col no-h-gutters">4</div>
+    </div>
+
+    <div class="row">
+      <div class="col no-h-gutters">5</div>
+      <div class="col no-h-gutters">6</div>
+      <div class="col no-h-gutters">7</div>
+      <div class="col no-h-gutters">8</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col no-v-gutters">1</div>
+      <div class="col no-v-gutters">2</div>
+      <div class="col no-v-gutters">3</div>
+      <div class="col no-v-gutters">4</div>
+    </div>
+
+    <div class="row">
+      <div class="col no-v-gutters">5</div>
+      <div class="col no-v-gutters">6</div>
+      <div class="col no-v-gutters">7</div>
+      <div class="col no-v-gutters">8</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col no-gutters-laptop-md">1</div>
+      <div class="col no-gutters-laptop-md">2</div>
+      <div class="col no-gutters-laptop-md">3</div>
+      <div class="col no-gutters-laptop-md">4</div>
+    </div>
+
+    <div class="row">
+      <div class="col no-gutters-laptop-md">5</div>
+      <div class="col no-gutters-laptop-md">6</div>
+      <div class="col no-gutters-laptop-md">7</div>
+      <div class="col no-gutters-laptop-md">8</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row no-children-gutters">
+      <div class="col">1</div>
+      <div class="col">2</div>
+      <div class="col">3</div>
+      <div class="col">4</div>
+    </div>
+
+    <div class="row">
+      <div class="col">5</div>
+      <div class="col">6</div>
+      <div class="col">7</div>
+      <div class="col">8</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row no-children-gutters-tablet-landscape">
+      <div class="col">1</div>
+      <div class="col">2</div>
+      <div class="col">3</div>
+      <div class="col">4</div>
+    </div>
+
+    <div class="row">
+      <div class="col">5</div>
+      <div class="col">6</div>
+      <div class="col">7</div>
+      <div class="col">8</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col">1</div>
+      <div class="col no-h-gutters">2</div>
+      <div class="col">3</div>
+      <div class="col">4</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col">1</div>
+      <div class="col no-h-gutters-laptop">2</div>
+      <div class="col no-h-gutters-laptop">3</div>
+      <div class="col">4</div>
+    </div>
   </div>`
   ],
 
@@ -1942,6 +2072,219 @@ include ../_utils/replacement
     @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
       .show-#{$breakpoint-name} {
         @include show(initial, $breakpoint-name);
+      }
+    }
+  }`,
+
+  `@mixin no-gutters($breakpoint: null) {
+    @if map_has_key($grid-breakpoints, $breakpoint) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        margin: 0 !important;
+      }
+    } @else {
+      margin: 0 !important;
+    }
+  }`,
+
+  `.col {
+    @include no-gutters;
+  }`,
+
+  `@mixin no-h-gutters($breakpoint: null) {
+    @if map_has_key($grid-breakpoints, $breakpoint) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+      }
+    } @else {
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+    }
+  }`,
+
+  `.col {
+    @include no-h-gutters;
+  }`,
+
+  `@mixin no-v-gutters($breakpoint: null) {
+    @if map_has_key($grid-breakpoints, $breakpoint) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+      }
+    } @else {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+  }`,
+
+  `.col {
+    @include no-v-gutters;
+  }`,
+
+  `// обнуляет внешние отступы колонок сетки
+  @mixin no-children-gutters($breakpoint: null) {
+    @if map_has_key($grid-breakpoints, $breakpoint) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        > .col,
+        > [class*='col-'] {
+          margin: 0 !important;
+        }
+      }
+    } @else {
+      > .col,
+      > [class*='col-'] {
+        margin: 0 !important;
+      }
+    }
+  }
+
+  // обнуляет внешние горизонтальные отступы колонок сетки
+  @mixin no-children-h-gutters($breakpoint: null) {
+    @if map_has_key($grid-breakpoints, $breakpoint) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        > .col,
+        > [class*='col-'] {
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+        }
+      }
+    } @else {
+      > .col,
+      > [class*='col-'] {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    }
+  }
+
+  // обнуляет внешние вертикальные отступы колонок сетки
+  @mixin no-children-v-gutters($breakpoint: null) {
+    @if map_has_key($grid-breakpoints, $breakpoint) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        > .col,
+        > [class*='col-'] {
+          margin-bottom: 0 !important;
+        }
+      }
+    } @else {
+      > .col,
+      > [class*='col-'] {
+        margin-bottom: 0 !important;
+      }
+    }
+  }`,
+
+  `.row:first-child {
+    @include no-children-gutters;
+  }`,
+
+  `.row:first-child {
+    @include no-children-h-gutters;
+  }`,
+
+  `.row:first-child {
+    @include no-children-v-gutters;
+  }`,
+
+  `.no-gutters {
+    @include no-gutters;
+  }
+
+  .no-h-gutters {
+    @include no-h-gutters;
+  }
+
+  .no-v-gutters {
+    @include no-v-gutters;
+  }`,
+
+  `.no-children-gutters {
+    @include no-children-gutters;
+  }
+
+  .no-children-h-gutters {
+    @include no-children-h-gutters;
+  }
+
+  .no-children-v-gutters {
+    @include no-children-v-gutters
+  }`,
+
+  `@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .no-gutters-#{$breakpoint-name} {
+      @include no-gutters($breakpoint-name);
+    }
+
+    .no-h-gutters-#{$breakpoint-name} {
+      @include no-h-gutters($breakpoint-name);
+    }
+
+    .no-v-gutters-#{$breakpoint-name} {
+      @include no-v-gutters($breakpoint-name);
+    }
+
+    .no-children-gutters-#{$breakpoint-name} {
+      @include no-children-gutters($breakpoint-name);
+    }
+
+    .no-children-h-gutters-#{$breakpoint-name} {
+      @include no-children-h-gutters($breakpoint-name);
+    }
+
+    .no-children-v-gutters-#{$breakpoint-name} {
+      @include no-children-v-gutters($breakpoint-name);
+    }
+  }`,
+
+  `@if (index($partials, gutters)) {
+    .no-gutters {
+      @include no-gutters;
+    }
+
+    .no-h-gutters {
+      @include no-h-gutters;
+    }
+
+    .no-v-gutters {
+      @include no-v-gutters;
+    }
+
+    .no-children-gutters {
+      @include no-children-gutters;
+    }
+
+    .no-children-h-gutters {
+      @include no-children-h-gutters;
+    }
+
+    .no-children-v-gutters {
+      @include no-children-v-gutters
+    }
+
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      .no-gutters-#{$breakpoint-name} {
+        @include no-gutters($breakpoint-name);
+      }
+
+      .no-h-gutters-#{$breakpoint-name} {
+        @include no-h-gutters($breakpoint-name);
+      }
+
+      .no-v-gutters-#{$breakpoint-name} {
+        @include no-v-gutters($breakpoint-name);
+      }
+
+      .no-children-gutters-#{$breakpoint-name} {
+        @include no-children-gutters($breakpoint-name);
+      }
+
+      .no-children-h-gutters-#{$breakpoint-name} {
+        @include no-children-h-gutters($breakpoint-name);
+      }
+
+      .no-children-v-gutters-#{$breakpoint-name} {
+        @include no-children-v-gutters($breakpoint-name);
       }
     }
   }`
