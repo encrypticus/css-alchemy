@@ -19,3 +19,189 @@ include _snippets/snippets
   const html = snippets.grid.html;
   const sass = snippets.grid.sass;
   const bash= snippets.grid.bash;
+
+p.post__text
+  | В <a class='post__link' href='/css-alchemy/2020/06/23/grid-tutorial-offset/'>предыдущей</a> части цикла я описал
+  | процесс создания модуля, добавляющего в библиотеку возможность задавать смещение колонкам. Следующий модуль нашей
+  | библиотеки, который мы реализуем – это упорядочивание колонок. Упорядочивание колонок – это задание
+  | колонкам порядка их следования внутри ряда. Примеры ниже демонстрируют изменение порядка расположения колонок.
+
+p.post__text Первая колонка расположена на втором месте:
+.container(style='padding: 0')
+  .row
+    .col.order-2.post__col 1
+    .col.order-1.post__col 2
+    .col.order-3.post__col 3
+    .col.order-4.post__col 4
+
+p.post__text Последняя колонка расположена на первом месте:
+.container(style='padding: 0')
+  .row
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.order-first.post__col 4
+
+p.post__text Первая колонка расположена на последнем месте:
+.container(style='padding: 0')
+  .row
+    .col.order-last.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+
+p.post__text Пятая колонка расположена на шестом месте:
+.container(style='padding: 0')
+  .row.direction-column
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+    .col.order-last.post__col 5
+    .col.post__col 6
+
+p.post__text А теперь добавим данный модуль в нашу библиотеку.
+
+p.post__text
+  | В директорию <span class='code'>mixins</span> добавим файл <span class='code'>_ordering.scss</span>, в котором начнём
+  | писать миксин, реализующий необходимый функционал.
+
+p.post__text
+  | Нам известно, что наши колонки являются флекс-элементами внутри флекс-контейнера ряда. Поэтому очевидно, что изменения
+  | порядка следования колонок мы можем добиться, устанавливая различные значения для их css-свойства
+  | <span class='code'>order</span>. Итак, миксин:
++snippet(sass[75], 'scss')
+
+p.post__text
+  | На вход миксин принимает два параметра. Первый параметр <span class='code'>$order</span> – это целое число, определяющее
+  | порядок следования ячейки: чем меньше число, тем ближе к началу ряда будет расположена ячейка. Если при вызове
+  | миксина в него будет передан второй аргумент $breakpoint, и при этом его значение будет соотвествовать
+  | одному из имен ключей глобального массива $grid-breakpoints, то правило упорядочивания будет срабытывать лишь в медиазапросе.
+
++snippet(sass[76], 'scss')
+p.post__text
+  | В примере выше мы определили два условия, защищающие нас от случаев, когда пользователь первым аргументом передаст число,
+  | которое будет больше, чем общее число колонок сетки, либло меньше нуля. Это нужно потому, что ниже мы создадим ещё два
+  | миксина, один из которых служит для расположения колонки в начале ряда, а другой – в конце. И если мы не предусмотрим
+  | подобной защиты, то эти дополнительные миксины могут не работать должным образом. Итак, код из первого
+  | <span class='code'>@if</span> присваивает параметру <span class='code'>$order</span> значение
+  | <span class='code'>$columns</span> – общее число колонок, если при вызове миксина первым аргументом было передано число,
+  | превышающее <span class='code'>$columns</span>.
+  | Код из второго <span class='code'>@if</span> устанавливает параметр <span class='code'>$order</span> в ноль, если при
+  | вызове миксина первым аргументом ему было передано отрицательное число.
+
++snippet(sass[77], 'scss')
+p.post__text
+  | В десятой строке мы имеем условие – если при подключении миксина вторым аргументом ему было передано существующее имя
+  | брейкпоинта из списка <span class='code'>$grid-breakpoints</span>, то правило упорядочивания будет обёрнуто в медиазапрос.
+
+p.post__text Дальше добавим уже упомянутые ранне миксины, отвечающие за расположение колонок в начале и конце ряда:
++snippet(sass[78], 'scss')
+p.post__text
+  | Миксин <span class='code'>order-first</span> располагает колонку в начале ряда. Это достигается за счёт того, что свойству
+  | <span class='code'>order</span> элемента значение устанавливается в -1. Ну и единственный параметр
+  | <span class='code'>$breakpoint</span> определяет, будет ли правило обёрнуто в директиву <span class='code'>@media</span>.
+
+p.post__text Следующий миксин по принципу действия очень похож на предыдущий:
++snippet(sass[79], 'scss')
+
+p.post__text
+  | Отличие в том, что свойство <span class='code'>order</span> элемента он устанавливает равным <span class='code'>$columns</span>
+  | плюс единица. То есть свойство <span class='code'>order</span> всегда будет на единицу больше общего числа колонок, что
+  | позволит гарантированно располагать колонку в конце ряда.
+
+p.post__text Примеры:
+
+p.post__text Первая колонка окажется в конце ряда, когда размер вьюпорта уменьшится до 960px:
++snippet(sass[85], 'scss')
+.container.page__container_no-padding
+  .row
+    .col.order-laptop-md-last.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+
+p.post__text Последняя колонка переместится в начало ряда, когда размер вьюпорта уменьшится до 768px:
++snippet(sass[86], 'scss')
+.container.page__container_no-padding
+  .row
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.order-tablet-landscape-first.post__col 4
+
+p.post__text
+  | Ну и по традиции добавим автоматическую генерацию "упорядочивающих" классов. Добавим в директорию <span class='code'>partials</span>
+  | файл <span class='code'>ordering.scss</span>:
++snippet(sass[80], 'scss')
+
+p.post__text
+  | Этот цикл сгенерирует набор селекторов классов вида <span class='code'>.order-0</span>, <span class='code'>.order-1</span>,
+  | <span class='code'>.order-2</span> и т.д. и правила для них.
+
+p.post__text
+  | Далее нам нужно сгенерировать набор "адаптивных упорядочивающих" классов. Для этого добавим миксин следующего содержания:
++snippet(sass[81], 'scss')
+
+p.post__text
+  | Миксин в цикле проходится по списку наших глобальных брейкпоинтов, генерирует селекторы классов вида
+  | <span class='code'>.order-desktop-3</span>, <span class='code'>.order-tablet-8</span>, <span class='code'>.order-laptop-md-2</span>
+  | и т.д. и внутри каждого селектора вызывает миксин <span class='code'>order</span>, передавая в него число порядка следования
+  | колонки и имя брейкпоинта, тем самым формируя правила для селектора.
+
+p.post__text
+  | Также создадим два готовых селектора класса, ответственных за расположение колонки в самом конце и самом начале ряда:
++snippet(sass[82], 'scss')
+
+p.post__text
+  | Полагаю, эти классы не нуждаются в подробном рассмотрении, так как они всего лишь подключают созданные нами ранее миксины,
+  | которые как раз и добавляют правила расположения колонок.
+
+p.post__text И конечно не забудем сгенерировать для этих классов их "адаптивные" варианты:
++snippet(sass[83], 'scss')
+
+p.post__text
+  | Циклом мы проходимся по списку брейкпоинтов и формируем селекторы классов вида <span class='code'>.order-desktop-last</span>,
+  | <span class='code'>.order-desktop-first</span>, <span class='code'>.order-phone-sm-first</span>,
+  | <span class='code'>.order-laptop-last</span> и т.д. Внутри селекторов мы подключаем миксины <span class='code'>order-first</span>
+  | и <span class='code'>order-last</span> соответственно, в которые на каждом проходе цикла передаём имена наших брейкпоинтов.
+
+p.post__text Полный код файла <span class='code'>partials/ordering.scss</span> с подробными комментариями:
++snippet(sass[84], 'scss')
+
+p.post__text Теперь мы можем задавать порядок расположения колонок прямо в html-разметке:
++snippet(html[11])
+.container.page__container_no-padding
+  .row
+    .col.order-laptop-md-last.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.post__col 4
+
++snippet(html[12])
+.container.page__container_no-padding
+  .row
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.order-tablet-landscape-first.post__col 4
+
++snippet(html[13])
+.container.page__container_no-padding
+  .row
+    .col.order-4.post__col 1
+    .col.order-3.post__col 2
+    .col.order-2.post__col 3
+    .col.order-1.post__col 4
+
++snippet(html[14])
+.container.page__container_no-padding
+  .row
+    .col.order-1.order-laptop-md-2.post__col 1
+    .col.order-2.order-laptop-md-1.post__col 2
+    .col.order-3.post__col 3
+    .col.order-4.post__col 4
+
+p.post__text
+  | Читайте <a class='post__link' href='/css-alchemy/2020/06/25/grid-tutorial-hide-show/'>шестую часть</a> цикла, в
+  | которой мы добавим в нашу библиотеку ещё один модуль.

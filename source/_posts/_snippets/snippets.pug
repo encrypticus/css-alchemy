@@ -202,6 +202,42 @@ include ../_utils/replacement
     <div class="row">
       <div class="col-1 offset-right-10">of-10</div>
     </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col order-laptop-md-last">1</div>
+      <div class="col">2</div>
+      <div class="col">3</div>
+      <div class="col">4</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col">1</div>
+      <div class="col">2</div>
+      <div class="col">3</div>
+      <div class="col order-tablet-landscape-first">4</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col order-4">1</div>
+      <div class="col order-3">2</div>
+      <div class="col order-2">3</div>
+      <div class="col order-1">4</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col order-1 order-laptop-md-2">1</div>
+      <div class="col order-2 order-laptop-md-1">2</div>
+      <div class="col order-3">3</div>
+      <div class="col order-4">4</div>
+    </div>
   </div>`
   ],
 
@@ -1659,6 +1695,156 @@ include ../_utils/replacement
     .offset-left-auto {
       @include offset(left);
     }
+  }`,
+
+  `@mixin order($order: 0, $breakpoint: null) {
+    //...
+  }`,
+
+  `@mixin order($order: 0, $breakpoint: null) {
+    @if ($order > $columns) {
+      $order: $columns;
+    }
+
+    @if ($order < 0) {
+      $order: 0;
+    }
+
+    //...
+  }`,
+
+  `@mixin order($order: 0, $breakpoint: null) {
+    @if ($order > $columns) {
+      $order: $columns;
+    }
+
+    @if ($order < 0) {
+      $order: 0;
+    }
+
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        order: $order;
+      }
+    } @else {
+      order: $order;
+    }
+  }`,
+
+  `@mixin order-first($breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        order: -1;
+      }
+    } @else {
+      order: -1;
+    }
+
+  }`,
+
+  `@mixin order-last($breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        order: $columns + 1;
+      }
+    } @else {
+      order: $columns + 1;
+    }
+  }`,
+
+  `@for $i from 0 through $columns {
+    .order-#{$i} {
+      order: #{$i};
+    }
+  }`,
+
+  `@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    @for $i from 0 through $columns {
+      .order-#{$breakpoint-name}-#{$i} {
+        @include order($i, $breakpoint-name);
+      }
+    }
+  }`,
+
+  `.order-first {
+    @include order-first;
+  }
+
+  .order-last {
+    @include order-last;
+  }`,
+
+  `@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .order-#{$breakpoint-name}-first {
+      @include order-first($breakpoint-name);
+    }
+  }
+
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .order-#{$breakpoint-name}-last {
+      @include order-last($breakpoint-name);
+    }
+  }`,
+
+  `@if (index($partials, ordering)) {
+
+    /*
+    Генерация "упорядочавающих" классов и правил для них: order-1, order-2, order-3 и т.д. согласно количеству заданных
+    колонок $columns
+    */
+    @for $i from 0 through $columns {
+      .order-#{$i} {
+        order: #{$i};
+      }
+    }
+
+    /*
+      Генерация "упорядочивающих" классов в медиазапросах и правил для них: order-desktop-3, order-tablet-8, order-laptop-md-2 и т.д.
+      согласно количеству заданных колонок $columns и значениям для медиазапросов $grid-breakpoints
+    */
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      @for $i from 0 through $columns {
+        .order-#{$breakpoint-name}-#{$i} {
+          @include order($i, $breakpoint-name);
+        }
+      }
+    }
+
+    /*
+      Генерация "упорядочивающих" классов, перемещающих колонку в самое начало ряда, в медиазапросах: order-desktop-first,
+      order-laptop-first, order-phone-sm-first и т.д. согласно заданным значениям в глобальном массиве $grid-breakpoints
+    */
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      .order-#{$breakpoint-name}-first {
+        @include order-first($breakpoint-name);
+      }
+    }
+
+    /*
+      Генерация "упорядочивающих" классов, перемещающих колонку в самый конец ряда, в медиазапросах: order-desktop-last,
+      order-laptop-last, order-phone-sm-last и т.д. согласно заданным значениям в глобальном массиве $grid-breakpoints
+    */
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      .order-#{$breakpoint-name}-last {
+        @include order-last($breakpoint-name);
+      }
+    }
+
+    .order-first {
+      @include order-first;
+    }
+
+    .order-last {
+      @include order-last;
+    }
+  }`,
+
+  `.col:first-child {
+    @include order(last, laptop-md);
+  }`,
+
+  `.col:last-child {
+    @include order(first, tablet-landscape);
   }`
   ],
 

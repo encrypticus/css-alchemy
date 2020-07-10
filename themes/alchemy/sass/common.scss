@@ -86,6 +86,13 @@ html, body {
       }
     }
   }
+
+  &__container {
+
+    &_no-padding {
+      padding: 0 !important;
+    }
+  }
 }
 
 .wrapper {
