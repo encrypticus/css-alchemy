@@ -238,6 +238,28 @@ include ../_utils/replacement
       <div class="col order-3">3</div>
       <div class="col order-4">4</div>
     </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col">1</div>
+      <div class="col">2</div>
+      <div class="col">3</div>
+      <div class="col">4</div>
+      <div class="col">5</div>
+      <div class="col">6</div>
+    </div>
+  </div>`,
+
+  `<div class="container">
+    <div class="row">
+      <div class="col">1</div>
+      <div class="col hide-laptop-md">2</div>
+      <div class="col">3</div>
+      <div class="col hide-laptop-md">4</div>
+      <div class="col">5</div>
+      <div class="col hide-laptop-md">6</div>
+    </div>
   </div>`
   ],
 
@@ -1845,6 +1867,83 @@ include ../_utils/replacement
 
   `.col:last-child {
     @include order(first, tablet-landscape);
+  }`,
+
+  `@mixin hide($breakpoint: null) {
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        display: none;
+      }
+    } @else {
+      display: none;
+    }
+  }`,
+
+  `.col:nth-child(4),
+  .col:nth-child(5),
+  .col:nth-child(6) {
+    @include hide(laptop-md);
+  }`,
+
+  `@if (index($partials, hide)) {
+
+    .hide {
+      @include hide();
+    }
+
+    /*
+      Генерация "скрывающих" классов в медиазапросах исходя из глобального массива $grid-breakpoints, содержащего значения
+      для медиазапросов
+    */
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      .hide-#{$breakpoint-name} {
+        @include hide($breakpoint-name);
+      }
+    }
+  }`,
+
+  `/* Отображение скрытых элементов */
+
+  /*
+    Устанавливает свойство display у элемента, на котором вызван миксин. Если значение аргумента $breakpoint соответствует
+    одному из имен ключей глобального массива $grid-breakpoints, правило будет применено в соответствующем медиазапросе
+  */
+  @mixin show($display: initial, $breakpoint: null) {
+    @if ($display == none) {
+      $display: initial;
+    }
+
+    @if (map_has_key($grid-breakpoints, $breakpoint)) {
+      @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+        display: $display;
+      }
+    } @else {
+      display: $display;
+    }
+  }`,
+
+  `.col:nth-child(4),
+   .col:nth-child(5),
+   .col:nth-child(6) {
+     @include hide;
+     @include show(laptop-md);
+  }`,
+
+  `@if (index($partials, show)) {
+
+    .show {
+      @include show(initial);
+    }
+
+    /*
+      Генерация "отображающих" классов в медиазапросах исходя из глобального объекта со значениями для медиазапросов
+      $grid-breakpoints
+    */
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      .show-#{$breakpoint-name} {
+        @include show(initial, $breakpoint-name);
+      }
+    }
   }`
   ],
 

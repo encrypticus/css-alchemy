@@ -19,3 +19,138 @@ include _snippets/snippets
   const html = snippets.grid.html;
   const sass = snippets.grid.sass;
   const bash= snippets.grid.bash;
+
+p.post__text
+  | В <a class='post__link' href='/css-alchemy/2020/06/24/grid-tutorial-ordering/'>предыдущей</a> части мы добавили
+  | модуль, позволяющий нам переупорядочивать элементы внутри сетки. В этой части мы добавим модуль, который даст нам
+  | возможность скрывать и отображать элементы сетки. Для чего может пригодиться данный
+  | модуль? Например для организации мобильного меню на сайте – на малых разрешениях экрана меню будет скрыто, а на больших
+  | разрешениях будет отображаться как обычно. Конечно, можно скрывать не только элементы сетки, но и другие элементы на
+  | странице. Но стоит отметить, что касательно сетки имеет смысл скрывать лишь её элементы колонок. Пример ниже
+  | демонстрирует концепцию скрытия элементов. При уменьшении ширины вьюпорта до 960px и меньше, вторая и четвёртая колонка
+  | будут скрыты:
+.container.page__container_no-padding
+  .row
+    .col.post__col 1
+    .col.hide-laptop-md.post__col 2
+    .col.post__col 3
+    .col.hide-laptop-md.post__col 4
+
+p.post__text
+  | А вот ещё пример, в котором имеется шапка сайта, содержащая два элемента – логотип и навигационное меню. Если
+  | уменьшить окно браузера до 768px, то меню будет скрыто и отобразится мобильное меню-гамбрургер:
+.container.page__container_no-padding
+  .row.justify-content-tablet-landscape-between
+    .col-3.post__col logo
+    .col.hide-tablet-landscape.post__col nav
+    .col-3.hide.show-tablet-landscape.post__col burger
+
+p.post__text
+  | Давайте напишем миксин, реализующий данный функционал. В директорию <span class='code'>mixins</span> добавим файл
+  | <span class='code'>_hide.scss</span> и в нём напишем:
++snippet(sass[87], 'scss')
+
+p.post__text
+  | Миксин <span class='code'>hide</span> принимает на вход единственный параметр <span class='code'>$breakpoint</span>, по
+  | умолчанию равный <span class='code'>null</span>. Этот параметр отвечает за то, будут ли css-правила, добавляемые к
+  | подключающему миксин элемнту обёрнуты в директиву <span class='code'>@media</span>. Иными словами, будут ли правила
+  | применены внутри медиазапроса. И если при подключении миксина аргументом ему будет передано валидное имя брейкпоинта, то
+  | скрытие элемента сработает в соответствии со значением этого брейкпоинта. Напомню, что валидным именем будет являться
+  | любой из ключей глобального массива <span class='code'>$grid-breakpoints</span>. Если же при подключении миксина ему
+  | будет передано невалидное имя брейкпоинта, или же миксин будет вызван со значением по умолчанию, то правило скрытия будет
+  | просто применено к элементу.
+
+p.post__text
+  | Ниже приведён пример, демонстрирующий миксин в действии. Для того, чтобы увидеть результат, поизменяйте размер окна
+  | браузера.
+.row
+  +snippet(html[15])(class='col col-laptop-md-12')
+  +snippet(sass[88], 'scss')(class='col')
+.container.page__container_no-padding
+  .row
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.hide-laptop-md.post__col 4
+    .col.hide-laptop-md.post__col 5
+    .col.hide-laptop-md.post__col 6
+
+p.post__text
+  | И конечно, нам нужно реализовать генерацию готовых классов. Добавим в директорию <span class='code'>partials</span> файл
+  | <span class='code'>hide.scss</span>, в котором напишем:
++snippet(sass[89], 'scss')
+
+p.post__text
+  | Миксин генерирует селектор класса <span class='code'>.hide</span>, внутри которого подключается наш миксин. И так как
+  | миксин подключен без явной передачи ему аргумента, то внутрь селектора просто добавится css-правило, скрывающее элемент.
+
+p.post__text
+  | Затем в цикле по массиву <span class='code'>$grid-breakpoints</span> происходит генерирование селекторов классов вида
+  | <span class='code'>.hide-desktop</span>, <span class='code'>.hide-laptop</span>, <span class='code'>.hide-phone</span>,
+  | <span class='code'>.hide-tablet-landscape</span> и т.д., внутри которых наш миксин подключается уже с передачей ему
+  | имён брейкпоинтов.
+
+p.post__text Испытаем наши сгенерированные классы. Как и в предыдущих примерах, поизменяйте окно браузера.
++snippet(html[16])
+.container.page__container_no-padding
+  .row
+    .col.post__col 1
+    .col.hide-laptop-md.post__col 2
+    .col.post__col 3
+    .col.hide-laptop-md.post__col 4
+    .col.post__col 5
+    .col.hide-laptop-md.post__col 6
+
+p.post__text
+  | А теперь напишем код, позволяющий отображать скрытые ранее элементы. В директорию <span class='code'>mixins</span>
+  | добавим файл <span class='code'>_show.scss</span> и в нём напишем такой миксин:
++snippet(sass[90], 'scss')
+
+p.post__text
+  | По принципу дейтсвия этот миксин схож с миксином <span class='code'>hide</span>. Отличие в том, что он производит действие,
+  | обратное миксину <span class='code'>hide</span> – он отображает скрытые элементы. Это достигается за счёт установления
+  | свойства <span class='code'>display</span> элемента в значение <span class='code'>initial</span>, которое сбрасывает
+  | свойство в начальное значение. Например, если для элемента <span class='code'>div</span> было установлено
+  | <span class='code'>display: none</span>, то <span class='code'>display: initial</span> установит
+  | <span class='code'>display</span> в <span class='code'>block</span>. Для элемента <span class='code'>span</span>
+  | <span class='code'>display: initial</span> установит <span class='code'>display</span> в <span class='code'>inline</span>.
+
+p.post__text
+  | Обращу внимание на блок с условием на восьмой строке. Это условие защищает нас от ситуации, когда пользователь
+  | библиотеки первым аргументом решит передать ключевое слово <span class='code'>none</span>. В таком случае параметр
+  | <span class='code'>$display</span> будет установлен в <span class='code'>initial</span>.
+
+p.post__text Ниже приведён пример, демонстрирующий отображение скрытых элементов при изменении размера вьюпорта.
+.row
+  +snippet(html[15])(class='col col-laptop-md-12')
+  +snippet(sass[91], 'scss')(class='col')
+.container.page__container_no-padding
+  .row
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.hide.show-laptop-md.post__col 4
+    .col.hide.show-laptop-md.post__col 5
+    .col.hide.show-laptop-md.post__col 6
+
+p.post__text
+| Генерацию "отображающих" классов мы поместим в файл <span class='code'>show.scss</span> в директории
+| <span class='code'>partials</span>:
++snippet(sass[92], 'scss')
+
+p.post__text
+  | Думаю, что код не нуждается в особых пояснениях, потому как он аналогичен коду из предыдущего примера. Теперь мы можем
+  | добавлять наши сгенерированные классы в разметку. Результат будет тем же, что и в предыдущем примере:
++snippet(html[16])
+.container.page__container_no-padding
+  .row
+    .col.post__col 1
+    .col.post__col 2
+    .col.post__col 3
+    .col.hide.show-laptop-md.post__col 4
+    .col.hide.show-laptop-md.post__col 5
+    .col.hide.show-laptop-md.post__col 6
+
+p.post__text
+  | Продолжение читайте в <a class='post__link' href='/css-alchemy/2020/06/26/grid-tutorial-gutters/'>следующей</a> части,
+  | в которой мы добавим последний важный модуль нашей библиотеки
