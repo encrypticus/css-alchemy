@@ -22,7 +22,7 @@ const paths = {
   sassTheme: ['themes/alchemy/sass/common.scss', 'themes/alchemy/sass/index.scss'],
   stylelint: ['source/_posts/**/*.scss', 'themes/alchemy/layout/**/*.scss'],
   fonts: 'themes/alchemy/fonts/*',
-  clean: ['themes/alchemy/source/**', '!themes/alchemy/source/**/*.js']
+  clean: ['themes/alchemy/source/**', '!themes/alchemy/source/**/*.js', '!themes/alchemy/source/CNAME']
 };
 
 // Очистка папки сборки
