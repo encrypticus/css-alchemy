@@ -3,7 +3,7 @@ import '../../../../../webpack-boilerplate/node_modules/mmenu-js';
 const mmenu = new Mmenu('#mmenu', {
   extensions: ['position-right', 'theme-dark'],
   navbar: {
-    title: '<a class="mmenu__logo" href="./">css alchemy</a>',
+    title: '<a class="mmenu__logo" href="/">frontend alchemy</a>',
   },
   onClick: {
     close: true,
