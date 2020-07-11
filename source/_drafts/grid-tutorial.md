@@ -3111,3 +3111,222 @@ partials/offset.scss:
 }
 ```
 А теперь на примерах посмотрим, как мы можем использовать наши новые готовые классы в нашей html-разметке: 
+
+```html
+примеры
+```
+
+# Компиляция
+
+В предыдущей части мы реализовали последний модуль нашей библиотеки. В заключительной части мы сосредоточимся на 
+компиляции исходных sass-файлов в файл css и поговорим о его оптимизации.
+На данный момент мы имеем готовую, полностью законченную библиотеку, реализующую адаптивную сетку. Полный исходный код 
+проекта можно посмотреть на [github](https://github.com/encrypticus/flexbox-grid-pro). Для компиляции исходников я буду 
+использовать таск-менеджер Gulp.
+
+Для начала установим утилиту командной строки Gulp: 
+```js
+npm i --global gulp-cli
+```
+В корневой директории библиотеки <span class='code'>grid/</span> создадим файл <span class='code'>package.json</span>: 
+ ```js
+npm init
+```
+
+Это позволит задать имя, описание, версию проекта и другую нужную информацию.
+
+Теперь установим Gulp в наши зависимости: 
+```js
+npm i --save-dev gulp
+```
+
+Также нам потребуются некоторые дополнительные пакеты.
+
+Для компиляции sass-файлов нам понадобится плагин [gulp-sass](https://www.npmjs.com/package/gulp-sass):
+```js
+npm i --save-dev gulp-sass
+```
+
+Для оптимизации скомпилированного css-файла библиотеки на понадобится css-минификатор [csso](https://www.npmjs.com/package/gulp-csso).
+Его мы будет использовать для сборки файла <span class='code'>grid.min.css</span>:
+```js
+npm i --save-dev gulp-csso
+```
+
+При компиляции в конечном css-файле получится очень много одинаковых повторяющихся медиазапросов с разным кодом внутри: 
+```css
+@media screen and (max-width:1280px) {
+  .justify-content-desktop-start {
+    justify-content: flex-start
+  }
+}
+
+@media screen and (max-width:1280px) {
+  .justify-content-desktop-center {
+    justify-content: center
+  }
+}
+
+@media screen and (max-width:1280px) {
+  .order-desktop-0 {
+    order: 0
+  }
+}
+```
+Очевидно, что это неэффективно, так как намного увеличит размер css-файла. Для того, чтобы результат был таким:
+```css
+@media screen and (max-width:1280px) {
+  .justify-content-desktop-start {
+    justify-content: flex-start
+  }
+  .justify-content-desktop-center {
+    justify-content: center
+  }
+  .order-desktop-0 {
+    order: 0
+  }
+}
+```
+
+Мы должны установить плагин [gulp-group-css-media-queries](https://www.npmjs.com/package/gulp-group-css-media-queries): 
+```js
+npm i --save-dev gulp-group-css-media-queries
+```
+
+У нас будут две версии css-файла – неминифицированная <span class='code'>grid.css</span> и минифицированная 
+<span class='code'>grid.min.css</span>. Поэтому нужно установить плагин, позволяющий переименовывать файлы – 
+[gulp-rename](https://www.npmjs.com/package/gulp-rename):
+```js
+npm i --save-dev gulp-rename
+```
+
+Также добавим плагин [gulp-clean-css](https://www.npmjs.com/package/gulp-clean-css), который, как и csso является 
+оптимизатором. Его мы будем использовать для сборки файла <span class='code'>grid.css</span>:
+
+```js
+npm i --save-dev gulp-clean-css
+```
+
+Теперь в корень проекта добавим файл <span class='code'>gulpfile.js</span> и подключим все необходимы модули:
+
+```js
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const csso = require('gulp-csso');
+const groupCss = require('gulp-group-css-media-queries');
+const rename = require('gulp-rename');
+const cleanCss = require('gulp-clean-css');
+```
+
+Также добавим две задачи:
+
+```js
+gulp.task('development', () => {
+  return gulp.src('grid/scss/grid.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(groupCss())
+    .pipe(cleanCss({ format: 'beautify' }))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('production', () => {
+  return gulp.src('grid/scss/grid.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(groupCss())
+    .pipe(csso())
+    .pipe(rename('grid.min.css'))
+    .pipe(gulp.dest('dist'));
+});
+```
+
+Задача <span class='code'>development</span> компилирует наш главный файл библиотеки <span class='code'>grid.scss</span> 
+в файл <span class='code'>grid.css</span> и кладёт его в директорию <span class='code'>dist/</span>. Перед окончательной 
+компиляцией файл проходит через группировку медиазапросов и оптимизацию с сохранением форматирования.
+
+Задача <span class='code'>production</span> собирает файл <span class='code'>grid.min.css</span> также в директории 
+<span class='code'>dist</span>, удаляя все пробелы и переводы строк.
+
+Далее добавим задачу наблюдения за нашими scss-файлами, которая будет запускать пересборку при каждом изменении любого 
+из файлов в директории <span class='code'>scss</span> и всех её поддиректорий:
+
+```js
+gulp.task('watch', () => {
+  gulp.watch(['scss/**/*.scss'], gulp.series(['development', 'production']));
+});
+```
+
+И напоследок добавим дефолтную задачу, котороя последовательно запустит задачи <span class='code'>development</span>,
+<span class='code'>production</span> и <span class='code'>watch</span>:
+
+```js
+gulp.task('default', gulp.series(
+  'development',
+  'production',
+  gulp.series('watch')
+));
+```
+
+Полный код файла <span class='code'>gulpfile.js</span>:
+
+```js
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const csso = require('gulp-csso');
+const groupCss = require('gulp-group-css-media-queries');
+const rename = require('gulp-rename');
+const cleanCss = require('gulp-clean-css');
+
+gulp.task('development', () => {
+  return gulp.src('grid/scss/grid.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(groupCss())
+    .pipe(cleanCss({ format: 'beautify' }))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('production', () => {
+  return gulp.src('grid/scss/grid.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(groupCss())
+    .pipe(csso())
+    .pipe(rename('grid.min.css'))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('watch', () => {
+  gulp.watch(['scss/**/*.scss'], gulp.series(['development', 'production']));
+});
+
+gulp.task('default', gulp.series(
+  'development',
+  'production',
+  gulp.series('watch')
+));
+```
+
+Мы написали нашу библиотеку, используя scss-синтаксис препроцессора. Очевидно, что нам также нужна sass-версия библиотеки. 
+Поэтому нам необходимо сконвертировать все наши scss-исходники в их sass-версии. Единственный адекватный способ конвертации 
+scss в sass, что я нашёл – это утилита <span class='code'>sass convert</span>. Прикол в том, что эта утилита входит в 
+состав дистрибутива Ruby. Поэтому для установки <span class='code'>sass convert</span> придётся немного поплясать с бубном. 
+Для начала нужно установить пакет [Ruby](https://www.ruby-lang.org/ru/downloads/) для вашей версии операционной системы. 
+После установки у вас появится директория с установленным дистрибутивом Ruby. На моей Windows 10 это
+<span class='code'>Ruby27-x64</span>. Внутри директории <span class='code'>Ruby27-x64</span> находится директория 
+<span class='code'>bin</span>, в которой содержится нужный нам исполняемый файл утилиты <span class='code'>sass-convert</span>.
+Чтобы запускать утилиту из любого места системы, добавьте директорию <span class='code'>bin</span> в системную 
+переменную PATH.
+
+Теперь мы можем сконвертировать наши scss-файлы в sass. Перейдите в корневую директорию проекта <span class='code'>grid/</span> 
+и запустите следующую команду:
+
+```bash
+sass-convert -R scss --from scss --to sass
+```
+При указании опции <span class='code'>-R</span> утилита рекурсивно конвертирует все файлы в указанной директории. В нашем 
+случае это директория <span class='code'>scss</span>. Опция <span class='code'>--from</span> задаёт формат, из которого 
+производится конвертация, а <span class='code'>--to</span> – выходной формат.
+
+После конвертации в директории <span class='code'>scss</span> и её поддиректориях <span class='code'>mixins</span> и 
+<span class='code'>partials</span> рядом с scss-файлами появятся их sass-аналоги. Просто переместим их в директорию 
+<span class='code'>sass</span>: файлы <span class='code'>grid.sass</span> и <span class='code'>base.sass</span> в корень 
+директории, а миксины и части в их директории <span class='code'>mixins</span> и <span class='code'>partials</span> 
+соответственно.

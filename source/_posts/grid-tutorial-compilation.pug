@@ -1,5 +1,5 @@
 ---
-title: 'Исчерпывающее руководство по созданию модульной библиотеки, реализующей адаптивную сетку. Часть 8. Поговорим про оптимизацию.'
+title: 'Исчерпывающее руководство по созданию модульной библиотеки, реализующей адаптивную сетку. Часть 8. Компиляция.'
 date: 2020-06-27 21:26:55
 tags:
 - scss
@@ -18,4 +18,122 @@ include _snippets/snippets
 -
   const html = snippets.grid.html;
   const sass = snippets.grid.sass;
-  const bash= snippets.grid.bash;
+  const bash = snippets.grid.bash;
+  const js = snippets.grid.js;
+
+p.post__text
+  | В <a class='post__link' href='/css-alchemy/2020/06/26/grid-tutorial-gutters/'>предыдущей<a> части мы реализовали последний
+  | модуль нашей библиотеки. В заключительной части мы сосредоточимся на компиляции исходных sass-файлов в файл css и
+  | поговорим о его оптимизации. На данный момент мы имеем готовую, полностью законченную библиотеку, реализующую адаптивную
+  | сетку. Полный исходный код проекта можно посмотреть на
+  | <a class='post__link' href='https://github.com/encrypticus/flexbox-grid-pro'>github</a>. Также имеется подробная
+  | <a class='post__link' href='https://flexbox-grid-pro.github.io/grid/' target='_blank'>документация</a> на
+  | русском и английском языках. Для компиляции исходников я буду использовать таск-менеджер Gulp.
+
+p.post__text Для начала установим утилиту командной строки Gulp:
++snippet('npm i --global gulp-cli', 'bash')
+
+p.post__text В корневой директории библиотеки <span class='code'>grid/</span> создадим файл <span class='code'>package.json</span>:
++snippet('npm init', 'bash')
+
+p.post__text Это позволит задать имя, описание, версию проекта и другую нужную информацию.
+
+p.post__text Теперь установим Gulp в наши зависимости:
++snippet('npm i --save-dev gulp', 'bash')
+
+p.post__text Также нам потребуются некоторые дополнительные пакеты.
+
+p.post__text
+  | Для компиляции sass-файлов нам понадобится плагин
+  | <a class='post__link' href='https://www.npmjs.com/package/gulp-sass' target='_blank'>gulp-sass</a>:
++snippet('npm i --save-dev gulp-sass', 'bash')
+
+p.post__text
+  | Для оптимизации скомпилированного css-файла библиотеки на понадобится css-минификатор
+  | <a class='post__link' href='https://www.npmjs.com/package/gulp-csso' target='_blank'>csso</a>. Его мы будет
+  | использовать для сборки файла <span class='code'>grid.min.css</span>:
++snippet('npm i --save-dev gulp-csso', 'bash')
+
+p.post__text При компиляции в конечном css-файле получится очень много одинаковых повторяющихся медиазапросов с разным кодом внутри:
++snippet(sass[107], 'scss')
+
+p.post__text Очевидно, что это неэффективно, так как намного увеличит размер css-файла. Для того, чтобы результат был таким:
++snippet(sass[108], 'scss')
+
+p.post__text
+  | мы должны установить плагин
+  | <a class='post__link' href='https://www.npmjs.com/package/gulp-group-css-media-queries' target='_blank'>gulp-group-css-media-queries</a>:
++snippet('npm i --save-dev gulp-group-css-media-queries', 'bash')
+
+p.post__text
+  | У нас будут две версии css-файла – неминифицированная <span class='code'>grid.css</span> и минифицированная
+  | <span class='code'>grid.min.css</span>. Поэтому нужно установить плагин, позволяющий переименовывать файлы –
+  | <a class='post__link' href='https://www.npmjs.com/package/gulp-rename' target='_blank'>gulp-rename</a>:
++snippet('npm i --save-dev gulp-rename', 'bash')
+
+p.post__text
+  | Также добавим плагин <a class='post__link' href='https://www.npmjs.com/package/gulp-clean-css' target='_blank'>gulp-clean-css</a>,
+  | который, как и csso является оптимизатором. Его мы будем использовать для сборки файла <span class='code'>grid.css</span>:
++snippet('npm i --save-dev gulp-clean-css', 'bash')
+
+p.post__text Теперь в корень проекта добавим файл <span class='code'>gulpfile.js</span> и подключим все необходимы модули:
++snippet(js[0], 'js')
+
+p.post__text Также добавим две задачи:
++snippet(js[1], 'js')
+
+p.post__text
+  | Задача <span class='code'>development</span> компилирует наш главный файл библиотеки <span class='code'>grid.scss</span>
+  | в файл <span class='code'>grid.css</span> и кладёт его в директорию <span class='code'>dist/</span>. Перед окончательной
+  | компиляцией файл проходит через группировку медиазапросов и оптимизацию с сохранением форматирования.
+
+p.post__text
+  | Задача <span class='code'>production</span> собирает файл <span class='code'>grid.min.css</span> также в директории
+  | <span class='code'>dist</span>, удаляя все пробелы и переводы строк.
+
+p.post__text
+  | Далее добавим задачу наблюдения за нашими scss-файлами, которая будет запускать пересборку при каждом изменении любого
+  | из файлов в директории <span class='code'>scss</span> и всех её поддиректорий:
++snippet(js[2], 'js')
+
+p.post__text
+  | И напоследок добавим дефолтную задачу, котороя последовательно запустит задачи <span class='code'>development</span>,
+  | <span class='code'>production</span> и <span class='code'>watch</span>:
++snippet(js[3], 'js')
+
+p.post__text Полный код файла <span class='code'>gulpfile.js</span>:
++snippet(js[4], 'js')
+
+p.post__text
+  | Теперь мы можем запустить компиляцию исхдников и наблюдение за файлами командой <span class='code'>gulp</span>
+  | в консоли в нашей корневой директории <span class='code'>grid/</span>.
+
+p.post__text
+  | Мы написали нашу библиотеку, используя scss-синтаксис препроцессора. Очевидно, что нам также нужна sass-версия библиотеки.
+  | Поэтому нам необходимо сконвертировать все наши scss-исходники в их sass-версии. Единственный адекватный способ конвертации
+  | scss в sass, что я нашёл – это утилита <span class='code'>sass convert</span>. Прикол в том, что эта утилита входит в
+  | состав дистрибутива Ruby. Поэтому для установки <span class='code'>sass convert</span> придётся немного поплясать с бубном.
+  | Для начала нужно установить пакет <a class='post__link' href='https://www.ruby-lang.org/ru/downloads/' target='_blank'>Ruby</a>
+  | для вашей версии операционной системы. После установки у вас появится директория с установленным дистрибутивом Ruby.
+  | На моей Windows 10 это <span class='code'>Ruby27-x64</span>. Внутри директории <span class='code'>Ruby27-x64</span>
+  | находится директория <span class='code'>bin</span>, в которой содержится нужный нам исполняемый файл утилиты
+  | <span class='code'>sass-convert</span>. Чтобы запускать утилиту из любого места системы, добавьте директорию
+  | <span class='code'>bin</span> в системную переменную PATH.
+
+p.post__text
+  | Теперь мы можем сконвертировать наши scss-файлы в sass. Перейдите в корневую директорию проекта <span class='code'>grid/</span>
+  | и запустите следующую команду:
++snippet('sass-convert -R scss --from scss --to sass', 'bash')
+
+p.post__text
+  | При указании опции <span class='code'>-R</span> утилита рекурсивно конвертирует все файлы в указанной директории и
+  | всех её поддиректориях. В нашем случае это директория <span class='code'>scss</span>.
+  | Опция <span class='code'>--from</span> задаёт формат, из которого производится конвертация,
+  | а <span class='code'>--to</span> – выходной формат.
+
+p.post__text
+  | После конвертации в директории <span class='code'>scss</span> и её поддиректориях <span class='code'>mixins</span> и
+  | <span class='code'>partials</span> рядом с scss-файлами появятся их sass-аналоги. Просто переместим их в директорию
+  | <span class='code'>sass</span>: файлы <span class='code'>grid.sass</span> и <span class='code'>base.sass</span> в корень
+  | директории, а миксины и части в их директории <span class='code'>mixins</span> и <span class='code'>partials</span>
+  | соответственно.

@@ -2287,6 +2287,36 @@ include ../_utils/replacement
         @include no-children-v-gutters($breakpoint-name);
       }
     }
+  }`,
+
+  `@media screen and (max-width:1280px) {
+    .justify-content-desktop-start {
+      justify-content: flex-start
+    }
+  }
+
+  @media screen and (max-width:1280px) {
+    .justify-content-desktop-center {
+      justify-content: center
+    }
+  }
+
+  @media screen and (max-width:1280px) {
+    .order-desktop-0 {
+      order: 0
+    }
+  }`,
+
+  `@media screen and (max-width:1280px) {
+    .justify-content-desktop-start {
+      justify-content: flex-start
+    }
+    .justify-content-desktop-center {
+      justify-content: center
+    }
+    .order-desktop-0 {
+      order: 0
+    }
   }`
   ],
 
@@ -2299,6 +2329,76 @@ include ../_utils/replacement
       partials/ - части библиотеки, реализующие генерацию предопределённых сеточных классов
       base.scss - начальная инициализация сетки
       grid.scss - главный файл, точка входа в библиотеку`
+  ],
+
+  js: [
+  `const gulp = require('gulp');
+  const sass = require('gulp-sass');
+  const csso = require('gulp-csso');
+  const groupCss = require('gulp-group-css-media-queries');
+  const rename = require('gulp-rename');
+  const cleanCss = require('gulp-clean-css');`,
+
+  `gulp.task('development', () => {
+    return gulp.src('scss/grid.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(groupCss())
+      .pipe(cleanCss({ format: 'beautify' }))
+      .pipe(gulp.dest('dist'));
+  });
+
+  gulp.task('production', () => {
+    return gulp.src('scss/grid.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(groupCss())
+      .pipe(csso())
+      .pipe(rename('grid.min.css'))
+      .pipe(gulp.dest('dist'));
+  });`,
+
+  `gulp.task('watch', () => {
+    gulp.watch(['scss/**/*.scss'], gulp.series(['development', 'production']));
+  });`,
+
+  `gulp.task('default', gulp.series(
+    'development',
+    'production',
+    gulp.series('watch')
+  ));`,
+
+  `const gulp = require('gulp');
+  const sass = require('gulp-sass');
+  const csso = require('gulp-csso');
+  const groupCss = require('gulp-group-css-media-queries');
+  const rename = require('gulp-rename');
+  const cleanCss = require('gulp-clean-css');
+
+  gulp.task('development', () => {
+    return gulp.src('grid/scss/grid.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(groupCss())
+      .pipe(cleanCss({ format: 'beautify' }))
+      .pipe(gulp.dest('dist'));
+  });
+
+  gulp.task('production', () => {
+    return gulp.src('grid/scss/grid.scss')
+      .pipe(sass().on('error', sass.logError))
+      .pipe(groupCss())
+      .pipe(csso())
+      .pipe(rename('grid.min.css'))
+      .pipe(gulp.dest('dist'));
+  });
+
+  gulp.task('watch', () => {
+    gulp.watch(['scss/**/*.scss'], gulp.series(['development', 'production']));
+  });
+
+  gulp.task('default', gulp.series(
+    'development',
+    'production',
+    'watch'
+  ));`
   ]
   }
   }
