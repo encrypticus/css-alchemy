@@ -21,7 +21,7 @@ html, body {
   margin: auto;
   max-width: 1750px;
   min-width: 320px;
-  background-image: url(../img/bg.png);
+  background-image: url(/img/bg.png);
   background-repeat: no-repeat;
 
   @include for-tablet-landscape-down {
