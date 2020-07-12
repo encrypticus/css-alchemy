@@ -1,4 +1,4 @@
-mixin card({ src = '', alt = 'card', description = '', demoLink = '#', githubLink = '#', linkText = 'Github', linkIcon = '/css-alchemy/img/git-icon.svg' } = {}, mods)
+mixin card({ src = '', alt = 'card', description = '', demoLink = '#', githubLink = '#', linkText = 'Github', linkIcon = '/img/git-icon.svg' } = {}, mods)
   -
     // список модификаторов
     var allMods = '';
@@ -17,7 +17,7 @@ mixin card({ src = '', alt = 'card', description = '', demoLink = '#', githubLin
         h3.card__description= description
         .card__links
           a.card__link(href=demoLink, target='_blank')
-            img.card__link-icon(src='/css-alchemy/img/demo-icon.svg', alt='Демо')
+            img.card__link-icon(src='/img/demo-icon.svg', alt='Демо')
             span Демо
           a.card__link(href=githubLink, target='_blank')
             img.card__link-icon(src=linkIcon, alt='Исходный код на github')
