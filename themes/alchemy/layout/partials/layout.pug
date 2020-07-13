@@ -16,7 +16,8 @@ include includes
       id: post._id,
       content: post.content,
       link: url_for(post.link || post.path),
-      thumbnail: post.thumbnail
+      thumbnail: post.thumbnail,
+      alt: post.alt
   });
 
   return posts;

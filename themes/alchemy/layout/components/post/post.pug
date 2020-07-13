@@ -1,7 +1,7 @@
 mixin post(post = {}, full = false)
   article.post
     .post__thumb-wrapper
-      img.post__thumbnail(src=`${post.thumbnail}`)
+      img.post__thumbnail(src=`${post.thumbnail}`, alt=post.alt || 'Постер статьи')
 
     .post__content-wrapper
       .post__meta
