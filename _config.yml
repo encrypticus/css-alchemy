@@ -105,3 +105,9 @@ deploy:
   branch: gh-pages
   url: https://encrypticus.github.io/css-alchemy
   root: /css-alchemy/
+
+# Sitemap
+sitemap:
+  path: sitemap.xml
+  tag: false
+  category: false
