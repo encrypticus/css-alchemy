@@ -1,8 +1,8 @@
 include includes
 
 -
-  var description = "",
-  keywords = "";
+  var description = "Примеры и руководства, уроки, туториалы по javascript, HTML, CSS и препроцессорам. Магия фронтэнда. Разработка библиотек, скриптов и расширений для браузеров.",
+  keywords = "frontend, фронтэнд, javascript, html, css, sass, scss, разработка, разработка javascript библиотек, разработка css библиотек, препроцессоры, pug, chrome extension development, разработка браузерных расширений";
 
   const postList = page.posts && page.posts.reduce(function(posts, post) {
     let excerpt = post.excerpt.replace(/\>\</g, '>\n<') || post.content.substr(0, 1000).replace(/\>\</g, '>\n<');
