@@ -105,6 +105,7 @@ html, body {
   flex-direction: column;
 }
 
+@import '../../alchemy/sass/post';
 @import '../layout/components/socials/socials';
 @import '../layout/components/site-logo/site-logo';
 @import '../layout/components/hamburger/hamburger';
