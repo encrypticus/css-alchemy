@@ -1,0 +1,179 @@
+-
+  const snippets = {
+  html: [
+  `<div class="lightbox">
+    <img class="lightbox__img" src="./img/work-1.jpg" alt="Изображение для lightbox">
+    <img class="lightbox__img" src="./img/work-2.jpg" alt="Изображение для lightbox">
+    <img class="lightbox__img" src="./img/work-3.jpg" alt="Изображение для lightbox">
+    <img class="lightbox__img" src="./img/work-4.jpg" alt="Изображение для lightbox">
+    <img class="lightbox__img" src="./img/work-5.jpg" alt="Изображение для lightbox">
+    <img class="lightbox__img" src="./img/work-6.jpg" alt="Изображение для lightbox">
+    <img class="lightbox__img" src="./img/work-7.jpg" alt="Изображение для lightbox">
+    <img class="lightbox__img" src="./img/work-8.jpg" alt="Изображение для lightbox">
+  </div>`,
+
+  `<div class="modal-window">
+    <div class="modal-window__content">
+      <div class="modal-window__header">
+        <h3 class="modal-window__title"></h3>
+        <button class="modal-window__btn" type="button" aria-label="close modal window">x</button>
+      </div>
+      <img class="modal-window__img">
+    </div>
+  </div>`
+  ],
+
+  sass: [
+  `.lightbox {
+
+    display: flex;
+    line-height: 0;
+
+    &__img {
+      width: 100%;
+      height: auto;
+      cursor: pointer;
+    }
+  }
+
+  .modal-window {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    background-color: transparent;
+    padding-top: 50px;
+    overflow: auto;
+    transition: background-color .5s;
+
+    &_show {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    &_display_block {
+      display: block;
+    }
+
+    &__content {
+      width: 80%;
+      margin: auto;
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 6px;
+      max-width: 630px;
+
+      &_show {
+        animation: fadeInDown .5s;
+      }
+
+      &_hide {
+        animation: fadeOutUp .5s;
+      }
+    }
+
+    &__img {
+      width: 100%;
+      height: auto;
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #c7c7c7;
+      margin-bottom: 15px;
+    }
+
+    &__title {
+      color: #989898;
+    }
+
+    &__btn {
+      padding: 0;
+      font-weight: bold;
+      line-height: 0;
+      background-color: transparent;
+      color: #989898;
+      border: 0;
+      margin-left: auto;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translate(0, -100%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes fadeOutUp {
+    from {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+    to {
+      opacity: 0;
+      transform: translate(0, -100%);
+    }
+  `
+  ],
+
+  js: [
+  `const images = document.querySelectorAll('.lightbox__img');
+  const modalWindow = document.querySelector('.modal-window');
+  const modalContent = document.querySelector('.modal-window__content');
+  const modalImg = modalContent.querySelector('.modal-window__img');
+  const modalTitle = modalContent.querySelector('.modal-window__title');
+  const modalBtn = modalContent.querySelector('.modal-window__btn');
+
+  images.forEach((image) => {
+    image.addEventListener('click', (event) => {
+      setTimeout(() => {
+        modalWindow.classList.add('modal-window_show');
+      });
+
+      modalWindow.classList.add('modal-window_display_block');
+      modalContent.classList.remove('modal-window__content_hide');
+      modalContent.classList.add('modal-window__content_show');
+
+      const { target: { src, alt } } = event;
+      modalImg.src = src;
+      modalImg.alt = alt;
+      modalTitle.innerText = alt;
+    });
+  });
+
+  const hideModalWindow = () => {
+    modalWindow.classList.remove('modal-window_show');
+    modalContent.classList.remove('modal-window__content_show');
+    modalContent.classList.add('modal-window__content_hide');
+  };
+
+  modalWindow.addEventListener('click', () => {
+    hideModalWindow();
+  });
+
+  modalWindow.addEventListener('transitionend', (event) => {
+    if (!event.target.classList.contains('modal-window_show')) {
+      modalWindow.classList.remove('modal-window_display_block');
+    }
+  });
+
+  modalContent.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
+
+  modalBtn.addEventListener('click', () => {
+    hideModalWindow();
+  });
+  `
+  ]
+  }

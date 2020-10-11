@@ -1,0 +1,91 @@
+---
+title: 'Lightbox на ванильном JS и СSS'
+date: 2020-10-10 20:27:13
+tags:
+- javascript
+- scss
+- велосипеды
+categories:
+- велосипеды
+thumbnail: /img/js_lightbox.jpg
+description: 'Создание компонента lightbox на чистом javascript и css'
+keywords: 'javascript, lightbox, lightbox.js, модальное окно, modal window'
+alt: 'Lightbox'
+include_post_style: post
+include_post_script: post
+include_highlight: true
+---
+include ../../themes/alchemy/layout/components/heading/heading
+include _snippets/snippet
+include _snippets/lightbox
+
+-
+  const html = snippets.html;
+  const sass = snippets.sass;
+  const js = snippets.js;
+
+section.lightbox
+  p.post__text
+    | Очень часто на сайтах можно встретить компонент Ligthbox — это всплывающее окно, которое появляется
+    | при клике на каком-либо изображении. Внутри этого окна содержится то изображение, на котором произошёл клик.
+    | Причеём весь контент под всплывающим окном с изображением как правило затемняется. Хотя существует множество
+    | готовых решений в виде сторонних библиотек и плагинов, в этой статье, я покажу, как самому написать такой
+    | компонент на чистом JavaScript и SASS. Чтобы увидеть компонент Lightbox в действии, покликайте на изображениях:
+
+  .container
+    .lightbox__items.row.p-0
+      .col-6.col-lg-3.p-0
+        img.lightbox__img(src='./img/work-1.jpg', alt='Изображение для lightbox')
+      .col-6.col-lg-3.p-0
+        img.lightbox__img(src='./img/work-2.jpg', alt='Изображение для lightbox')
+      .col-6.col-lg-3.p-0
+        img.lightbox__img(src='./img/work-3.jpg', alt='Изображение для lightbox')
+      .col-6.col-lg-3.p-0
+        img.lightbox__img(src='./img/work-4.jpg', alt='Изображение для lightbox')
+    .lightbox__items.row.p-0.mb-3
+      .col-6.col-lg-3.p-0
+        img.lightbox__img(src='./img/work-5.jpg', alt='Изображение для lightbox')
+      .col-6.col-lg-3.p-0
+        img.lightbox__img(src='./img/work-6.jpg', alt='Изображение для lightbox')
+      .col-6.col-lg-3.p-0
+        img.lightbox__img(src='./img/work-7.jpg', alt='Изображение для lightbox')
+      .col-6.col-lg-3.p-0
+        img.lightbox__img(src='./img/work-8.jpg', alt='Изображение для lightbox')
+
+    .row
+      .col
+        p.post__text
+          | Добавляем в разметку изображения, при клике на которых будет появляться Lightbox:
+    .row
+      .col.p-0
+        +snippet(html[0])
+    .row
+      .col.p-0
+        p.post__text
+          | Добавляем в разметку код для Lightbox. Код можно вставить в любое место разметки страницы, например в самый
+          | конец:
+    .row
+      .col.p-0
+        +snippet(html[1])
+    .row
+      .col.p-0
+        p.post__text
+          | Добавляем стили:
+    .row
+      .col.p-0
+        +snippet(sass[0], 'scss')
+    .row
+      .col.p-0
+        p.post__text
+          | И наконец добавляем js:
+    .row
+      .col.p-0
+        +snippet(js[0], 'js')
+
+
+.modal-window
+  .modal-window__content
+    .modal-window__header
+      h3.modal-window__title
+      button.modal-window__btn(type='button', aria-label='close modal window') x
+    img.modal-window__img
