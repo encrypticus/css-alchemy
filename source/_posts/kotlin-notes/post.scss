@@ -1,0 +1,42 @@
+@import '../../../webpack-boilerplate/src/sass/utils';
+
+.post {
+
+  &__link {
+    color: blue;
+  }
+
+  &__text {
+    margin-bottom: pxToRem(30);
+  }
+
+  &__list {
+    list-style-type: decimal;
+    list-style-position: inside;
+    margin-bottom: pxToRem(30);
+  }
+
+  &__list-item-span {
+    display: inline-block;
+    margin-bottom: pxToRem(30);
+  }
+
+  .code {
+    padding: .2rem .4rem;
+    font-size: 85%;
+    background-color: rgba(27, 31, 35, .05);
+    border-radius: 3px;
+  }
+
+  pre {
+    font-size: 90%;
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    font-style: normal;
+    //line-height: 1.45;
+    //background-color: #f6f8fa;
+    border-radius: 3px;
+    margin-bottom: pxToRem(30);
+    //padding: pxToRem(16);
+    overflow: auto;
+  }
+}
