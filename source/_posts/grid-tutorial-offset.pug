@@ -22,9 +22,10 @@ include _snippets/grid
   const html = snippets.grid.html;
   const sass = snippets.grid.sass;
   const bash= snippets.grid.bash;
+  const prevPost = "{% post_link grid-tutorial-direction 'предыдущей' %}"
 
 p.post__text
-  | В <a class='post__link' href='/2020/06/22/grid-tutorial-direction/'>предыдущей</a> части мы реализовали
+  | В #{prevPost} части мы реализовали
   | модуль, отвечающий за направление расположения колонок. В этой части мы сосредоточимся на создании модуля,
   | отвечающего за смещение колонок в ряду. Смещение колоноки – это её перемещение вправо или влево относительно её
   | первоначального положения на расстояние, равное размеру одной или более колонок. Как всегда, лучше начать с примеров.

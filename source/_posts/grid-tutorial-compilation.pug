@@ -23,9 +23,10 @@ include _snippets/grid
   const sass = snippets.grid.sass;
   const bash = snippets.grid.bash;
   const js = snippets.grid.js;
+  const prevPost = "{% post_link grid-tutorial-gutters 'предыдущей' %}"
 
 p.post__text
-  | В <a class='post__link' href='/2020/06/26/grid-tutorial-gutters/'>предыдущей<a> части мы реализовали последний
+  | В #{prevPost} части мы реализовали последний
   | модуль нашей библиотеки. В заключительной части мы сосредоточимся на компиляции исходных sass-файлов в файл css и
   | поговорим о его оптимизации. На данный момент мы имеем готовую, полностью законченную библиотеку, реализующую адаптивную
   | сетку. Полный исходный код проекта можно посмотреть на

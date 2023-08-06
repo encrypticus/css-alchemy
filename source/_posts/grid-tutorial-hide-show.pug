@@ -22,9 +22,10 @@ include _snippets/grid
   const html = snippets.grid.html;
   const sass = snippets.grid.sass;
   const bash= snippets.grid.bash;
+  const prevPost = "{% post_link  grid-tutorial-ordering'предыдущей' %}"
 
 p.post__text
-  | В <a class='post__link' href='/2020/06/24/grid-tutorial-ordering/'>предыдущей</a> части мы добавили
+  | В #{prevPost} части мы добавили
   | модуль, позволяющий нам переупорядочивать элементы внутри сетки. В этой части мы добавим модуль, который даст нам
   | возможность скрывать и отображать элементы сетки. Для чего может пригодиться данный
   | модуль? Например для организации мобильного меню на сайте – на малых разрешениях экрана меню будет скрыто, а на больших

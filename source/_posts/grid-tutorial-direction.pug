@@ -22,9 +22,10 @@ include _snippets/grid
   const html = snippets.grid.html;
   const sass = snippets.grid.sass;
   const bash= snippets.grid.bash;
+  const prevPost = "{% post_link grid-tutorial-alignment 'предыдущей' %}"
 
 p.post__text
-  | В <a class='post__link' href='/2020/06/21/grid-tutorial-alignment/'>предыдущей</a> части мы добавили в
+  | В #{prevPost} части мы добавили в
   | нашу библиотеку модуль выравнивания колонок. В этой части библиотека пополнится ещё одним модулем, позволяющим
   | задавать направление расположения колонок в сетке. Направление колонок – это то, как будут выстраиваться колонки
   | внутри ряда. Как и в случае с выравниванием колонок, лучше это продемонстрировать наглядно.
