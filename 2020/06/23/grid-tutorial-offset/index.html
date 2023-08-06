@@ -1,0 +1,384 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Примеры и руководства, уроки, туториалы по javascript, HTML, CSS и препроцессорам. Магия фронтэнда. Разработка библиотек, скриптов и расширений для браузеров."><meta name="keywords" content="frontend, фронтэнд, javascript, html, css, sass, scss, разработка, разработка javascript библиотек, разработка css библиотек, препроцессоры, pug, chrome extension development, разработка браузерных расширений"><meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<link rel="stylesheet" href="/css-alchemy/common.css">
+<link rel="stylesheet" href="post.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/styles/default.min.css"><link rel="apple-touch-icon" sizes="180x180" href="/css-alchemy/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/css-alchemy/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/css-alchemy/favicons/favicon-16x16.png"><link rel="manifest" href="/css-alchemy/favicons/site.webmanifest"><link rel="mask-icon" href="/css-alchemy/favicons/safari-pinned-tab.svg" color="#5bbad5"><link rel="shortcut icon" href="/css-alchemy/favicons/favicon.ico"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/css-alchemy/favicons/browserconfig.xml"><meta name="theme-color" content="#5bbad5"><title>Исчерпывающее руководство по созданию модульной библиотеки, реализующей адаптивную сетку. Часть 4. Смещение колонок. - Алхимия CSS</title></head><body><div id="menu-wrapper"></div><div class="page"><div class="wrapper"><header class="page-header"><div class="page__socials page__socials_header"><div class="socials"><a class="socials__link" href="https://github.com/encrypticus/" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/github-icon.svg" alt="мой github"/></a><a class="socials__link" href="https://t.me/encrypticus" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/telegram-icon.svg" alt="мой телеграм"/></a><a class="socials__link" href="mailto:encrypticus@gmail.com"><img class="socials__icon" src="/css-alchemy/img/gmail-icon.svg" alt="мое мыло"/></a></div></div><div class="site-logo"><a class="site-logo__link" href="/css-alchemy"><span class="site-logo__link-text">frontend alchemy</span><img class="site-logo__icon" src="/css-alchemy/img/logo.svg" alt="site logo"/></a></div><a class="page-header__link-wrapper" href="#mmenu"><button class="hamburger hamburger--arrowturn"><span class="hamburger-inner"><span class="line-top"><span class="line-top-left"></span><span class="line-top-right"></span></span><span class="line-center"><span class="line-center-left"></span><span class="line-center-right"></span></span><span class="line-bottom"><span class="line-bottom-left"></span><span class="line-bottom-right"></span></span></span></button></a><nav class="mmenu mmenu_hidden" id="mmenu"><ul class="mmenu__list"><li class="mmenu__list-item"><a class="mmenu__link" href="/css-alchemy">Главная</a></li><li class="mmenu__list-item"><span>Категории</span><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/">javascript</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/">разработка</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/chrome-extensions/">chrome extensions</a></li></ul></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/">kotlin</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/notes/">notes</a></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/">велосипеды</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></li></ul></li></ul></li></ul></li><li class="mmenu__list-item"><span>Тэги</span><ul class="categories-widget-list" itemprop="keywords"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/chrome-extensions/" rel="tag">chrome extensions</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/javascript/" rel="tag">javascript</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/kotlin/" rel="tag">kotlin</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/libs/" rel="tag">libs</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/notes/" rel="tag">notes</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/sass/" rel="tag">sass</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/scss/" rel="tag">scss</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/" rel="tag">велосипеды</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/" rel="tag">разработка</a></li></ul></li><li class="mmenu__list-item"><span>Архивы</span><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2023/07/">июль 2023</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/10/">октябрь 2020</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/06/">июнь 2020</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/04/">апрель 2020</a></li></ul></li></ul></nav></header><main class="page__content"><div class="page__content-inner"><section class="page__posts"><article class="post"><div class="post__thumb-wrapper"><img class="post__thumbnail" src="/css-alchemy/img/flexbox-grid-offset-hero.jpg" alt="Смещение колонок"/></div><div class="post__content-wrapper"><div class="post__meta"><time class="post__date" datetime="2020-06-23T15:26:55.000Z">Опубликовано: 2020-06-23</time><div class="post__categories"><a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a>►<a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a>►<a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></div></div><h2 class="post__title">Исчерпывающее руководство по созданию модульной библиотеки, реализующей адаптивную сетку. Часть 4. Смещение колонок.</h2><div class="post__content"><p class="post__text">В <a href="/css-alchemy/2020/06/22/grid-tutorial-direction/" title="предыдущей">предыдущей</a> части мы реализовали
+модуль, отвечающий за направление расположения колонок. В этой части мы сосредоточимся на создании модуля,
+отвечающего за смещение колонок в ряду. Смещение колоноки – это её перемещение вправо или влево относительно её
+первоначального положения на расстояние, равное размеру одной или более колонок. Как всегда, лучше начать с примеров.
+В примерах ниже представлена сетка из двух рядов, первый из которых заполнен шестью элементами размером по две колонки
+каждый. Этот ряд нужен для наглядности того, на сколько колонок смещён элемент во втором ряду.</p><p class="post__text">Элемент смещён на две колонки вправо:</p><div class="post__grid"><div class="row"><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div></div></div><div class="post__grid"><div class="row"><div class="col-2 offset-right-2 post__col">col-2</div></div></div><p class="post__text">Элемент смещён на четыре колонки вправо:</p><div class="post__grid"><div class="row"><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div></div></div><div class="post__grid"><div class="row"><div class="col-2 offset-right-4 post__col">col-2</div></div></div><p class="post__text">Элемент смещён на шесть колонок вправо:</p><div class="post__grid"><div class="row"><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div></div></div><div class="post__grid"><div class="row"><div class="col-2 offset-right-6 post__col">col-2</div></div></div><p class="post__text">Элемент смещён на восемь колонок вправо:</p><div class="post__grid"><div class="row"><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div></div></div><div class="post__grid"><div class="row"><div class="col-2 offset-right-8 post__col">col-2</div></div></div><p class="post__text">Элемент смещён на десять колонок вправо:</p><div class="post__grid"><div class="row"><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div><div class="col-2 post__col">col-2</div></div></div><div class="post__grid"><div class="row"><div class="col-2 offset-right-10 post__col">col-2</div></div></div><p class="post__text">А теперь реализуем это в нашем коде. В директорию <span class='code'>mixins</span> добавим файл <span class='code'>_offset.scss</span>.
+Теперь поразмышляем, каким образом можно заставить колонку сместиться влево или вправо внутри ряда. Первое, что приходит
+на ум – это внешние отступы элемента. То есть, чтобы сместить колонку в ту или иную сторону, мы должны добавить ей левый
+или правый марджины. Очевидно также, что колонка может смещаться просто на всё свободное доступное пространство влево
+или вправо, реализуя таким образом эффект автосмещения. И также, как и в двух других написанных нами ранее модулях –
+выравнивания и направления, мы должны добавить возможность смещения колонок в медиазапросах. Начнём писать наш миксин:</p><pre><code class="scss">@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  //...
+}</code></pre><p class="post__text">Наш миксин принимает на вход три параметра. Параметр <span class='code'>$direction</span> отвечает за направление смещения
+колонки и может принимать лишь два значения: <span class='code'>right</span> и <span class='code'>left</span> – вправо и
+влево соответственно. По умолчанию параметр равен <span class='code'>right</span>.</p><p class="post__text">Параметр <span class='code'>$offset</span> отвечает за расстояние, на которое может быть смещена
+колонка, и может принимать либо целое неотрицательное число, указывающее число колонок смещения, либо ключевое слово
+<span class='code'>auto</span>, указывающее, что колонка может быть смещена на всё доступное свободное пространство.
+По умолчанию равен <span class='code'>auto</span>.</p><p class="post__text">Параметр <span class='code'>$breakpoint</span> отвечает за то, будут ли правила смещения колонки применяться внутри
+медиазапроса. Может принимать одно из имён брейкпоинтов, хранящихся в глобальном массиве <span class='code'>$grid-breakpoints</span>.
+По умолчанию не передаётся.</p><pre><code class="scss">@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    //...
+  } else {
+    //...
+  }
+}</code></pre><p class="post__text">В примере выше в первой строке внутри миксина стоит условие, согласно которому, если при вызове было передано
+существующее имя брейкпоинта, то выполнится код из блока <span class='code'>@if</span>. Иначе будет выполнен код из
+блока <span class='code'>@else</span>.</p><pre><code class="scss">@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      //...
+    }
+  } else {
+    //...
+  }
+}</code></pre><p class="post__text">Если при вызове миксинав в примере выше было передано валидное имя брейкпоинта, то код из блока
+<span class='code'>@if</span> будет обёрнут в медиавыражение. Все дальнейшие условия, которые мы рассмотрим и которые
+находятся дальше по коду, будут одинаково присутствовать и внутри блока <span class='code'>@if</span>, и внутри блока
+<span class='code'>@else</span>.</p><pre><code class="scss">@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      @if ($offset == auto) {
+        @if ($direction == right) {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        } @else if ($direction == left) {
+          margin-right: auto !important;
+          margin-left: $h-gutter / 2 !important;
+        } @else {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        }
+      }
+    }
+  } else {
+    @if ($offset == auto) {
+      @if ($direction == right) {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      } @else if ($direction == left) {
+        margin-right: auto !important;
+        margin-left: $h-gutter / 2 !important;
+      } @else {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      }
+    }
+  }
+}</code></pre><p class="post__text">В четвёртой и восемнадцатой строках в примере выше прописано условие, по которому если для <span class='code'>$offset</span>
+передано значение <span class='code'>auto</span>, то возможны три варианта:</p><ul class="post__list"><li>если значение параметра <span class='code'>$direction</span> равно <span class='code'>right</span>, то колонка
+смещается на всё доступное пространство вправо.</li><li>если значение параметра <span class='code'>$direction</span> равно <span class='code'>left</span>, то колонка смещается
+на всё доступное пространство влево.</li><li>и по умолчанию колонка всегда смещается вправо.</li></ul><p class="post__tex">Давайте ещё более расширим наш миксин:</p><pre><code class="scss">@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      @if ($offset == auto) {
+        @if ($direction == right) {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        } @else if ($direction == left) {
+          margin-right: auto !important;
+          margin-left: $h-gutter / 2 !important;
+        } @else {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        }
+      } @else if (type_of($offset) == number) {
+        //...
+      }
+    }
+  } else {
+    @if ($offset == auto) {
+      @if ($direction == right) {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      } @else if ($direction == left) {
+        margin-right: auto !important;
+        margin-left: $h-gutter / 2 !important;
+      } @else {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      }
+    } @else if (type_of($offset) == number) {
+      //...
+    }
+  }
+}</code></pre><p class="post__text">В пятнадцатой и тридцать первой строках в примере выше я добавил по условию, которые будут выполнены в том случае,
+если параметр<span class='code'>$offset</span> при вызове не будет равен <span class='code'>auto</span>, а будет
+являться числом. И в этом случае будет выполнен следующий код:</p><pre><code class="scss">@if ($offset > $columns) {
+  $offset: $columns;
+}
+
+@if ($offset &lt; 1) {
+  $offset: 1;
+}
+
+@if ($direction == right) {
+  margin-left: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+} @else if ($direction == left) {
+  margin-right: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+}</code></pre><p class="post__text">Разберём его подробнее. Условие в первой строке защищает нас от ситуации, когда пользователь при подключении миксина
+пытается передать число, большее общего числа колонок сетки, хранящегося в глобальной переменной
+<span class='code'>$columns</span>. В этом случае параметр <span class='code'>$offset</span> автоматически будет равен
+этому общему числу колонок.</p><p class="post__text">Условие в пятой строке защищает нас от ситуации, когда пользователь при подключении миксина попытается передать
+отрицательное число или ноль. В этом случае параметр <span class='code'>$offset</span> автоматически станет равным единице.</p><p class="post__text">Условия в девятой и одиннадцатой строках зависят от значения параметра <span class='code'>$direction</span> и выполняют
+код, отвечающий за смещение элементов вправо и влево на указанное число колонок.</p><p class="post__text">Итак, полный код миксина:</p><pre><code class="scss">  /* Смещение колонок */
+
+/*
+  Смещает колонку в ряду на $offset - целое число колонок, вправо - $direction: right или влево - $direction: left.
+  Если в качестве второго аргумента передано значение auto, колонка смещается на свободное пространство в ту или иную
+  сторону. Если значение аргумента $breakpoint соответствует одному из имен ключей глобального массива $grid-breakpoints,
+  правила применяются в соответствующем медиазапросе.
+*/
+@mixin offset($direction: right, $offset: auto, $breakpoint: null) {
+  @if (map_has_key($grid-breakpoints, $breakpoint)) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      @if ($offset == auto) {
+        @if ($direction == right) {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        } @else if ($direction == left) {
+          margin-right: auto !important;
+          margin-left: $h-gutter / 2 !important;
+        } @else {
+          margin-left: auto !important;
+          margin-right: $h-gutter / 2 !important;
+        }
+      } @else if (type_of($offset) == number) {
+        @if ($offset > $columns) {
+          $offset: $columns;
+        }
+
+        @if ($offset &lt; 1) {
+          $offset: 1;
+        }
+
+        @if ($direction == right) {
+          margin-left: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+        } @else if ($direction == left) {
+          margin-right: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+        }
+      }
+    }
+  } @else {
+    @if ($offset == auto) {
+      @if ($direction == right) {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      } @else if ($direction == left) {
+        margin-right: auto !important;
+        margin-left: $h-gutter / 2 !important;
+      } @else {
+        margin-left: auto !important;
+        margin-right: $h-gutter / 2 !important;
+      }
+    } @else if (type_of($offset == number)) {
+      @if ($offset > $columns) {
+        $offset: $columns;
+      }
+
+      @if ($offset &lt; 1) {
+        $offset: 1;
+      }
+
+      @if ($direction == right) {
+        margin-left: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+      } @else if ($direction == left) {
+        margin-right: calc(100% / #{$columns} * #{$offset} + #{$h-gutter} / 2) !important;
+      }
+    }
+  }
+
+}</code></pre><p class="post__text">Теперь мы можем подключить наш миксин. Думаю излишне уточнять, что миксин нужно подключать к элементу колонки:</p><div class="row"><pre class="col col-laptop-12"><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-1">of-1&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-2">of-2&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-3">of-3&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-4">of-4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-5">of-5&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-6">of-6&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-7">of-7&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-8">of-8&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-9">of-9&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-10">of-10&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><pre class="col"><code class="scss">.container {
+
+  .col-3 {
+    @include offset(right, 5);
+  }
+}</code></pre></div><p class="post__text">Приведённый выше код сместит колонку на пять колонок вправо:</p><div class="post__grid"><div class="row"><div class="col-3 offset-right-3 post__col">col-3</div></div></div><p class="post__text">Нам осталось написать модуль, ответственный за генерацию готовых классов смещения. В директорию
+<span class='code'>partials</span> добавим файла <span class='code'>offset.scss</span>.</p><p class="post__tex">partials/offset.scss:</p><p class="post__text">Пишем цикл от одного до 12 – общего количества колонок:</p><pre><code class="scss">@if (index($partials, offset)) {
+  @for $i from 1 through $columns {
+    //...
+  }
+}</code></pre><p class="post__text">Внутри цикла генерируются 12 селекторов "смещающих" классов вида <span class='code'>.offset-right-1</span>,
+<span class='code'>.offset-right-2</span>, <span class='code'>.offset-right-3</span> и т.д.:</p><pre><code class="scss">@if (index($partials, offset)) {
+  @for $i from 1 through $columns {
+    .offset-right-#{$i} {
+      //...
+    }
+  }
+}</code></pre><p class="post__text">Внутри селектора на каждом проходе цикла подключается наш миксин <span class='code'>offset</span>, в который первым
+аргументом передаётся ключевое слово <span class='code'>right</span>, а вторым – число колонок смещения:</p><pre><code class="scss">@if (index($partials, offset)) {
+  @for $i from 1 through $columns {
+    .offset-right-#{$i} {
+      @include offset(right, $i);
+    }
+  }
+}</code></pre><p class="post__text">Аналогичным образом генерируются и "левые смещающие" классы:</p><pre><code class="scss">@if (index($partials, offset)) {
+  @for $i from 1 through $columns {
+    .offset-right-#{$i} {
+      @include offset(right, $i);
+    }
+
+    .offset-left-#{$i} {
+      @include offset(left, $i);
+    }
+  }
+}</code></pre><p class="post__text">Ниже внутри этого же цикла генерируются "смещающие адаптивные" классы вида <span class='code'>offset-desktop-right-2</span>,
+<span class='code'>offset-laptop-left-4</span>, <span class='code'>offset-phone-landscape-6</span> и т.д. Это происходит
+внутри ещё одного цикла, который проходит по каждому элементу списка брейкпоинтов <span class='code'>$grid-breakpoints</span>,
+на каждой итерации генерирует селектор класса, внутри которого подключает наш миксин, но уже с передачей ему имени
+брейкпоинта третьим параметром:</p><pre><code class="scss">@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+  .offset-#{$breakpoint-name}-right-#{$i} {
+    @include offset(right, $i, $breakpoint-name);
+  }
+
+  .offset-#{$breakpoint-name}-left-#{$i} {
+    @include offset(left, $i, $breakpoint-name);
+  }
+}</code></pre><p class="post__text">Затем идёт формирование "автосмещающих" классов, не нуждающееся в подробном разборе:</p><pre><code class="scss">.offset-right-auto {
+  @include offset(right);
+}
+
+.offset-left-auto {
+  @include offset(left);
+}</code></pre><p class="post__text">И наконец формирование "автосмещающих адаптивных" классов:</p><pre><code class="scss">@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+  .offset-#{$breakpoint-name}-right-auto {
+    @include offset(right, auto, $breakpoint-name);
+  }
+
+  .offset-#{$breakpoint-name}-left-auto {
+    @include offset(left, auto, $breakpoint-name);
+  }
+}</code></pre><p class="post__text">В примере выше осуществляется циклический проход по списку брейкпоинтов. На каждой итерации цикла генерируется
+селектор класса вида <span class='code'>.offset-desktop-right-auto</span>, <span class='code'>.offset-desktop-left-auto</span>
+и т.д. Внутри селектора происходит подключение миксина с передачей в него ключевого слова <span class='code'>right</span>
+или <span class='code'>left</span>, ключевого слов <span class='code'>auto</span> и имени брейкпоинта.</p><p class="post__text">Полный код <span class='code'>partials/offset.scss</span>:</p><pre><code class="scss">@if (index($partials, offset)) {
+
+  // генерация "смещающих" классов соответственно числу колонок и соответственно числу колонок и медиазапросам
+  @for $i from 1 through $columns {
+    .offset-right-#{$i} {
+      @include offset(right, $i);
+    }
+
+    .offset-left-#{$i} {
+      @include offset(left, $i);
+    }
+
+    @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+      .offset-#{$breakpoint-name}-right-#{$i} {
+        @include offset(right, $i, $breakpoint-name);
+      }
+
+      .offset-#{$breakpoint-name}-left-#{$i} {
+        @include offset(left, $i, $breakpoint-name);
+      }
+    }
+  }
+
+  // генерация "автосмещающих" классов, правила в которых применяются в медиазапросах
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .offset-#{$breakpoint-name}-right-auto {
+      @include offset(right, auto, $breakpoint-name);
+    }
+
+    .offset-#{$breakpoint-name}-left-auto {
+      @include offset(left, auto, $breakpoint-name);
+    }
+  }
+
+  .offset-right-auto {
+    @include offset(right);
+  }
+
+  .offset-left-auto {
+    @include offset(left);
+  }
+}</code></pre><p class="post__text">Теперь мы можем осуществлять смещение колонок простым добавлением классов элементам в разметке:</p><pre><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-1">of-1&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-2">of-2&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-3">of-3&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-4">of-4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-5">of-5&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-6">of-6&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-7">of-7&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-8">of-8&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-9">of-9&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col-1 offset-right-10">of-10&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><div class="container" style="margin-bottom: 30px"><div class="row post__row_colored"><div class="col-1 offset-right-1 post__col">1</div></div><div class="row post__row_colored"><div class="col-1 offset-right-2 post__col">2</div></div><div class="row post__row_colored"><div class="col-1 offset-right-3 post__col">3</div></div><div class="row post__row_colored"><div class="col-1 offset-right-4 post__col">4</div></div><div class="row post__row_colored"><div class="col-1 offset-right-5 post__col">5</div></div><div class="row post__row_colored"><div class="col-1 offset-right-6 post__col">6</div></div><div class="row post__row_colored"><div class="col-1 offset-right-7 post__col">7</div></div><div class="row post__row_colored"><div class="col-1 offset-right-8 post__col">8</div></div><div class="row post__row_colored"><div class="col-1 offset-right-9 post__col">9</div></div><div class="row post__row_colored"><div class="col-1 offset-right-10 post__col">10</div></div></div><p class="post__text">Читайте <a class='post__link' href='/2020/06/24/grid-tutorial-ordering/'>пятую часть</a> руководоства,
+в которой мы шаг за шагом реализуем и добавим в нашу библиотеку модуль, отвечающий за упорядочивание колонок в сетке.</p></div><div class="post__button-more"><a class="button-more button-more_type_back" href="#">Назад</a></div><div class="post__foot"><ul class="post__tags"><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/scss/">scss</a></li><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/sass/">sass</a></li><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/libs/">libs</a></li></ul></div></div></article><div class="page__heading page__heading_comments"><h2 class="heading">Комментарии</h2></div><section id="hyvor-talk-view"></section><script src="/hyvor.js"></script><script async="async" src="//talk.hyvor.com/web-api/embed"></script></section><aside class="page__sidebar"><h2 class="heading  heading_sidebar">категории</h2><div class="categories-widget"><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/">javascript</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/">разработка</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/chrome-extensions/">chrome extensions</a></li></ul></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/">kotlin</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/notes/">notes</a></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/">велосипеды</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></li></ul></li></ul></li></ul></div><h2 class="heading  heading_sidebar">тэги</h2><div class="tags-widget"><ul class="tags-widget-list" itemprop="keywords"><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/chrome-extensions/" rel="tag">chrome extensions</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/javascript/" rel="tag">javascript</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/kotlin/" rel="tag">kotlin</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/libs/" rel="tag">libs</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/notes/" rel="tag">notes</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/sass/" rel="tag">sass</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/scss/" rel="tag">scss</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/" rel="tag">велосипеды</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/" rel="tag">разработка</a></li></ul></div><h2 class="heading  heading_sidebar">архив</h2><div class="archive-widget"><ul class="archive-widget-list"><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2023/07/">июль 2023</a></li><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/10/">октябрь 2020</a></li><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/06/">июнь 2020</a></li><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/04/">апрель 2020</a></li></ul></div></aside></div></main><footer class="page-footer"><div class="page__socials"><div class="socials  socials_theme_light"><a class="socials__link" href="https://github.com/encrypticus/" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/github-icon.svg" alt="мой github"/></a><a class="socials__link" href="https://t.me/encrypticus" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/telegram-icon.svg" alt="мой телеграм"/></a><a class="socials__link" href="mailto:encrypticus@gmail.com"><img class="socials__icon" src="/css-alchemy/img/gmail-icon.svg" alt="мое мыло"/></a></div></div><p class="copyright">© Александр Тимофеев. Сайт собран с помощью гремучей смеси hexo + webpack + gulp.</span></p><div class="site-logo  site-logo_theme_light"><a class="site-logo__link" href="/css-alchemy"><span class="site-logo__link-text">frontend alchemy</span><img class="site-logo__icon" src="/css-alchemy/img/logo.svg" alt="site logo"/></a></div></footer></div></div>
+<script src="/css-alchemy/npm.svg-injector.js"></script>
+<script src="/css-alchemy/npm.mmenu-js.js"></script>
+<script src="/css-alchemy/common.js"></script>
+<script src="/css-alchemy/npm.jquery.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script><script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>hljs.initLineNumbersOnLoad();</script></body></html>

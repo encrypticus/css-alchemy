@@ -1,0 +1,405 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Примеры и руководства, уроки, туториалы по javascript, HTML, CSS и препроцессорам. Магия фронтэнда. Разработка библиотек, скриптов и расширений для браузеров."><meta name="keywords" content="frontend, фронтэнд, javascript, html, css, sass, scss, разработка, разработка javascript библиотек, разработка css библиотек, препроцессоры, pug, chrome extension development, разработка браузерных расширений"><meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<link rel="stylesheet" href="/css-alchemy/common.css">
+<link rel="stylesheet" href="post.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/styles/default.min.css"><link rel="apple-touch-icon" sizes="180x180" href="/css-alchemy/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/css-alchemy/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/css-alchemy/favicons/favicon-16x16.png"><link rel="manifest" href="/css-alchemy/favicons/site.webmanifest"><link rel="mask-icon" href="/css-alchemy/favicons/safari-pinned-tab.svg" color="#5bbad5"><link rel="shortcut icon" href="/css-alchemy/favicons/favicon.ico"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/css-alchemy/favicons/browserconfig.xml"><meta name="theme-color" content="#5bbad5"><title>Исчерпывающее руководство по созданию модульной библиотеки, реализующей адаптивную сетку. Часть 7. Отступы. - Алхимия CSS</title></head><body><div id="menu-wrapper"></div><div class="page"><div class="wrapper"><header class="page-header"><div class="page__socials page__socials_header"><div class="socials"><a class="socials__link" href="https://github.com/encrypticus/" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/github-icon.svg" alt="мой github"/></a><a class="socials__link" href="https://t.me/encrypticus" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/telegram-icon.svg" alt="мой телеграм"/></a><a class="socials__link" href="mailto:encrypticus@gmail.com"><img class="socials__icon" src="/css-alchemy/img/gmail-icon.svg" alt="мое мыло"/></a></div></div><div class="site-logo"><a class="site-logo__link" href="/css-alchemy"><span class="site-logo__link-text">frontend alchemy</span><img class="site-logo__icon" src="/css-alchemy/img/logo.svg" alt="site logo"/></a></div><a class="page-header__link-wrapper" href="#mmenu"><button class="hamburger hamburger--arrowturn"><span class="hamburger-inner"><span class="line-top"><span class="line-top-left"></span><span class="line-top-right"></span></span><span class="line-center"><span class="line-center-left"></span><span class="line-center-right"></span></span><span class="line-bottom"><span class="line-bottom-left"></span><span class="line-bottom-right"></span></span></span></button></a><nav class="mmenu mmenu_hidden" id="mmenu"><ul class="mmenu__list"><li class="mmenu__list-item"><a class="mmenu__link" href="/css-alchemy">Главная</a></li><li class="mmenu__list-item"><span>Категории</span><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/">javascript</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/">разработка</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/chrome-extensions/">chrome extensions</a></li></ul></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/">kotlin</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/notes/">notes</a></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/">велосипеды</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></li></ul></li></ul></li></ul></li><li class="mmenu__list-item"><span>Тэги</span><ul class="categories-widget-list" itemprop="keywords"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/chrome-extensions/" rel="tag">chrome extensions</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/javascript/" rel="tag">javascript</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/kotlin/" rel="tag">kotlin</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/libs/" rel="tag">libs</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/notes/" rel="tag">notes</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/sass/" rel="tag">sass</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/scss/" rel="tag">scss</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/" rel="tag">велосипеды</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/" rel="tag">разработка</a></li></ul></li><li class="mmenu__list-item"><span>Архивы</span><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2023/07/">июль 2023</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/10/">октябрь 2020</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/06/">июнь 2020</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/04/">апрель 2020</a></li></ul></li></ul></nav></header><main class="page__content"><div class="page__content-inner"><section class="page__posts"><article class="post"><div class="post__thumb-wrapper"><img class="post__thumbnail" src="/css-alchemy/img/flexbox-grid-gutters-hero.png" alt="Отступы"/></div><div class="post__content-wrapper"><div class="post__meta"><time class="post__date" datetime="2020-06-26T15:26:55.000Z">Опубликовано: 2020-06-26</time><div class="post__categories"><a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a>►<a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a>►<a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></div></div><h2 class="post__title">Исчерпывающее руководство по созданию модульной библиотеки, реализующей адаптивную сетку. Часть 7. Отступы.</h2><div class="post__content"><p class="post__text">В <a href="/css-alchemy/2020/06/25/grid-tutorial-hide-show/" title="предыдущей">предыдущей</a> статье мы добавили в
+нашу библиотеку модуль, позволяющий скрывать и отображать элементы. Последний модуль, который мы реализуем в нашей
+библиотеке, позволит нам управлять внешними отступами элементов сетки.
+Если быть точным, модуль даст нам возможность обнулять заданные элементам марджины. Ведь, как мы помним, по умолчанию
+колонки сетки имеют горизонтальные и нижний вертикальный отступы. Но может возникнуть ситуация, когда нам нужно обнулить
+только горизонтальные или только вертикальные марджины у одной колонки, или обнулить определённые марджины у колонок
+в одном из рядов сетки, или же вовсе обнулить отступы у всех колонок у одной сетки на странице, не касаясь колонок другой
+сетки. Некоторые из миксинов модуля, как мы увидим, будет возможно применять не только к колонкам сетки, но и при
+необходимости к любому элементу на странице. Итак, добавим в директорию <span class='code'>mixins</span> файл
+<span class='code'>_gutters.scss</span>. В него добавим первый миксин:</p><pre><code class="scss">@mixin no-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      margin: 0 !important;
+    }
+  } @else {
+    margin: 0 !important;
+  }
+}</code></pre><p class="post__text">Этот миксин просто обнуляет все внешние отступы элемента, на котором он вызван. Очевидно, что миксин может быть вызван
+на любом элементе страницы, а не только на элементах колонок нашей сетки. Миксин принимает параметр
+<span class='code'>$breakpoint</span>, равный по умолчанию <span class='code'>null</span> и определяющий, будет ли
+сброс отступов осуществляться внутри медиазапроса. Если аргумент при вызыове будет валидным именем одного из брейкпоинтов
+<span class='code'>$grid-breakpoints</span>, то привило будет применено в медиавыражении. Ниже представлен пример с сеткой,
+состоящей из двух рядов и нескольких колонок, у которых сброшены все внешние отступы:</p><div class="row"><pre class="col col-laptop-md-12"><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col">1&lt;/div>
+    &lt;div class="col">2&lt;/div>
+    &lt;div class="col">3&lt;/div>
+    &lt;div class="col">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col">5&lt;/div>
+    &lt;div class="col">6&lt;/div>
+    &lt;div class="col">7&lt;/div>
+    &lt;div class="col">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><pre class="col"><code class="scss">.col {
+  @include no-gutters;
+}</code></pre></div><div class="container" style="margin-bottom: 30px"><div class="row"><div class="col no-gutters post__col">1</div><div class="col no-gutters post__col">2</div><div class="col no-gutters post__col">3</div><div class="col no-gutters post__col">4</div></div><div class="row"><div class="col no-gutters post__col">5</div><div class="col no-gutters post__col">6</div><div class="col no-gutters post__col">7</div><div class="col no-gutters post__col">8</div></div></div><p class="post__text">Обратите внимание, что у колонок сброшены не только горизонтальные, но и вертикальные отступы, поэтому между рядами
+сетки тоже отсутствуют отступы.</p><p class="post__text">Теперь добавим второй миксин, реализующий сброс только горизонтальных отступов у элементов:</p><pre><code class="scss">@mixin no-h-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+    }
+  } @else {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+}</code></pre><p class="post__text">Второй миксин аналогичен первому, за исключением того, что он обнуляет только горизонтальные отступы элемента, на котором
+он был вызван. Ниже представлен пример с сеткой, состоящей из двух рядов и нескольких колонок, у которых сброшены
+горизонтальные отступы:</p><div class="row"><pre class="col col-laptop-md-12"><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col">1&lt;/div>
+    &lt;div class="col">2&lt;/div>
+    &lt;div class="col">3&lt;/div>
+    &lt;div class="col">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col">5&lt;/div>
+    &lt;div class="col">6&lt;/div>
+    &lt;div class="col">7&lt;/div>
+    &lt;div class="col">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><pre class="col"><code class="scss">.col {
+  @include no-h-gutters;
+}</code></pre></div><div class="container" style="margin-bottom: 30px"><div class="row"><div class="col no-h-gutters post__col">1</div><div class="col no-h-gutters post__col">2</div><div class="col no-h-gutters post__col">3</div><div class="col no-h-gutters post__col">4</div></div><div class="row"><div class="col no-h-gutters post__col">5</div><div class="col no-h-gutters post__col">6</div><div class="col no-h-gutters post__col">7</div><div class="col no-h-gutters post__col">8</div></div></div><p class="post__text">И третий миксин, сбрасывающий только вертикальные отступы элемента:</p><pre><code class="scss">@mixin no-v-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+  } @else {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}</code></pre><p class="post__text">Пример сброса вертикальных отступов:</p><div class="row"><pre class="col col-laptop-md-12"><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col">1&lt;/div>
+    &lt;div class="col">2&lt;/div>
+    &lt;div class="col">3&lt;/div>
+    &lt;div class="col">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col">5&lt;/div>
+    &lt;div class="col">6&lt;/div>
+    &lt;div class="col">7&lt;/div>
+    &lt;div class="col">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><pre class="col"><code class="scss">.col {
+  @include no-v-gutters;
+}</code></pre></div><div class="container page__container_no-padding" style="margin-bottom: 30px"><div class="row"><div class="col no-v-gutters post__col">1</div><div class="col no-v-gutters post__col">2</div><div class="col no-v-gutters post__col">3</div><div class="col no-v-gutters post__col">4</div></div><div class="row"><div class="col no-v-gutters post__col">5</div><div class="col no-v-gutters post__col">6</div><div class="col no-v-gutters post__col">7</div><div class="col no-v-gutters post__col">8</div></div></div><p class="post__text">А теперь добавим миксины, реализующие сборос отступов лишь у элементов колонок сетки:</p><pre><code class="scss">// обнуляет внешние отступы колонок сетки
+@mixin no-children-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      > .col,
+      > [class*='col-'] {
+        margin: 0 !important;
+      }
+    }
+  } @else {
+    > .col,
+    > [class*='col-'] {
+      margin: 0 !important;
+    }
+  }
+}
+
+// обнуляет внешние горизонтальные отступы колонок сетки
+@mixin no-children-h-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      > .col,
+      > [class*='col-'] {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    }
+  } @else {
+    > .col,
+    > [class*='col-'] {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+}
+
+// обнуляет внешние вертикальные отступы колонок сетки
+@mixin no-children-v-gutters($breakpoint: null) {
+  @if map_has_key($grid-breakpoints, $breakpoint) {
+    @media screen and (#{$media-query}-width: map_get($grid-breakpoints, $breakpoint)) {
+      > .col,
+      > [class*='col-'] {
+        margin-bottom: 0 !important;
+      }
+    }
+  } @else {
+    > .col,
+    > [class*='col-'] {
+      margin-bottom: 0 !important;
+    }
+  }
+}</code></pre><p class="post__text">Эти три миксина, как и предыдующие три, отвечают за сброс всех отступов, только горизонтальных отступов и только
+вертикальных отступов соответственно. Коренное отличие в том, что данные миксины обнуляют отступы только у элементов
+колонок, на что укзывают селекторы <span class='code'>> .col</span> и <span class='code'>> [class*='col-']</span>.
+Очевидно, что данные миксины имеет смысл подключать только к элементам ряда <span class='code'>row</span>, так как
+селекторы указывают на прямых потомков <span class='code'>.col</span>, <span class='code'>.col-1</span>,
+<span class='code'>.col-2</span>, <span class='code'>.col-3</span> и т.д.</p><p class="post__text">Вот примеры сброса отступов у колонок:</p><p class="post__text">сброшены все отступы у колонок в первом ряду:</p><div class="row"><pre class="col col-laptop-md-12"><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col">1&lt;/div>
+    &lt;div class="col">2&lt;/div>
+    &lt;div class="col">3&lt;/div>
+    &lt;div class="col">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col">5&lt;/div>
+    &lt;div class="col">6&lt;/div>
+    &lt;div class="col">7&lt;/div>
+    &lt;div class="col">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><pre class="col"><code class="scss">.row:first-child {
+  @include no-children-gutters;
+}</code></pre></div><div class="container"><div class="row no-children-gutters"><div class="col post__col">1</div><div class="col post__col">2</div><div class="col post__col">3</div><div class="col post__col">4</div></div><div class="row"><div class="col post__col">5</div><div class="col post__col">6</div><div class="col post__col">7</div><div class="col post__col">8</div></div></div><p class="post__text">сброшены только горизонтальные отступы у колонок в первом ряду:</p><div class="row"><pre class="col col-laptop-md-12"><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col">1&lt;/div>
+    &lt;div class="col">2&lt;/div>
+    &lt;div class="col">3&lt;/div>
+    &lt;div class="col">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col">5&lt;/div>
+    &lt;div class="col">6&lt;/div>
+    &lt;div class="col">7&lt;/div>
+    &lt;div class="col">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><pre class="col"><code class="scss">.row:first-child {
+  @include no-children-h-gutters;
+}</code></pre></div><div class="container"><div class="row no-children-h-gutters"><div class="col post__col">1</div><div class="col post__col">2</div><div class="col post__col">3</div><div class="col post__col">4</div></div><div class="row"><div class="col post__col">5</div><div class="col post__col">6</div><div class="col post__col">7</div><div class="col post__col">8</div></div></div><p class="post__text">сброшены только вертикальные отступы у колонок в первом ряду:</p><div class="row"><pre class="col col-laptop-md-12"><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col">1&lt;/div>
+    &lt;div class="col">2&lt;/div>
+    &lt;div class="col">3&lt;/div>
+    &lt;div class="col">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col">5&lt;/div>
+    &lt;div class="col">6&lt;/div>
+    &lt;div class="col">7&lt;/div>
+    &lt;div class="col">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><pre class="col"><code class="scss">.row:first-child {
+  @include no-children-v-gutters;
+}</code></pre></div><div class="container page__container_no-padding"><div class="row no-children-v-gutters"><div class="col post__col">1</div><div class="col post__col">2</div><div class="col post__col">3</div><div class="col post__col">4</div></div><div class="row"><div class="col post__col">5</div><div class="col post__col">6</div><div class="col post__col">7</div><div class="col post__col">8</div></div></div><p class="post__text">Теперь по аналогии с другими, написанными нами ранее модулями, реализуем генерирование классов, отвечающих за сброс
+отступов. В директорию <span class='code'>partials</span> добавим файл <span class='code'>gutters.scss</span> и начнём
+добавлять в него код:</p><pre><code class="scss">.no-gutters {
+  @include no-gutters;
+}
+
+.no-h-gutters {
+  @include no-h-gutters;
+}
+
+.no-v-gutters {
+  @include no-v-gutters;
+}</code></pre><p class="post__text">Выше мы добавили три селектора класса, подключающие миксины, добавляющие селектору правила сброса всех марджинов, только
+горизонтальных марджинов и только вертикальных марджинов элемента соответственно.</p><p class="post__text">Теперь добавим селекторы с миксинами, сбрасывающими отступы только у элементов колонок:</p><pre><code class="scss">.no-children-gutters {
+  @include no-children-gutters;
+}
+
+.no-children-h-gutters {
+  @include no-children-h-gutters;
+}
+
+.no-children-v-gutters {
+  @include no-children-v-gutters
+}</code></pre><p class="post__text">И напоследок сгенерируем классы в медиазапросах:</p><pre><code class="scss">@each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+  .no-gutters-#{$breakpoint-name} {
+    @include no-gutters($breakpoint-name);
+  }
+
+  .no-h-gutters-#{$breakpoint-name} {
+    @include no-h-gutters($breakpoint-name);
+  }
+
+  .no-v-gutters-#{$breakpoint-name} {
+    @include no-v-gutters($breakpoint-name);
+  }
+
+  .no-children-gutters-#{$breakpoint-name} {
+    @include no-children-gutters($breakpoint-name);
+  }
+
+  .no-children-h-gutters-#{$breakpoint-name} {
+    @include no-children-h-gutters($breakpoint-name);
+  }
+
+  .no-children-v-gutters-#{$breakpoint-name} {
+    @include no-children-v-gutters($breakpoint-name);
+  }
+}</code></pre><p class="post__text">Классы будут сгенерированы по тому же принципу, что и в других наших модулях: по списку определённых нами брейкпоинтов
+осуществляется проход цикла, на каждой итерации которого генерируются селекторы вида
+<span class='code'>.no-gutters-desktop</span>, <span class='code'>.no-h-gutters-laptop</span>,
+<span class='code'>.no-children-v-gutters-phone-landscape</span> и т.д., внутри которых подключаются миксины, добавляющие
+селектору css-правила сброса марджинов.</p><p class="post__text">Полный код файла <span class='code'>partials/gutters.scss</span>:</p><pre><code class="scss">@if (index($partials, gutters)) {
+  .no-gutters {
+    @include no-gutters;
+  }
+
+  .no-h-gutters {
+    @include no-h-gutters;
+  }
+
+  .no-v-gutters {
+    @include no-v-gutters;
+  }
+
+  .no-children-gutters {
+    @include no-children-gutters;
+  }
+
+  .no-children-h-gutters {
+    @include no-children-h-gutters;
+  }
+
+  .no-children-v-gutters {
+    @include no-children-v-gutters
+  }
+
+  @each $breakpoint-name, $breakpoint-value in $grid-breakpoints {
+    .no-gutters-#{$breakpoint-name} {
+      @include no-gutters($breakpoint-name);
+    }
+
+    .no-h-gutters-#{$breakpoint-name} {
+      @include no-h-gutters($breakpoint-name);
+    }
+
+    .no-v-gutters-#{$breakpoint-name} {
+      @include no-v-gutters($breakpoint-name);
+    }
+
+    .no-children-gutters-#{$breakpoint-name} {
+      @include no-children-gutters($breakpoint-name);
+    }
+
+    .no-children-h-gutters-#{$breakpoint-name} {
+      @include no-children-h-gutters($breakpoint-name);
+    }
+
+    .no-children-v-gutters-#{$breakpoint-name} {
+      @include no-children-v-gutters($breakpoint-name);
+    }
+  }
+}</code></pre><p class="post__text">А теперь на примерах посмотрим, как мы можем использовать наши новые готовые классы в нашей html-разметке.</p><p class="post__text">Сброс всех отступов у всех колонок сетки:</p><pre><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col no-gutters">1&lt;/div>
+    &lt;div class="col no-gutters">2&lt;/div>
+    &lt;div class="col no-gutters">3&lt;/div>
+    &lt;div class="col no-gutters">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col no-gutters">5&lt;/div>
+    &lt;div class="col no-gutters">6&lt;/div>
+    &lt;div class="col no-gutters">7&lt;/div>
+    &lt;div class="col no-gutters">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><div class="container" style="margin-bottom: 30px"><div class="row"><div class="col no-gutters post__col">1</div><div class="col no-gutters post__col">2</div><div class="col no-gutters post__col">3</div><div class="col no-gutters post__col">4</div></div><div class="row"><div class="col no-gutters post__col">5</div><div class="col no-gutters post__col">6</div><div class="col no-gutters post__col">7</div><div class="col no-gutters post__col">8</div></div></div><p class="post__text">Сброс только горизонтальных отступов всех колонок сетки:</p><pre><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col no-h-gutters">1&lt;/div>
+    &lt;div class="col no-h-gutters">2&lt;/div>
+    &lt;div class="col no-h-gutters">3&lt;/div>
+    &lt;div class="col no-h-gutters">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col no-h-gutters">5&lt;/div>
+    &lt;div class="col no-h-gutters">6&lt;/div>
+    &lt;div class="col no-h-gutters">7&lt;/div>
+    &lt;div class="col no-h-gutters">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><div class="container"><div class="row"><div class="col no-h-gutters post__col">1</div><div class="col no-h-gutters post__col">2</div><div class="col no-h-gutters post__col">3</div><div class="col no-h-gutters post__col">4</div></div><div class="row"><div class="col no-h-gutters post__col">5</div><div class="col no-h-gutters post__col">6</div><div class="col no-h-gutters post__col">7</div><div class="col no-h-gutters post__col">8</div></div></div><p class="post__text">Сброс только вертикальных отступов всех колонок сетки:</p><pre><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col no-v-gutters">1&lt;/div>
+    &lt;div class="col no-v-gutters">2&lt;/div>
+    &lt;div class="col no-v-gutters">3&lt;/div>
+    &lt;div class="col no-v-gutters">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col no-v-gutters">5&lt;/div>
+    &lt;div class="col no-v-gutters">6&lt;/div>
+    &lt;div class="col no-v-gutters">7&lt;/div>
+    &lt;div class="col no-v-gutters">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><div class="container page__container_no-padding" style="margin-bottom: 30px"><div class="row"><div class="col no-v-gutters post__col">1</div><div class="col no-v-gutters post__col">2</div><div class="col no-v-gutters post__col">3</div><div class="col no-v-gutters post__col">4</div></div><div class="row"><div class="col no-v-gutters post__col">5</div><div class="col no-v-gutters post__col">6</div><div class="col no-v-gutters post__col">7</div><div class="col no-v-gutters post__col">8</div></div></div><p class="post__text">Сброс всех отступов всех колонок сетки при ширине вьюпорта 960px и ниже:</p><pre><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col no-gutters-laptop-md">1&lt;/div>
+    &lt;div class="col no-gutters-laptop-md">2&lt;/div>
+    &lt;div class="col no-gutters-laptop-md">3&lt;/div>
+    &lt;div class="col no-gutters-laptop-md">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col no-gutters-laptop-md">5&lt;/div>
+    &lt;div class="col no-gutters-laptop-md">6&lt;/div>
+    &lt;div class="col no-gutters-laptop-md">7&lt;/div>
+    &lt;div class="col no-gutters-laptop-md">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><div class="container page__container_no-padding"><div class="row"><div class="col no-gutters-laptop-md post__col">1</div><div class="col no-gutters-laptop-md post__col">2</div><div class="col no-gutters-laptop-md post__col">3</div><div class="col no-gutters-laptop-md post__col">4</div></div><div class="row"><div class="col no-gutters-laptop-md post__col">5</div><div class="col no-gutters-laptop-md post__col">6</div><div class="col no-gutters-laptop-md post__col">7</div><div class="col no-gutters-laptop-md post__col">8</div></div></div><p class="post__text">Сброс всех отступов у колонок в первом ряду:</p><pre><code class="html">&lt;div class="container">
+  &lt;div class="row no-children-gutters">
+    &lt;div class="col">1&lt;/div>
+    &lt;div class="col">2&lt;/div>
+    &lt;div class="col">3&lt;/div>
+    &lt;div class="col">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col">5&lt;/div>
+    &lt;div class="col">6&lt;/div>
+    &lt;div class="col">7&lt;/div>
+    &lt;div class="col">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><div class="container"><div class="row no-children-gutters"><div class="col post__col">1</div><div class="col post__col">2</div><div class="col post__col">3</div><div class="col post__col">4</div></div><div class="row"><div class="col post__col">5</div><div class="col post__col">6</div><div class="col post__col">7</div><div class="col post__col">8</div></div></div><p class="post__text">Сброс всех отступов у колонок в первом ряду при ширине вьюпортм 768px и меньше:</p><pre><code class="html">&lt;div class="container">
+  &lt;div class="row no-children-gutters-tablet-landscape">
+    &lt;div class="col">1&lt;/div>
+    &lt;div class="col">2&lt;/div>
+    &lt;div class="col">3&lt;/div>
+    &lt;div class="col">4&lt;/div>
+  &lt;/div>
+
+  &lt;div class="row">
+    &lt;div class="col">5&lt;/div>
+    &lt;div class="col">6&lt;/div>
+    &lt;div class="col">7&lt;/div>
+    &lt;div class="col">8&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><div class="container page__container_no-padding"><div class="row no-children-gutters-tablet-landscape"><div class="col post__col">1</div><div class="col post__col">2</div><div class="col post__col">3</div><div class="col post__col">4</div></div><div class="row"><div class="col post__col">5</div><div class="col post__col">6</div><div class="col post__col">7</div><div class="col post__col">8</div></div></div><p class="post__text">Сброс горизонтальных отступов у второй колонки:</p><pre><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col">1&lt;/div>
+    &lt;div class="col no-h-gutters">2&lt;/div>
+    &lt;div class="col">3&lt;/div>
+    &lt;div class="col">4&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><div class="container page__container_no-padding"><div class="row"><div class="col post__col">1</div><div class="col no-h-gutters post__col">2</div><div class="col post__col">3</div><div class="col post__col">4</div></div></div><p class="post__text">Сброс горизонтальных отступов у второй и третьей колонок при ширине вьюпорта 1024px и ниже:</p><pre><code class="html">&lt;div class="container">
+  &lt;div class="row">
+    &lt;div class="col">1&lt;/div>
+    &lt;div class="col no-h-gutters-laptop">2&lt;/div>
+    &lt;div class="col no-h-gutters-laptop">3&lt;/div>
+    &lt;div class="col">4&lt;/div>
+  &lt;/div>
+&lt;/div></code></pre><div class="container page__container_no-padding"><div class="row"><div class="col post__col">1</div><div class="col no-h-gutters-laptop post__col">2</div><div class="col no-h-gutters-laptop post__col">3</div><div class="col post__col">4</div></div></div><p class="post__text">В заключительной части нашего руководства мы поговорим про компиляцию наших исходных файлов в один css-файл библиотеки
+и его оптимизацию. Читайте <a class='post__link' href='/2020/06/27/grid-tutorial-compilation/'>продолжение</a>.</p></div><div class="post__button-more"><a class="button-more button-more_type_back" href="#">Назад</a></div><div class="post__foot"><ul class="post__tags"><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/scss/">scss</a></li><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/sass/">sass</a></li><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/libs/">libs</a></li></ul></div></div></article><div class="page__heading page__heading_comments"><h2 class="heading">Комментарии</h2></div><section id="hyvor-talk-view"></section><script src="/hyvor.js"></script><script async="async" src="//talk.hyvor.com/web-api/embed"></script></section><aside class="page__sidebar"><h2 class="heading  heading_sidebar">категории</h2><div class="categories-widget"><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/">javascript</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/">разработка</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/chrome-extensions/">chrome extensions</a></li></ul></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/">kotlin</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/notes/">notes</a></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/">велосипеды</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></li></ul></li></ul></li></ul></div><h2 class="heading  heading_sidebar">тэги</h2><div class="tags-widget"><ul class="tags-widget-list" itemprop="keywords"><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/chrome-extensions/" rel="tag">chrome extensions</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/javascript/" rel="tag">javascript</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/kotlin/" rel="tag">kotlin</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/libs/" rel="tag">libs</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/notes/" rel="tag">notes</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/sass/" rel="tag">sass</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/scss/" rel="tag">scss</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/" rel="tag">велосипеды</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/" rel="tag">разработка</a></li></ul></div><h2 class="heading  heading_sidebar">архив</h2><div class="archive-widget"><ul class="archive-widget-list"><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2023/07/">июль 2023</a></li><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/10/">октябрь 2020</a></li><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/06/">июнь 2020</a></li><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/04/">апрель 2020</a></li></ul></div></aside></div></main><footer class="page-footer"><div class="page__socials"><div class="socials  socials_theme_light"><a class="socials__link" href="https://github.com/encrypticus/" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/github-icon.svg" alt="мой github"/></a><a class="socials__link" href="https://t.me/encrypticus" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/telegram-icon.svg" alt="мой телеграм"/></a><a class="socials__link" href="mailto:encrypticus@gmail.com"><img class="socials__icon" src="/css-alchemy/img/gmail-icon.svg" alt="мое мыло"/></a></div></div><p class="copyright">© Александр Тимофеев. Сайт собран с помощью гремучей смеси hexo + webpack + gulp.</span></p><div class="site-logo  site-logo_theme_light"><a class="site-logo__link" href="/css-alchemy"><span class="site-logo__link-text">frontend alchemy</span><img class="site-logo__icon" src="/css-alchemy/img/logo.svg" alt="site logo"/></a></div></footer></div></div>
+<script src="/css-alchemy/npm.svg-injector.js"></script>
+<script src="/css-alchemy/npm.mmenu-js.js"></script>
+<script src="/css-alchemy/common.js"></script>
+<script src="/css-alchemy/npm.jquery.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script><script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>hljs.initLineNumbersOnLoad();</script></body></html>

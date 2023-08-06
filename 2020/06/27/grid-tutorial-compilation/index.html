@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Примеры и руководства, уроки, туториалы по javascript, HTML, CSS и препроцессорам. Магия фронтэнда. Разработка библиотек, скриптов и расширений для браузеров."><meta name="keywords" content="frontend, фронтэнд, javascript, html, css, sass, scss, разработка, разработка javascript библиотек, разработка css библиотек, препроцессоры, pug, chrome extension development, разработка браузерных расширений"><meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<link rel="stylesheet" href="/css-alchemy/common.css">
+<link rel="stylesheet" href="post.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/styles/default.min.css"><link rel="apple-touch-icon" sizes="180x180" href="/css-alchemy/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/css-alchemy/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/css-alchemy/favicons/favicon-16x16.png"><link rel="manifest" href="/css-alchemy/favicons/site.webmanifest"><link rel="mask-icon" href="/css-alchemy/favicons/safari-pinned-tab.svg" color="#5bbad5"><link rel="shortcut icon" href="/css-alchemy/favicons/favicon.ico"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/css-alchemy/favicons/browserconfig.xml"><meta name="theme-color" content="#5bbad5"><title>Исчерпывающее руководство по созданию модульной библиотеки, реализующей адаптивную сетку. Часть 8. Компиляция. - Алхимия CSS</title></head><body><div id="menu-wrapper"></div><div class="page"><div class="wrapper"><header class="page-header"><div class="page__socials page__socials_header"><div class="socials"><a class="socials__link" href="https://github.com/encrypticus/" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/github-icon.svg" alt="мой github"/></a><a class="socials__link" href="https://t.me/encrypticus" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/telegram-icon.svg" alt="мой телеграм"/></a><a class="socials__link" href="mailto:encrypticus@gmail.com"><img class="socials__icon" src="/css-alchemy/img/gmail-icon.svg" alt="мое мыло"/></a></div></div><div class="site-logo"><a class="site-logo__link" href="/css-alchemy"><span class="site-logo__link-text">frontend alchemy</span><img class="site-logo__icon" src="/css-alchemy/img/logo.svg" alt="site logo"/></a></div><a class="page-header__link-wrapper" href="#mmenu"><button class="hamburger hamburger--arrowturn"><span class="hamburger-inner"><span class="line-top"><span class="line-top-left"></span><span class="line-top-right"></span></span><span class="line-center"><span class="line-center-left"></span><span class="line-center-right"></span></span><span class="line-bottom"><span class="line-bottom-left"></span><span class="line-bottom-right"></span></span></span></button></a><nav class="mmenu mmenu_hidden" id="mmenu"><ul class="mmenu__list"><li class="mmenu__list-item"><a class="mmenu__link" href="/css-alchemy">Главная</a></li><li class="mmenu__list-item"><span>Категории</span><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/">javascript</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/">разработка</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/chrome-extensions/">chrome extensions</a></li></ul></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/">kotlin</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/notes/">notes</a></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/">велосипеды</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></li></ul></li></ul></li></ul></li><li class="mmenu__list-item"><span>Тэги</span><ul class="categories-widget-list" itemprop="keywords"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/chrome-extensions/" rel="tag">chrome extensions</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/javascript/" rel="tag">javascript</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/kotlin/" rel="tag">kotlin</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/libs/" rel="tag">libs</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/notes/" rel="tag">notes</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/sass/" rel="tag">sass</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/scss/" rel="tag">scss</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/" rel="tag">велосипеды</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/tags/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/" rel="tag">разработка</a></li></ul></li><li class="mmenu__list-item"><span>Архивы</span><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2023/07/">июль 2023</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/10/">октябрь 2020</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/06/">июнь 2020</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/archives/2020/04/">апрель 2020</a></li></ul></li></ul></nav></header><main class="page__content"><div class="page__content-inner"><section class="page__posts"><article class="post"><div class="post__thumb-wrapper"><img class="post__thumbnail" src="/css-alchemy/img/flexbox-grid-optimization-hero.png" alt="Компиляция исходников"/></div><div class="post__content-wrapper"><div class="post__meta"><time class="post__date" datetime="2020-06-27T15:26:55.000Z">Опубликовано: 2020-06-27</time><div class="post__categories"><a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a>►<a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a>►<a class="post__category-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></div></div><h2 class="post__title">Исчерпывающее руководство по созданию модульной библиотеки, реализующей адаптивную сетку. Часть 8. Компиляция.</h2><div class="post__content"><p class="post__text">В <a href="/css-alchemy/2020/06/26/grid-tutorial-gutters/" title="предыдущей">предыдущей</a> части мы реализовали последний
+модуль нашей библиотеки. В заключительной части мы сосредоточимся на компиляции исходных sass-файлов в файл css и
+поговорим о его оптимизации. На данный момент мы имеем готовую, полностью законченную библиотеку, реализующую адаптивную
+сетку. Полный исходный код проекта можно посмотреть на
+<a class='post__link' href='https://github.com/encrypticus/flexbox-grid-pro' target="_blank" rel="noopener">github</a>. Также имеется подробная
+<a class='post__link' href='https://flexbox-grid-pro.github.io/grid/' target='_blank'>документация</a> на
+русском и английском языках. Для компиляции исходников я буду использовать таск-менеджер Gulp.</p><p class="post__text">Для начала установим утилиту командной строки Gulp:</p><pre><code class="bash">npm i --global gulp-cli</code></pre><p class="post__text">В корневой директории библиотеки <span class='code'>grid/</span> создадим файл <span class='code'>package.json</span>:</p><pre><code class="bash">npm init</code></pre><p class="post__text">Это позволит задать имя, описание, версию проекта и другую нужную информацию.</p><p class="post__text">Теперь установим Gulp в наши зависимости:</p><pre><code class="bash">npm i --save-dev gulp</code></pre><p class="post__text">Также нам потребуются некоторые дополнительные пакеты.</p><p class="post__text">Для компиляции sass-файлов нам понадобится плагин
+<a class='post__link' href='https://www.npmjs.com/package/gulp-sass' target='_blank'>gulp-sass</a>:</p><pre><code class="bash">npm i --save-dev gulp-sass</code></pre><p class="post__text">Для оптимизации скомпилированного css-файла библиотеки на понадобится css-минификатор
+<a class='post__link' href='https://www.npmjs.com/package/gulp-csso' target='_blank'>csso</a>. Его мы будет
+использовать для сборки файла <span class='code'>grid.min.css</span>:</p><pre><code class="bash">npm i --save-dev gulp-csso</code></pre><p class="post__text">При компиляции в конечном css-файле получится очень много одинаковых повторяющихся медиазапросов с разным кодом внутри:</p><pre><code class="scss">@media screen and (max-width:1280px) {
+  .justify-content-desktop-start {
+    justify-content: flex-start
+  }
+}
+
+@media screen and (max-width:1280px) {
+  .justify-content-desktop-center {
+    justify-content: center
+  }
+}
+
+@media screen and (max-width:1280px) {
+  .order-desktop-0 {
+    order: 0
+  }
+}</code></pre><p class="post__text">Очевидно, что это неэффективно, так как намного увеличит размер css-файла. Для того, чтобы результат был таким:</p><pre><code class="scss">@media screen and (max-width:1280px) {
+  .justify-content-desktop-start {
+    justify-content: flex-start
+  }
+  .justify-content-desktop-center {
+    justify-content: center
+  }
+  .order-desktop-0 {
+    order: 0
+  }
+}</code></pre><p class="post__text">мы должны установить плагин
+<a class='post__link' href='https://www.npmjs.com/package/gulp-group-css-media-queries' target='_blank'>gulp-group-css-media-queries</a>:</p><pre><code class="bash">npm i --save-dev gulp-group-css-media-queries</code></pre><p class="post__text">У нас будут две версии css-файла – неминифицированная <span class='code'>grid.css</span> и минифицированная
+<span class='code'>grid.min.css</span>. Поэтому нужно установить плагин, позволяющий переименовывать файлы –
+<a class='post__link' href='https://www.npmjs.com/package/gulp-rename' target='_blank'>gulp-rename</a>:</p><pre><code class="bash">npm i --save-dev gulp-rename</code></pre><p class="post__text">Также добавим плагин <a class='post__link' href='https://www.npmjs.com/package/gulp-clean-css' target='_blank'>gulp-clean-css</a>,
+который, как и csso является оптимизатором. Его мы будем использовать для сборки файла <span class='code'>grid.css</span>:</p><pre><code class="bash">npm i --save-dev gulp-clean-css</code></pre><p class="post__text">Теперь в корень проекта добавим файл <span class='code'>gulpfile.js</span> и подключим все необходимы модули:</p><pre><code class="js">const gulp = require('gulp');
+const sass = require('gulp-sass');
+const csso = require('gulp-csso');
+const groupCss = require('gulp-group-css-media-queries');
+const rename = require('gulp-rename');
+const cleanCss = require('gulp-clean-css');</code></pre><p class="post__text">Также добавим две задачи:</p><pre><code class="js">gulp.task('development', () => {
+  return gulp.src('scss/grid.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(groupCss())
+    .pipe(cleanCss({ format: 'beautify' }))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('production', () => {
+  return gulp.src('scss/grid.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(groupCss())
+    .pipe(csso())
+    .pipe(rename('grid.min.css'))
+    .pipe(gulp.dest('dist'));
+});</code></pre><p class="post__text">Задача <span class='code'>development</span> компилирует наш главный файл библиотеки <span class='code'>grid.scss</span>
+в файл <span class='code'>grid.css</span> и кладёт его в директорию <span class='code'>dist/</span>. Перед окончательной
+компиляцией файл проходит через группировку медиазапросов и оптимизацию с сохранением форматирования.</p><p class="post__text">Задача <span class='code'>production</span> собирает файл <span class='code'>grid.min.css</span> также в директории
+<span class='code'>dist</span>, удаляя все пробелы и переводы строк.</p><p class="post__text">Далее добавим задачу наблюдения за нашими scss-файлами, которая будет запускать пересборку при каждом изменении любого
+из файлов в директории <span class='code'>scss</span> и всех её поддиректорий:</p><pre><code class="js">gulp.task('watch', () => {
+  gulp.watch(['scss/**/*.scss'], gulp.series(['development', 'production']));
+});</code></pre><p class="post__text">И напоследок добавим дефолтную задачу, котороя последовательно запустит задачи <span class='code'>development</span>,
+<span class='code'>production</span> и <span class='code'>watch</span>:</p><pre><code class="js">gulp.task('default', gulp.series(
+  'development',
+  'production',
+  gulp.series('watch')
+));</code></pre><p class="post__text">Полный код файла <span class='code'>gulpfile.js</span>:</p><pre><code class="js">const gulp = require('gulp');
+const sass = require('gulp-sass');
+const csso = require('gulp-csso');
+const groupCss = require('gulp-group-css-media-queries');
+const rename = require('gulp-rename');
+const cleanCss = require('gulp-clean-css');
+
+gulp.task('development', () => {
+  return gulp.src('grid/scss/grid.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(groupCss())
+    .pipe(cleanCss({ format: 'beautify' }))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('production', () => {
+  return gulp.src('grid/scss/grid.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(groupCss())
+    .pipe(csso())
+    .pipe(rename('grid.min.css'))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('watch', () => {
+  gulp.watch(['scss/**/*.scss'], gulp.series(['development', 'production']));
+});
+
+gulp.task('default', gulp.series(
+  'development',
+  'production',
+  'watch'
+));</code></pre><p class="post__text">Теперь мы можем запустить компиляцию исхдников и наблюдение за файлами командой <span class='code'>gulp</span>
+в консоли в нашей корневой директории <span class='code'>grid/</span>.</p><p class="post__text">Мы написали нашу библиотеку, используя scss-синтаксис препроцессора. Очевидно, что нам также нужна sass-версия библиотеки.
+Поэтому нам необходимо сконвертировать все наши scss-исходники в их sass-версии. Единственный адекватный способ конвертации
+scss в sass, что я нашёл – это утилита <span class='code'>sass convert</span>. Прикол в том, что эта утилита входит в
+состав дистрибутива Ruby. Поэтому для установки <span class='code'>sass convert</span> придётся немного поплясать с бубном.
+Для начала нужно установить пакет <a class='post__link' href='https://www.ruby-lang.org/ru/downloads/' target='_blank'>Ruby</a>
+для вашей версии операционной системы. После установки у вас появится директория с установленным дистрибутивом Ruby.
+На моей Windows 10 это <span class='code'>Ruby27-x64</span>. Внутри директории <span class='code'>Ruby27-x64</span>
+находится директория <span class='code'>bin</span>, в которой содержится нужный нам исполняемый файл утилиты
+<span class='code'>sass-convert</span>. Чтобы запускать утилиту из любого места системы, добавьте директорию
+<span class='code'>bin</span> в системную переменную PATH.</p><p class="post__text">Теперь мы можем сконвертировать наши scss-файлы в sass. Перейдите в корневую директорию проекта <span class='code'>grid/</span>
+и запустите следующую команду:</p><pre><code class="bash">sass-convert -R scss --from scss --to sass</code></pre><p class="post__text">При указании опции <span class='code'>-R</span> утилита рекурсивно конвертирует все файлы в указанной директории и
+всех её поддиректориях. В нашем случае это директория <span class='code'>scss</span>.
+Опция <span class='code'>--from</span> задаёт формат, из которого производится конвертация,
+а <span class='code'>--to</span> – выходной формат.</p><p class="post__text">После конвертации в директории <span class='code'>scss</span> и её поддиректориях <span class='code'>mixins</span> и
+<span class='code'>partials</span> рядом с scss-файлами появятся их sass-аналоги. Просто переместим их в директорию
+<span class='code'>sass</span>: файлы <span class='code'>grid.sass</span> и <span class='code'>base.sass</span> в корень
+директории, а миксины и части в их директории <span class='code'>mixins</span> и <span class='code'>partials</span>
+соответственно.</p></div><div class="post__button-more"><a class="button-more button-more_type_back" href="#">Назад</a></div><div class="post__foot"><ul class="post__tags"><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/scss/">scss</a></li><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/sass/">sass</a></li><li class="post__tag"><a class="post__tag-link" href="/css-alchemy/tags/libs/">libs</a></li></ul></div></div></article><div class="page__heading page__heading_comments"><h2 class="heading">Комментарии</h2></div><section id="hyvor-talk-view"></section><script src="/hyvor.js"></script><script async="async" src="//talk.hyvor.com/web-api/embed"></script></section><aside class="page__sidebar"><h2 class="heading  heading_sidebar">категории</h2><div class="categories-widget"><ul class="categories-widget-list"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/">javascript</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/">разработка</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/javascript/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/chrome-extensions/">chrome extensions</a></li></ul></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/">kotlin</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/kotlin/notes/">notes</a></li></ul></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/">велосипеды</a></li><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/">препроцессоры</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/">scss</a><ul class="categories-widget-list-child"><li class="categories-widget-list-item"><a class="categories-widget-list-link" href="/css-alchemy/categories/%D0%BF%D1%80%D0%B5%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D1%80%D1%8B/scss/%D0%B1%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B8/">библиотеки</a></li></ul></li></ul></li></ul></div><h2 class="heading  heading_sidebar">тэги</h2><div class="tags-widget"><ul class="tags-widget-list" itemprop="keywords"><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/chrome-extensions/" rel="tag">chrome extensions</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/javascript/" rel="tag">javascript</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/kotlin/" rel="tag">kotlin</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/libs/" rel="tag">libs</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/notes/" rel="tag">notes</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/sass/" rel="tag">sass</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/scss/" rel="tag">scss</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/%D0%B2%D0%B5%D0%BB%D0%BE%D1%81%D0%B8%D0%BF%D0%B5%D0%B4%D1%8B/" rel="tag">велосипеды</a></li><li class="tags-widget-list-item"><a class="tags-widget-list-link" href="/css-alchemy/tags/%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0/" rel="tag">разработка</a></li></ul></div><h2 class="heading  heading_sidebar">архив</h2><div class="archive-widget"><ul class="archive-widget-list"><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2023/07/">июль 2023</a></li><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/10/">октябрь 2020</a></li><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/06/">июнь 2020</a></li><li class="archive-widget-list-item"><a class="archive-widget-list-link" href="/css-alchemy/archives/2020/04/">апрель 2020</a></li></ul></div></aside></div></main><footer class="page-footer"><div class="page__socials"><div class="socials  socials_theme_light"><a class="socials__link" href="https://github.com/encrypticus/" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/github-icon.svg" alt="мой github"/></a><a class="socials__link" href="https://t.me/encrypticus" target="_blank" rel="noopener"><img class="socials__icon" src="/css-alchemy/img/telegram-icon.svg" alt="мой телеграм"/></a><a class="socials__link" href="mailto:encrypticus@gmail.com"><img class="socials__icon" src="/css-alchemy/img/gmail-icon.svg" alt="мое мыло"/></a></div></div><p class="copyright">© Александр Тимофеев. Сайт собран с помощью гремучей смеси hexo + webpack + gulp.</span></p><div class="site-logo  site-logo_theme_light"><a class="site-logo__link" href="/css-alchemy"><span class="site-logo__link-text">frontend alchemy</span><img class="site-logo__icon" src="/css-alchemy/img/logo.svg" alt="site logo"/></a></div></footer></div></div>
+<script src="/css-alchemy/npm.svg-injector.js"></script>
+<script src="/css-alchemy/npm.mmenu-js.js"></script>
+<script src="/css-alchemy/common.js"></script>
+<script src="/css-alchemy/npm.jquery.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script><script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.8.0/dist/highlightjs-line-numbers.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>hljs.initLineNumbersOnLoad();</script></body></html>
